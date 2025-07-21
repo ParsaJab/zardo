@@ -38,14 +38,13 @@ header {
   font-size: 18px;
 }
 main {
-  padding-bottom: 110px !important; /* فضای زیر nav برای دکمه آخر */
+  padding-bottom: 115px !important;
   overflow-y: auto;
-  max-height: calc(100vh - 120px);
+  max-height: calc(100vh - 110px);
   width: 100vw;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
 }
 nav {
   display: flex;
@@ -68,7 +67,7 @@ nav button {
 .tab {
   display: none;
   width: 100vw;
-  max-width: 420px;
+  max-width: 430px;
   margin: 0 auto;
 }
 .tab.active {
@@ -88,7 +87,27 @@ nav button {
   box-shadow: 0 6px 12px #000;
   position: relative;
   z-index: 2;
-  touch-action: manipulation; /* جلوگیری از دوبل-تپ زوم */
+  touch-action: manipulation;
+}
+.gold-drop {
+  position: fixed;
+  font-size: 18px;
+  color: gold;
+  left: 50%;
+  top: 34%;
+  animation: drop 1s ease-out forwards;
+  pointer-events: none;
+  z-index: 2000;
+}
+@keyframes drop {
+  0% {
+    opacity: 1;
+    transform: translateY(0px) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-60px) scale(1.3);
+  }
 }
 .xp-bar {
   height: 14px;
@@ -114,22 +133,22 @@ nav button {
 #business-list {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
   margin: 20px auto 0 auto;
-  width: 95%;
-  max-width: 410px;
-  padding-bottom: 50px; /* برای دکمه آخر */
+  width: 96%;
+  max-width: 420px;
+  padding-bottom: 80px;
 }
 .business-card {
   background: #292b38;
   border: 1px solid #444;
   border-radius: 13px;
-  padding: 14px 18px 28px 18px; /* فضای بیشتر پایین */
+  padding: 14px 18px 34px 18px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   box-shadow: 0 4px 10px rgba(0,0,0,0.12);
-  margin-bottom: 18px;
+  margin-bottom: 10px;
 }
 .business-card h3 {
   margin: 0 0 8px 0;
@@ -156,13 +175,13 @@ nav button {
   font-size: 16px;
   margin: 18px auto 0 auto;
   width: 95%;
-  max-width: 350px;
+  max-width: 380px;
   box-shadow: 0 0 7px #0002;
   color: #ffc700;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   flex-wrap: wrap;
 }
 .profile-card {
