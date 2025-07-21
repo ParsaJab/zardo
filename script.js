@@ -1,6 +1,10 @@
 
 let gold = parseInt(localStorage.getItem("gold")) || 0;
 let clicks = parseInt(localStorage.getItem("clicks")) || 0;
+let xp = parseInt(localStorage.getItem("xp")) || 0;
+let level = parseInt(localStorage.getItem("level")) || 1;
+let xpToNext = parseInt(localStorage.getItem("xpToNext")) || 10;
+
 let businesses = JSON.parse(localStorage.getItem("businesses")) || {
   shop: 0,
   factory: 0,
@@ -9,10 +13,16 @@ let businesses = JSON.parse(localStorage.getItem("businesses")) || {
 
 const goldEl = document.getElementById("gold");
 const clicksEl = document.getElementById("clicks");
+const levelEl = document.getElementById("level");
+const xpEl = document.getElementById("xp");
+const xpNextEl = document.getElementById("xp-next");
 
 function updateUI() {
   goldEl.textContent = gold;
   clicksEl.textContent = clicks;
+  levelEl.textContent = level;
+  xpEl.textContent = xp;
+  xpNextEl.textContent = xpToNext;
   document.getElementById("shop-count").textContent = "x" + businesses.shop;
   document.getElementById("factory-count").textContent = "x" + businesses.factory;
   document.getElementById("bank-count").textContent = "x" + businesses.bank;
@@ -21,6 +31,14 @@ function updateUI() {
 document.getElementById("click-btn").addEventListener("click", () => {
   gold += 3;
   clicks += 1;
+  xp += 1;
+
+  if (xp >= xpToNext) {
+    xp -= xpToNext;
+    level += 1;
+    xpToNext = Math.floor(xpToNext * 1.5);
+  }
+
   saveData();
   updateUI();
 });
@@ -48,6 +66,9 @@ function earnPassiveGold() {
 function saveData() {
   localStorage.setItem("gold", gold);
   localStorage.setItem("clicks", clicks);
+  localStorage.setItem("xp", xp);
+  localStorage.setItem("level", level);
+  localStorage.setItem("xpToNext", xpToNext);
   localStorage.setItem("businesses", JSON.stringify(businesses));
 }
 
