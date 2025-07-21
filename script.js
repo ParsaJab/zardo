@@ -43,12 +43,10 @@ document.getElementById("click-btn").addEventListener("click", () => {
     xpToNext = Math.floor(xpToNext * 1.5);
   }
 
-  // انیمیشن کلیک
   const btn = document.getElementById("click-btn");
   btn.classList.add("clicked");
   setTimeout(() => btn.classList.remove("clicked"), 100);
 
-  // صدا
   clickSound.currentTime = 0;
   clickSound.play();
 
@@ -74,11 +72,19 @@ document.getElementById("toggle-theme").addEventListener("click", () => {
   localStorage.setItem("isDark", JSON.stringify(isDark));
 });
 
-function buyBusiness(type) {
+function buyBusiness(type, cardId) {
   const prices = { shop: 50, factory: 200, bank: 1000 };
   if (gold >= prices[type]) {
     gold -= prices[type];
     businesses[type]++;
+
+    // انیمیشن خرید کارت مربوطه
+    if (cardId) {
+      const card = document.getElementById(cardId);
+      card.classList.add("animate-buy");
+      setTimeout(() => card.classList.remove("animate-buy"), 200);
+    }
+
     saveData();
     updateUI();
   } else {
