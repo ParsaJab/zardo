@@ -18,13 +18,9 @@ const businessDefs = [
 let businesses = []; // {id, level, income}
 let bizInterval = null;
 
-function getBusiness(id) {
-  return businesses.find(b=>b.id===id);
-}
-function businessUpgradeCost(biz) {
-  return Math.floor(businessDefs[biz.id-1].baseCost * Math.pow(1.7, biz.level));
-}
-
+// ====================
+function getBusiness(id) { return businesses.find(b=>b.id===id); }
+function businessUpgradeCost(biz) { return Math.floor(businessDefs[biz.id-1].baseCost * Math.pow(1.7, biz.level)); }
 // ذخیره و لود بازی
 function loadGame() {
   try {
@@ -55,30 +51,28 @@ function saveGame() {
   };
   localStorage.setItem('zardoSave', JSON.stringify(data));
 }
-
-// ==== TAB SWITCHER ====
-function setTabEvents() {
-  const allTabs = document.querySelectorAll('.tab');
-  const allPanels = document.querySelectorAll('.panel');
-  allTabs.forEach(tab => {
-    tab.onclick = () => {
-      allTabs.forEach(t => t.classList.remove('active'));
+// ====================
+// تب‌ها و سوییچ پانل با delegation
+function setupTabDelegation() {
+  document.querySelector(".bottom-tabs").onclick = function(e) {
+    if(e.target.classList.contains("tab")) {
+      let tab = e.target;
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
       tab.classList.add('active');
-      allPanels.forEach(p => p.classList.add('hidden'));
+      document.querySelectorAll('.panel').forEach(p => p.classList.add('hidden'));
       document.getElementById(tab.dataset.panel).classList.remove('hidden');
       if(tab.dataset.panel==="panel-business") renderBusinesses();
       if(tab.dataset.panel==="panel-robot") renderRobotPanel();
     }
-  });
+  };
 }
-setTabEvents();
-
+setupTabDelegation();
 document.getElementById("settings-open").onclick = () => {
   document.querySelectorAll('.panel').forEach(p => p.classList.add("hidden"));
   document.getElementById("settings-panel").classList.remove("hidden");
   showProfileInfo();
 };
-
+// ====================
 function updateUI() {
   document.getElementById("gold-count").textContent = gold;
   document.getElementById("vault-amount").textContent = vault;
@@ -86,14 +80,12 @@ function updateUI() {
   document.getElementById("vault-upgrade-cost").textContent = vaultLevel * 50;
   document.getElementById("level").textContent = `Lvl ${level}`;
   document.getElementById("xp-fill").style.width = `${(xp/xpToNextLevel)*100}%`;
-  // آپدیت امتیاز گلد در صفحات بیزنس و ربات
   let bizGold = document.getElementById("biz-gold-amount");
   if(bizGold) bizGold.textContent = gold;
   let robotGold = document.getElementById("robot-gold-amount");
   if(robotGold) robotGold.textContent = gold;
   saveGame();
 }
-
 function showProfileInfo() {
   document.getElementById("profile-info-settings").innerHTML =
     `<div style="border-radius:12px;background:#e9e9e9;padding:10px 14px;">
@@ -110,7 +102,6 @@ function showProfileInfo() {
     }
   }
 }
-
 function gainXP(amount) {
   xp += amount;
   if (xp >= xpToNextLevel) {
@@ -119,7 +110,7 @@ function gainXP(amount) {
     xpToNextLevel = Math.floor(xpToNextLevel * 1.5);
   }
 }
-
+// دکمه کلیک
 document.getElementById("click-button").onclick = () => {
   const earned = level;
   gold += earned; // مستقیم به Gold اضافه شود
@@ -157,8 +148,6 @@ document.getElementById("upgrade-robot").onclick = () => {
     gold -= robotUpgradeCost; robotPower++; robotUpgradeCost = Math.floor(robotUpgradeCost*1.6); updateUI();
   }
 };
-
-// درآمد بیزنس‌ها هر دقیقه به Vault اضافه شود
 function startBusinessIncome() {
   if(bizInterval) clearInterval(bizInterval);
   bizInterval = setInterval(()=>{
@@ -170,10 +159,10 @@ function startBusinessIncome() {
     }
   }, 60000);
 }
+// بیزنس
 function renderBusinesses() {
   const bizList = document.getElementById("business-list");
   bizList.innerHTML = "";
-  // نمایش Gold
   let goldDiv = document.createElement("div");
   goldDiv.style = "font-size:17px;font-weight:bold;text-align:right;margin:8px 0 4px 0;";
   goldDiv.innerHTML = `Gold: <span id="biz-gold-amount">${gold}</span>`;
@@ -200,7 +189,6 @@ function renderBusinesses() {
     bizList.appendChild(startBox);
     return;
   }
-  // Owned Businesses
   bizList.innerHTML += "<h3 style='margin:8px 0;'>Your Businesses</h3>";
   businesses.forEach((biz,i) => {
     const def = businessDefs[biz.id-1];
@@ -212,22 +200,18 @@ function renderBusinesses() {
         Upgrade (${businessUpgradeCost(biz)} Gold)
       </button>
     `;
-    setTimeout(()=>{
-      let btn = box.querySelector(".biz-upgrade-btn");
-      if(btn) btn.onclick = ()=>{
-        let upCost = businessUpgradeCost(biz);
-        if(gold>=upCost && biz.level<10) {
-          gold-=upCost;
-          biz.level+=1;
-          biz.income+=2;
-          updateUI();
-          renderBusinesses();
-        }
+    box.querySelector(".biz-upgrade-btn").onclick = ()=>{
+      let upCost = businessUpgradeCost(biz);
+      if(gold>=upCost && biz.level<10) {
+        gold-=upCost;
+        biz.level+=1;
+        biz.income+=2;
+        updateUI();
+        renderBusinesses();
       }
-    },10);
+    };
     bizList.appendChild(box);
   });
-  // Start Business (only for NOT OWNED businesses)
   let startDiv = document.createElement("div");
   startDiv.innerHTML = "<h3 style='margin:12px 0 5px 0;'>Start New Business</h3>";
   businessDefs.filter(def=>!getBusiness(def.id)).forEach(def=>{
@@ -238,24 +222,19 @@ function renderBusinesses() {
     <button class="biz-buy-btn">
       Buy (${def.baseCost} Gold)
     </button>`;
-    setTimeout(()=>{
-      let btn = startBox.querySelector(".biz-buy-btn");
-      if(btn) btn.onclick = ()=>{
-        if(gold>=def.baseCost) {
-          gold-=def.baseCost;
-          businesses.push({id:def.id,level:1,income:5});
-          updateUI();
-          renderBusinesses();
-          startBusinessIncome();
-        }
+    startBox.querySelector(".biz-buy-btn").onclick = ()=>{
+      if(gold>=def.baseCost) {
+        gold-=def.baseCost;
+        businesses.push({id:def.id,level:1,income:5});
+        updateUI();
+        renderBusinesses();
+        startBusinessIncome();
       }
-    },10);
+    };
     startDiv.appendChild(startBox);
   });
   bizList.appendChild(startDiv);
-  setTabEvents();
 }
-
 // Gold در ربات
 function renderRobotPanel() {
   let panel = document.getElementById("panel-robot");
@@ -270,10 +249,8 @@ function renderRobotPanel() {
   else {
     goldDiv.innerHTML = `Gold: <span id="robot-gold-amount">${gold}</span>`;
   }
-  setTabEvents();
 }
-
 loadGame();
 updateUI();
-setTabEvents();
+setupTabDelegation();
 startBusinessIncome();
