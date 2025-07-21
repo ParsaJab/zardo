@@ -7,28 +7,21 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Header -->
   <header>
     <div class="xp-bar">
       <span id="level">Lvl 1</span>
-      <div class="xp-track">
-        <div id="xp-fill"></div>
-      </div>
+      <div class="xp-track"><div id="xp-fill"></div></div>
     </div>
     <div class="title">ZARDO</div>
-    <div class="settings-tab">⚙️</div>
+    <div class="settings-tab" id="settings-open">⚙️</div>
   </header>
-
-  <!-- Main Click Area -->
-  <main>
+  
+  <!-- MAIN PANEL (Click) -->
+  <section id="main-panel" class="panel">
     <div id="score-display">Gold: <span id="gold-count">0</span></div>
     <button id="click-button">💰 Click for Gold</button>
-
-    <!-- Vault Section -->
     <div class="vault">
-      <div class="vault-bar">
-        <div id="vault-fill"></div>
-      </div>
+      <div class="vault-bar"><div id="vault-fill"></div></div>
       <div class="vault-info">
         <p>Vault: <span id="vault-amount">0</span> Gold</p>
         <p>Next Upgrade: <span id="vault-upgrade-cost">50</span> Gold</p>
@@ -38,33 +31,13 @@
         </div>
       </div>
     </div>
-  </main>
-
-  <!-- Bottom Tabs -->
-  <nav class="bottom-tabs">
-    <button class="tab" id="business-tab">🏢 Businesses</button>
-    <button class="tab" id="robot-tab">🤖 Robot</button>
-    <button class="tab active" id="click-tab">🖱️ Click</button>
-    <button class="tab" id="referral-tab">🔗 Referrals</button>
-  </nav>
-
-  <!-- Floating Profile Tab -->
-  <div class="profile-tab">
-    <img src="assets/images/profile.png" alt="Profile" />
-    <div id="profile-info">
-      <p>Level: 1</p>
-      <p>Income/Minute: 0</p>
-      <p>Clicks: 0</p>
-      <p>Total Earnings: 0</p>
-    </div>
-  </div>
-
-  <!-- Panels for Tabs (Hidden by default) -->
+  </section>
+  <!-- BUSINESSES -->
   <section id="business-panel" class="panel hidden">
     <button id="start-business">Start Business</button>
     <div id="business-list"></div>
   </section>
-
+  <!-- ROBOT -->
   <section id="robot-panel" class="panel hidden">
     <div id="robot-status">
       <p>Robot is not active</p>
@@ -76,15 +49,31 @@
       <button id="upgrade-robot">Upgrade Robot</button>
     </div>
   </section>
-
-  <section id="settings-panel" class="panel hidden">
-    <button id="toggle-theme">Toggle Theme (Dark/Light)</button>
-  </section>
-
+  <!-- REFERRALS -->
   <section id="referral-panel" class="panel hidden">
     <p>Invite referrals to earn bonus Gold!</p>
   </section>
-
+  <!-- SETTINGS -->
+  <section id="settings-panel" class="panel hidden">
+    <button id="toggle-theme">Toggle Theme (Dark/Light)</button>
+  </section>
+  <!-- PROFILE -->
+  <div class="profile-tab">
+    <img src="https://ui-avatars.com/api/?name=Player" alt="Profile" />
+    <div id="profile-info">
+      <p>Level: 1</p>
+      <p>Income/Minute: 0</p>
+      <p>Clicks: 0</p>
+      <p>Total Earnings: 0</p>
+    </div>
+  </div>
+  <!-- TABS -->
+  <nav class="bottom-tabs">
+    <button class="tab active" id="tab-main">🖱️ Click</button>
+    <button class="tab" id="tab-business">🏢 Businesses</button>
+    <button class="tab" id="tab-robot">🤖 Robot</button>
+    <button class="tab" id="tab-referral">🔗 Referrals</button>
+  </nav>
   <script src="script.js"></script>
 </body>
 </html>
