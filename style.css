@@ -1,3 +1,4 @@
+
 body {
   background-color: #111;
   color: #fff;
@@ -5,12 +6,14 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  height: auto;
   margin: 0;
+  padding: 20px;
 }
 
 .container {
   text-align: center;
+  max-width: 500px;
 }
 
 #click-btn {
@@ -24,4 +27,20 @@ body {
 
 #click-btn:hover {
   background-color: orange;
+}
+
+.shop {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #222;
+  padding: 10px;
+  border-radius: 8px;
 }
