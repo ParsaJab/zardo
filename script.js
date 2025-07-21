@@ -50,17 +50,12 @@ function saveGame() {
 }
 
 function updateUI() {
-  // فقط در تب کلیک نمایش
   let mainPanel = !document.getElementById("panel-main").classList.contains("hidden");
   document.getElementById("score-display").style.display = mainPanel ? "" : "none";
   document.getElementById("click-button").style.display = mainPanel ? "" : "none";
   document.querySelector(".vault").style.display = mainPanel ? "" : "none";
-
-  // Gold همیشه در تب بیزنس نمایش داده شود
   let bizGoldBar = document.getElementById("biz-gold-amount");
   if (bizGoldBar) bizGoldBar.textContent = gold;
-
-  // Gold، Vault و غیره
   document.getElementById("gold-count").textContent = gold;
   document.getElementById("vault-amount").textContent = vault;
   document.getElementById("vault-fill").style.width = `${(vault/vaultCapacity)*100}%`;
@@ -127,85 +122,80 @@ document.getElementById("upgrade-robot").onclick = () => {
 function renderBusinesses() {
   const bizList = document.getElementById("business-list");
   bizList.innerHTML = "";
-  if(businesses.length===0) {
+  // اگر هیچ بیزنسی نداره فقط دکمه استارت بیزنس نمایش داده شود
+  if (businesses.length === 0) {
     let startBox = document.createElement("div");
     startBox.className = "business-item business-locked";
     startBox.style.margin = "40px auto 0 auto"; startBox.style.textAlign="center";
-    startBox.innerHTML = `<button class="biz-buy-btn" style="font-size:19px;min-width:180px;min-height:54px;">Start Business</button>`;
-    startBox.querySelector(".biz-buy-btn").onclick = ()=>{
-      let list = businessDefs.filter(def=>!getBusiness(def.id));
-      if(list.length>0){
-        let select = prompt("Choose Business:\n" + list.map((b,i)=>`${i+1}- ${b.name} (${b.baseCost} Gold)`).join('\n'));
-        let idx = parseInt(select)-1;
-        if(!isNaN(idx) && list[idx] && gold>=list[idx].baseCost){
-          gold-=list[idx].baseCost;
-          businesses.push({id:list[idx].id,level:1,income:5});
+    startBox.innerHTML = `<button class="biz-buy-btn" id="open-business-modal" style="font-size:19px;min-width:180px;min-height:54px;">Start Business</button>`;
+    bizList.appendChild(startBox);
+  } else {
+    // نمایش بیزنس‌های خریداری شده
+    bizList.innerHTML += "<h3 style='margin:8px 0;'>Your Businesses</h3>";
+    businesses.forEach((biz,i) => {
+      const def = businessDefs[biz.id-1];
+      let box = document.createElement("div");
+      box.className = "business-item business-owned";
+      box.innerHTML = `<div class="biz-title">${def.name} <span class="biz-lvl">Lvl ${biz.level}</span></div>
+        <div class="biz-income">Income: <b>${biz.income}</b>/sec</div>
+        <button class="biz-upgrade-btn" ${biz.level>=10?"disabled":""}>
+          Upgrade (${businessUpgradeCost(biz)} Gold)
+        </button>
+      `;
+      box.querySelector(".biz-upgrade-btn").onclick = ()=>{
+        let upCost = businessUpgradeCost(biz);
+        if(gold>=upCost && biz.level<10) {
+          gold-=upCost;
+          biz.level+=1;
+          biz.income+=2;
           updateUI();
           renderBusinesses();
         }
-      }
-    };
-    bizList.appendChild(startBox);
-    return;
+      };
+      bizList.appendChild(box);
+    });
+    // نمایش دکمه خرید بیزنس جدید اگر هنوز بیزنسی مونده
+    if (businessDefs.some(def=>!getBusiness(def.id))) {
+      let startBox = document.createElement("div");
+      startBox.className = "business-item business-locked";
+      startBox.style.margin = "22px auto 0 auto"; startBox.style.textAlign="center";
+      startBox.innerHTML = `<button class="biz-buy-btn" id="open-business-modal" style="font-size:17px;min-width:140px;min-height:45px;">Start New Business</button>`;
+      bizList.appendChild(startBox);
+    }
   }
-  bizList.innerHTML += "<h3 style='margin:8px 0;'>Your Businesses</h3>";
-  businesses.forEach((biz,i) => {
-    const def = businessDefs[biz.id-1];
-    let box = document.createElement("div");
-    box.className = "business-item business-owned";
-    box.innerHTML = `<div class="biz-title">${def.name} <span class="biz-lvl">Lvl ${biz.level}</span></div>
-      <div class="biz-income">Income: <b>${biz.income}</b>/sec</div>
-      <button class="biz-upgrade-btn" ${biz.level>=10?"disabled":""}>
-        Upgrade (${businessUpgradeCost(biz)} Gold)
-      </button>
-    `;
-    box.querySelector(".biz-upgrade-btn").onclick = ()=>{
-      let upCost = businessUpgradeCost(biz);
-      if(gold>=upCost && biz.level<10) {
-        gold-=upCost;
-        biz.level+=1;
-        biz.income+=2;
-        updateUI();
-        renderBusinesses();
-      }
-    };
-    bizList.appendChild(box);
-  });
-  let startDiv = document.createElement("div");
-  startDiv.innerHTML = "<h3 style='margin:12px 0 5px 0;'>Start New Business</h3>";
+  // هندل باز شدن مودال انتخاب بیزنس
+  let btn = document.getElementById("open-business-modal");
+  if (btn) btn.onclick = showBusinessModal;
+}
+
+function showBusinessModal() {
+  const modal = document.getElementById("business-select-modal");
+  const list = document.getElementById("business-select-list");
+  list.innerHTML = '';
   businessDefs.filter(def=>!getBusiness(def.id)).forEach(def=>{
-    let startBox = document.createElement("div");
-    startBox.className = "business-item business-locked";
-    startBox.innerHTML = `<div class="biz-title">${def.name}</div>
-    <div class="biz-income">Income: <b>5</b>/sec</div>
-    <button class="biz-buy-btn">
-      Buy (${def.baseCost} Gold)
-    </button>`;
-    startBox.querySelector(".biz-buy-btn").onclick = ()=>{
-      if(gold>=def.baseCost) {
-        gold-=def.baseCost;
+    let card = document.createElement("div");
+    card.className = "business-buy-card";
+    card.innerHTML = `
+      <span class="biz-name">${def.name}</span>
+      <span class="biz-cost">${def.baseCost} Gold</span>
+      <button class="buy-btn" ${gold<def.baseCost?"disabled":""}>Buy</button>
+    `;
+    card.querySelector(".buy-btn").onclick = function() {
+      if (gold >= def.baseCost) {
+        gold -= def.baseCost;
         businesses.push({id:def.id,level:1,income:5});
-        updateUI();
+        modal.classList.add('hidden');
         renderBusinesses();
+        updateUI();
       }
     };
-    startDiv.appendChild(startBox);
+    list.appendChild(card);
   });
-  bizList.appendChild(startDiv);
+  modal.classList.remove('hidden');
 }
-function renderRobotPanel() {
-  let robotStatus = document.getElementById("robot-status");
-  let robotUpgrade = document.getElementById("robot-upgrade");
-  if(!robotOwned){
-    robotStatus.classList.remove("hidden");
-    robotUpgrade.classList.add("hidden");
-  } else {
-    robotStatus.classList.add("hidden");
-    robotUpgrade.classList.remove("hidden");
-    document.getElementById("robot-power").textContent = robotPower;
-    document.getElementById("robot-upgrade-cost").textContent = robotUpgradeCost;
-  }
-}
+document.getElementById("close-business-modal").onclick = function(){
+  document.getElementById("business-select-modal").classList.add('hidden');
+};
 
 // درآمد بیزنس‌ها هر ثانیه به Vault اضافه شود
 if (bizIncomeInterval) clearInterval(bizIncomeInterval);
@@ -229,6 +219,20 @@ document.querySelector(".bottom-tabs").onclick = function(e) {
     updateUI();
   }
 };
+
+function renderRobotPanel() {
+  let robotStatus = document.getElementById("robot-status");
+  let robotUpgrade = document.getElementById("robot-upgrade");
+  if(!robotOwned){
+    robotStatus.classList.remove("hidden");
+    robotUpgrade.classList.add("hidden");
+  } else {
+    robotStatus.classList.add("hidden");
+    robotUpgrade.classList.remove("hidden");
+    document.getElementById("robot-power").textContent = robotPower;
+    document.getElementById("robot-upgrade-cost").textContent = robotUpgradeCost;
+  }
+}
 
 document.getElementById("settings-open").onclick = () => {
   document.querySelectorAll('.panel').forEach(p => p.classList.add("hidden"));
