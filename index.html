@@ -2,14 +2,17 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0"/>
   <title>ZARDO: Click Empire</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <header>
     <img src="zardo-logo.png" alt="ZARDO Logo" class="zardo-logo"/>
-    <div id="gold-box" class="gold-box">💰 <span id="gold-amount">0</span></div>
+    <div id="gold-box" class="gold-box">
+      <img src="coin.png" class="coin-icon" />
+      <span id="gold-amount">0</span>
+    </div>
     <div class="menu">
       <button onclick="switchTab('settings-tab')">⚙️</button>
     </div>
@@ -17,7 +20,10 @@
   <main>
     <!-- تب کلیک -->
     <section id="game-tab" class="tab active">
-      <div id="gold-box-big" class="gold-box-big">💰 <span id="gold-amount-big">0</span></div>
+      <div id="gold-box-big" class="gold-box-big">
+        <img src="coin.png" class="coin-icon-big" />
+        <span id="gold-amount-big">0</span>
+      </div>
       <div class="vault-bar">
         <img src="vault-icon.png" class="vault-icon"/>
         <div class="vault-progress">
@@ -27,14 +33,14 @@
       </div>
       <div class="vault-actions">
         <button id="collect-btn">Collect</button>
-        <button id="upgrade-vault-btn">Upgrade Vault (<span id="vault-upgrade-cost">100</span>)</button>
+        <button id="upgrade-vault-btn">
+          Upgrade Vault (<span id="vault-upgrade-cost">100</span>)
+        </button>
       </div>
-      <div class="center-fade">top</div>
+      <div id="click-area"></div>
     </section>
     <!-- تب بیزنس -->
     <section id="business-tab" class="tab">
-      <button id="start-business-btn" class="start-btn">+ Start Business</button>
-      <div id="market-list"></div>
       <h4 class="mybiz-title">My Businesses</h4>
       <div id="my-biz-list"></div>
     </section>
@@ -71,7 +77,8 @@
       <h3>Auto Vault Bot</h3>
       <div id="bot-box">
         <div id="bot-status"></div>
-        <button id="buy-bot-btn">Buy Bot (1000)</button>
+        <button id="buy-bot-btn"></button>
+        <button id="upgrade-bot-btn"></button>
       </div>
     </section>
   </main>
@@ -80,7 +87,6 @@
     <button onclick="switchTab('game-tab')"><span class="icon-coin"></span></button>
     <button onclick="switchTab('profile-tab')"><span class="icon-user"></span></button>
     <button onclick="switchTab('bot-tab')"><span class="icon-robot"></span></button>
-    <button onclick="switchTab('settings-tab')"><span class="icon-settings"></span></button>
   </nav>
   <script src="script.js"></script>
 </body>
