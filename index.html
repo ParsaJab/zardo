@@ -4,13 +4,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-  <title>ZARDO</title>
+  <title>ZARDO: Click Empire</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <header>
-    <h1>ZARDO</h1>
-    <div class="settings">
+    <div class="title">ZARDO</div>
+    <div class="menu">
       <button id="toggle-theme">🌙</button>
       <button id="reset-btn">🔁</button>
     </div>
@@ -18,61 +18,37 @@
 
   <main>
     <section id="game-tab" class="tab active">
-      <div class="gold-display">💰 <span id="gold">0</span></div>
-      <button id="click-btn">TAP</button>
-      <div class="xp-bar">
-        <div class="xp-fill" id="xp-fill" style="width: 0%"></div>
+      <div class="balance">💰 <span id="gold">0</span></div>
+      <button id="click-btn" class="neon-button">ZDC</button>
+      <div class="xp-container">
+        <div class="xp-bar"><div id="xp-fill" class="xp-fill"></div></div>
+        <div class="level">Level <span id="level">1</span></div>
       </div>
-      <div class="level-display">⭐ Level <span id="level">1</span></div>
-    </section>
-
-    <section id="profile-tab" class="tab">
-      <h2>👤 Profile</h2>
-      <p>Clicks: <span id="clicks">0</span></p>
-      <p>XP: <span id="xp">0</span> / <span id="xp-next">10</span></p>
-      <p>Vault: <span id="passiveGold">0</span></p>
     </section>
 
     <section id="shop-tab" class="tab">
-      <h2>🏭 Businesses</h2>
-
-      <div class="item" id="shop-card">
-        <span>
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h16v2H4zm1 4h14v13H5z"/></svg>
-          🏪 Shop: <span id="shop-count">0</span>
-        </span>
-        <button onclick="buyBusiness('shop', 'shop-card')">Buy</button>
+      <h2>🏢 ONLINE STORE</h2>
+      <div class="shop-list">
+        <div class="card">🏪 Shop <span id="shop-count">0</span><button onclick="buyBusiness('shop', 'shop-card')">Buy</button></div>
+        <div class="card">🏭 Factory <span id="factory-count">0</span><button onclick="buyBusiness('factory', 'factory-card')">Buy</button></div>
+        <div class="card">🏦 Bank <span id="bank-count">0</span><button onclick="buyBusiness('bank', 'bank-card')">Buy</button></div>
+        <div class="card">🛢 Storage <span id="storage-capacity">Lvl 1</span><button onclick="upgradeStorage()">Upgrade</button></div>
+        <button id="collect-btn" class="collect neon-button">📥 Collect</button>
       </div>
+    </section>
 
-      <div class="item" id="factory-card">
-        <span>
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 21h20v-2H2v2zm16-10h-2V5H8v6H6V3h12v8z"/></svg>
-          🏭 Factory: <span id="factory-count">0</span>
-        </span>
-        <button onclick="buyBusiness('factory', 'factory-card')">Buy</button>
-      </div>
-
-      <div class="item" id="bank-card">
-        <span>
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L1 9h2v13h6v-6h6v6h6V9h2z"/></svg>
-          🏦 Bank: <span id="bank-count">0</span>
-        </span>
-        <button onclick="buyBusiness('bank', 'bank-card')">Buy</button>
-      </div>
-
-      <div class="item">
-        <span>🛢 Storage: <span id="storage-capacity">Lvl 1</span></span>
-        <button onclick="upgradeStorage()">Upgrade</button>
-      </div>
-
-      <button id="collect-btn" class="collect">📥 Collect</button>
+    <section id="profile-tab" class="tab">
+      <h2>👤 PROFILE</h2>
+      <p>Clicks: <span id="clicks">0</span></p>
+      <p>XP: <span id="xp">0</span> / <span id="xp-next">10</span></p>
+      <p>Vault: <span id="passiveGold">0</span></p>
     </section>
   </main>
 
   <nav>
     <button onclick="switchTab('game-tab')">🎮</button>
+    <button onclick="switchTab('shop-tab')">🏢</button>
     <button onclick="switchTab('profile-tab')">👤</button>
-    <button onclick="switchTab('shop-tab')">🏪</button>
   </nav>
 
   <script src="script.js"></script>

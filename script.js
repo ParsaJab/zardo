@@ -7,7 +7,6 @@ let level = parseInt(localStorage.getItem("level")) || 1;
 let xpToNext = parseInt(localStorage.getItem("xpToNext")) || 10;
 let storageLevel = parseInt(localStorage.getItem("storageLevel")) || 1;
 let storageLimit = storageLevel * 20;
-let isDark = JSON.parse(localStorage.getItem("isDark")) ?? true;
 
 let businesses = JSON.parse(localStorage.getItem("businesses")) || {
   shop: 0,
@@ -68,8 +67,6 @@ document.getElementById("reset-btn").addEventListener("click", () => {
 
 document.getElementById("toggle-theme").addEventListener("click", () => {
   document.body.classList.toggle("light");
-  isDark = !document.body.classList.contains("light");
-  localStorage.setItem("isDark", JSON.stringify(isDark));
 });
 
 function buyBusiness(type, cardId) {
@@ -77,14 +74,6 @@ function buyBusiness(type, cardId) {
   if (gold >= prices[type]) {
     gold -= prices[type];
     businesses[type]++;
-
-    // انیمیشن خرید کارت مربوطه
-    if (cardId) {
-      const card = document.getElementById(cardId);
-      card.classList.add("animate-buy");
-      setTimeout(() => card.classList.remove("animate-buy"), 200);
-    }
-
     saveData();
     updateUI();
   } else {
@@ -130,8 +119,6 @@ function switchTab(tabId) {
   document.querySelectorAll(".tab").forEach(tab => tab.classList.remove("active"));
   document.getElementById(tabId).classList.add("active");
 }
-
-if (!isDark) document.body.classList.add("light");
 
 setInterval(earnPassiveGold, 1000);
 updateUI();
