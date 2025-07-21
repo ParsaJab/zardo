@@ -7,7 +7,7 @@ let xpToNext = Number(localStorage.getItem("xpToNext")) || 10;
 let vaultLevel = Number(localStorage.getItem("vaultLevel")) || 1;
 let vaultCapacity = vaultLevel * 20;
 
-const businesses = JSON.parse(localStorage.getItem("businesses")) || [
+let defaultBusinesses = [
   { id: 'kiosk', name: 'Kiosk', level: 0, max: 10, income: 0.2, price: 20 },
   { id: 'taxi', name: 'Taxi Co.', level: 0, max: 10, income: 1, price: 100 },
   { id: 'office', name: 'Office', level: 0, max: 10, income: 3, price: 250 },
@@ -19,6 +19,16 @@ const businesses = JSON.parse(localStorage.getItem("businesses")) || [
   { id: 'startup', name: 'Startup', level: 0, max: 10, income: 120, price: 12000 },
   { id: 'crypto', name: 'Crypto', level: 0, max: 10, income: 200, price: 20000 }
 ];
+
+// اگه business ذخیره شده سالم نبود یا کمتر بود، ریست کن
+let businesses;
+try {
+  let fromStore = JSON.parse(localStorage.getItem("businesses"));
+  if (!Array.isArray(fromStore) || fromStore.length !== defaultBusinesses.length) throw "";
+  businesses = fromStore;
+} catch {
+  businesses = JSON.parse(JSON.stringify(defaultBusinesses));
+}
 
 function saveAll() {
   localStorage.setItem("gold", gold);
@@ -38,8 +48,11 @@ function updateUI() {
   document.getElementById("xp").textContent = xp;
   document.getElementById("xp-next").textContent = xpToNext;
   document.getElementById("passiveGold").textContent = Math.floor(passiveGold);
-  document.getElementById("vault-capacity").textContent = `/ ${vaultCapacity}`;
+  document.getElementById("vault-capacity").textContent = vaultCapacity;
   updateBusinessCards();
+  // XP Bar
+  let percent = Math.min(Math.floor((xp / xpToNext) * 100), 100);
+  document.getElementById("xp-fill").style.width = percent + "%";
   saveAll();
 }
 
@@ -73,7 +86,7 @@ window.buyBusiness = function(id) {
   if (gold >= b.price) {
     gold -= b.price;
     b.level++;
-    b.income = Math.round((b.income) * 1.16 * 10) / 10; // رشد درآمد
+    b.income = Math.round((b.income) * 1.16 * 10) / 10;
     b.price = Math.floor(b.price * 1.5);
     updateUI();
   } else {
@@ -94,16 +107,13 @@ document.getElementById("click-btn").addEventListener("click", (e) => {
   // افکت Drop طلا روی دکمه
   let drop = document.createElement("div");
   drop.className = "gold-drop";
-  let btnRect = e.target.getBoundingClientRect();
-  drop.style.left = (btnRect.left + btnRect.width/2) + "px";
-  drop.style.top = (btnRect.top - 10) + "px";
   drop.textContent = "+ZDC";
   document.body.appendChild(drop);
-  setTimeout(() => drop.remove(), 850);
+  setTimeout(() => drop.remove(), 950);
 
   // انیمیشن دکمه
   e.target.style.transform = "scale(0.94)";
-  setTimeout(() => e.target.style.transform = "", 100);
+  setTimeout(() => e.target.style.transform = "", 110);
 
   updateUI();
 });
