@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ZARDO Clicker Game</title>
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -16,7 +16,9 @@
     <div class="title">ZARDO</div>
     <div class="settings-tab" id="settings-open">⚙️</div>
   </header>
-  <section id="panel-main" class="panel">
+
+  <!-- MAIN PANEL (Click) -->
+  <section id="main-panel" class="panel">
     <div id="score-display">Gold: <span id="gold-count">0</span></div>
     <button id="click-button">💰 Click for Gold</button>
     <div class="vault">
@@ -31,11 +33,13 @@
       </div>
     </div>
   </section>
-  <section id="panel-business" class="panel hidden">
+  <!-- BUSINESSES -->
+  <section id="business-panel" class="panel hidden">
     <button id="start-business">Start Business</button>
     <div id="business-list"></div>
   </section>
-  <section id="panel-robot" class="panel hidden">
+  <!-- ROBOT -->
+  <section id="robot-panel" class="panel hidden">
     <div id="robot-status">
       <p>Robot is not active</p>
       <button id="buy-robot">Buy Robot</button>
@@ -46,20 +50,30 @@
       <button id="upgrade-robot">Upgrade Robot</button>
     </div>
   </section>
-  <section id="panel-referral" class="panel hidden">
+  <!-- REFERRALS -->
+  <section id="referral-panel" class="panel hidden">
     <p>Invite referrals to earn bonus Gold!</p>
   </section>
+  <!-- SETTINGS -->
   <section id="settings-panel" class="panel hidden">
     <button id="toggle-theme">Toggle Theme (Dark/Light)</button>
-    <div id="profile-info-settings" style="margin-top:20px;">
-      <!-- Profile Info will appear here -->
-    </div>
   </section>
+  <!-- PROFILE -->
+  <div class="profile-tab">
+    <img src="https://ui-avatars.com/api/?name=Player" alt="Profile" />
+    <div id="profile-info">
+      <p>Level: 1</p>
+      <p>Income/Minute: 0</p>
+      <p>Clicks: 0</p>
+      <p>Total Earnings: 0</p>
+    </div>
+  </div>
+  <!-- TABS -->
   <nav class="bottom-tabs">
-    <button class="tab active" data-panel="panel-main">🖱️ Click</button>
-    <button class="tab" data-panel="panel-business">🏢 Businesses</button>
-    <button class="tab" data-panel="panel-robot">🤖 Robot</button>
-    <button class="tab" data-panel="panel-referral">🔗 Referrals</button>
+    <button class="tab active" id="tab-main">🖱️ Click</button>
+    <button class="tab" id="tab-business">🏢 Businesses</button>
+    <button class="tab" id="tab-robot">🤖 Robot</button>
+    <button class="tab" id="tab-referral">🔗 Referrals</button>
   </nav>
   <script src="script.js"></script>
 </body>
