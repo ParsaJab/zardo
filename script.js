@@ -1,5 +1,6 @@
 
 let gold = parseInt(localStorage.getItem("gold")) || 0;
+let passiveGold = parseFloat(localStorage.getItem("passiveGold")) || 0;
 let clicks = parseInt(localStorage.getItem("clicks")) || 0;
 let xp = parseInt(localStorage.getItem("xp")) || 0;
 let level = parseInt(localStorage.getItem("level")) || 1;
@@ -14,6 +15,7 @@ let businesses = JSON.parse(localStorage.getItem("businesses")) || {
 };
 
 const goldEl = document.getElementById("gold");
+const passiveGoldEl = document.getElementById("passiveGold");
 const clicksEl = document.getElementById("clicks");
 const levelEl = document.getElementById("level");
 const xpEl = document.getElementById("xp");
@@ -23,6 +25,7 @@ const storageCapEl = document.getElementById("storage-capacity");
 
 function updateUI() {
   goldEl.textContent = gold;
+  passiveGoldEl.textContent = Math.floor(passiveGold);
   clicksEl.textContent = clicks;
   levelEl.textContent = level;
   xpEl.textContent = xp;
@@ -37,16 +40,13 @@ function updateUI() {
 
 document.getElementById("click-btn").addEventListener("click", () => {
   gold += level;
-  if (gold > storageLimit) gold = storageLimit;
-  clicks += 1;
-  xp += 1;
+  saveData();
+  updateUI();
+});
 
-  if (xp >= xpToNext) {
-    xp -= xpToNext;
-    level += 1;
-    xpToNext = Math.floor(xpToNext * 1.5);
-  }
-
+document.getElementById("collect-btn").addEventListener("click", () => {
+  gold += Math.floor(passiveGold);
+  passiveGold = 0;
   saveData();
   updateUI();
 });
@@ -77,21 +77,20 @@ function upgradeStorage() {
 }
 
 function earnPassiveGold() {
-  if (gold >= storageLimit) return;
-
-  gold += businesses.shop * 0.2;
-  gold += businesses.factory * 1;
-  gold += businesses.bank * 5;
-
-  if (gold > storageLimit) gold = storageLimit;
-
-  gold = Math.floor(gold);
-  saveData();
-  updateUI();
+  let income = businesses.shop * 0.2 + businesses.factory * 1 + businesses.bank * 5;
+  if (passiveGold < storageLimit) {
+    passiveGold += income;
+    if (passiveGold > storageLimit) {
+      passiveGold = storageLimit;
+    }
+    saveData();
+    updateUI();
+  }
 }
 
 function saveData() {
   localStorage.setItem("gold", gold);
+  localStorage.setItem("passiveGold", passiveGold);
   localStorage.setItem("clicks", clicks);
   localStorage.setItem("xp", xp);
   localStorage.setItem("level", level);
