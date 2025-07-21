@@ -2,7 +2,29 @@
 let gold = 0, level = 1, xp = 0, xpToNextLevel = 20, vault = 0, vaultCapacity = 100, vaultLevel = 1, clickCount = 0, totalEarnings = 0;
 let robotOwned = false, robotPower = 1, robotUpgradeCost = 100, businessStarted = false, darkMode = false;
 
-// LOAD DATA FROM LOCALSTORAGE
+// هر بیزنس: {id, name, owned, level, income, baseCost}
+const businessDefs = [
+  {id:1, name:"Bakery", baseCost:100},
+  {id:2, name:"Cafe", baseCost:250},
+  {id:3, name:"Shop", baseCost:500},
+  {id:4, name:"Restaurant", baseCost:1200},
+  {id:5, name:"Bookstore", baseCost:2600},
+  {id:6, name:"Pharmacy", baseCost:5400},
+  {id:7, name:"Gym", baseCost:9000},
+  {id:8, name:"Hotel", baseCost:16000},
+  {id:9, name:"Factory", baseCost:25000},
+  {id:10, name:"Bank", baseCost:44000}
+];
+let businesses = []; // {id, level, income}
+
+function getBusiness(id) {
+  return businesses.find(b=>b.id===id);
+}
+function businessUpgradeCost(biz) {
+  return Math.floor(businessDefs[biz.id-1].baseCost * Math.pow(1.7, biz.level));
+}
+
+// ذخیره و لود بازی
 function loadGame() {
   try {
     const data = JSON.parse(localStorage.getItem('zardoSave'));
@@ -20,14 +42,15 @@ function loadGame() {
     robotPower = data.robotPower || 1;
     robotUpgradeCost = data.robotUpgradeCost || 100;
     darkMode = data.darkMode || false;
+    businesses = data.businesses || [];
     if (darkMode) document.body.classList.add('dark');
   } catch {}
 }
-// SAVE DATA TO LOCALSTORAGE
 function saveGame() {
   const data = {
     gold, level, xp, xpToNextLevel, vault, vaultCapacity, vaultLevel,
-    clickCount, totalEarnings, robotOwned, robotPower, robotUpgradeCost, darkMode
+    clickCount, totalEarnings, robotOwned, robotPower, robotUpgradeCost, darkMode,
+    businesses
   };
   localStorage.setItem('zardoSave', JSON.stringify(data));
 }
@@ -41,6 +64,7 @@ allTabs.forEach(tab => {
     tab.classList.add('active');
     allPanels.forEach(p => p.classList.add('hidden'));
     document.getElementById(tab.dataset.panel).classList.remove('hidden');
+    if(tab.dataset.panel==="panel-business") renderBusinesses();
   }
 });
 document.getElementById("settings-open").onclick = () => {
@@ -114,36 +138,62 @@ document.getElementById("upgrade-robot").onclick = () => {
     gold -= robotUpgradeCost; robotPower++; robotUpgradeCost = Math.floor(robotUpgradeCost*1.6); updateUI();
   }
 };
-document.getElementById("start-business").onclick = () => {
-  if (!businessStarted) {
-    for (let i = 1; i <= 10; i++) {
-      let biz = document.createElement("div");
-      biz.className = "business-item";
-      biz.innerHTML = `
-        <p>Business ${i}</p>
-        <p>Income: <span id="biz-income-${i}">1</span>/min</p>
-        <p>Upgrade Cost: <span id="biz-cost-${i}">${i*50}</span> Gold</p>
-        <button onclick="upgradeBusiness(${i})">Upgrade</button>
+
+// منطق نمایش و خرید و ارتقای بیزنس
+function renderBusinesses() {
+  // Owned Businesses
+  const bizList = document.getElementById("business-list");
+  bizList.innerHTML = "<h3 style='margin:8px 0;'>Your Businesses</h3>";
+  if(businesses.length===0) {
+    bizList.innerHTML += "<p style='opacity:.7'>You don't own any business yet.</p>";
+  } else {
+    businesses.forEach(biz => {
+      const def = businessDefs[biz.id-1];
+      let box = document.createElement("div");
+      box.className = "business-item business-owned";
+      box.innerHTML = `<div class="biz-title">${def.name} <span class="biz-lvl">Lvl ${biz.level}</span></div>
+        <div class="biz-income">Income: <b>${biz.income}</b>/min</div>
+        <button class="biz-upgrade-btn" ${biz.level>=10?"disabled":""}>
+          Upgrade (${businessUpgradeCost(biz)} Gold)
+        </button>
       `;
-      document.getElementById("business-list").appendChild(biz);
-    }
-    businessStarted = true;
+      box.querySelector(".biz-upgrade-btn").onclick = ()=>{
+        let upCost = businessUpgradeCost(biz);
+        if(gold>=upCost && biz.level<10) {
+          gold-=upCost;
+          biz.level+=1;
+          biz.income+=2;
+          updateUI();
+          renderBusinesses();
+        }
+      };
+      bizList.appendChild(box);
+    });
   }
-};
-window.upgradeBusiness = function(id){
-  let costEl = document.getElementById(`biz-cost-${id}`);
-  let incomeEl = document.getElementById(`biz-income-${id}`);
-  let cost = parseInt(costEl.textContent);
-  let income = parseInt(incomeEl.textContent);
-  if (gold >= cost) {
-    gold -= cost;
-    income += 1;
-    cost = Math.floor(cost*1.5);
-    costEl.textContent = cost;
-    incomeEl.textContent = income;
-    updateUI();
-  }
-};
+  // Start Business (only for NOT OWNED businesses)
+  let startDiv = document.createElement("div");
+  startDiv.innerHTML = "<h3 style='margin:12px 0 5px 0;'>Start New Business</h3>";
+  businessDefs.filter(def=>!getBusiness(def.id)).forEach(def=>{
+    let startBox = document.createElement("div");
+    startBox.className = "business-item business-locked";
+    startBox.innerHTML = `<div class="biz-title">${def.name}</div>
+    <div class="biz-income">Income: <b>5</b>/min</div>
+    <button class="biz-buy-btn">
+      Buy (${def.baseCost} Gold)
+    </button>`;
+    startBox.querySelector(".biz-buy-btn").onclick = ()=>{
+      if(gold>=def.baseCost) {
+        gold-=def.baseCost;
+        businesses.push({id:def.id,level:1,income:5});
+        updateUI();
+        renderBusinesses();
+      }
+    };
+    startDiv.appendChild(startBox);
+  });
+  bizList.appendChild(startDiv);
+}
+
 // ===== INIT =====
 loadGame();
 updateUI();

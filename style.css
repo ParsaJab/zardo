@@ -52,3 +52,16 @@ body.dark .business-item { background: #262b3a; }
   .panel { padding: 10px 2vw; }
   .vault { padding: 10px; }
 }
+
+
+.business-owned { border-left: 6px solid #0095ff; }
+.business-locked { opacity: .85; background: #ddeaf8; border-left: 6px solid #aaa; }
+.biz-title { font-weight: bold; font-size: 17px; margin-bottom: 4px; display:flex; justify-content:space-between; }
+.biz-lvl { color: #0073e6; font-weight:normal;font-size:15px;}
+.biz-income { margin-bottom: 5px; font-size:15px; }
+.biz-upgrade-btn, .biz-buy-btn {
+  background: linear-gradient(90deg,#0095ff,#5db7ff); border: none; color: #fff; border-radius:8px;
+  padding:7px 18px; font-size:15px; cursor:pointer; margin-bottom:3px; transition:.15s;
+}
+.biz-upgrade-btn[disabled] { opacity:.5; cursor:not-allowed; background:#aaa;}
+.biz-buy-btn { background:linear-gradient(90deg,#ffb100,#ffe39c); color:#2a2d3a; font-weight:bold; }
