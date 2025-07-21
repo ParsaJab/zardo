@@ -329,3 +329,10 @@ function showTelegramConnectionStatus() {
     infoDiv.innerHTML = `🔴 Not connected to Telegram WebApp.`;
   }
 }
+document.getElementById("settings-open").onclick = () => {
+  document.querySelectorAll('.panel').forEach(p => p.classList.add("hidden"));
+  document.getElementById("settings-panel").classList.remove("hidden");
+  showProfileInfo();
+  showTelegramConnectionStatus(); // همینجا اضافه باشه
+  updateUI();
+};
