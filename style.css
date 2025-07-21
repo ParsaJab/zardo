@@ -1,9 +1,114 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&display=swap');
 
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(to bottom, #1b2735, #090a0f);
+  color: #fff;
+  overflow: hidden;
+}
+
 body.light {
   background: linear-gradient(to bottom, #f5f5f5, #ffffff);
   color: #222;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px;
+  background: rgba(0,0,0,0.4);
+}
+
+header h1 {
+  font-size: 20px;
+  margin: 0;
+  color: gold;
+}
+
+.settings button {
+  background: #444;
+  border: none;
+  color: #fff;
+  font-size: 18px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  margin-left: 8px;
+}
+
+main {
+  padding: 10px;
+  height: calc(100vh - 120px);
+  overflow-y: auto;
+  scroll-behavior: smooth;
+}
+
+.tab {
+  display: none;
+}
+.tab.active {
+  display: block;
+  animation: fade 0.2s ease-in-out;
+}
+@keyframes fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.gold-display {
+  font-size: 22px;
+  text-align: center;
+  margin: 10px 0;
+}
+
+#click-btn {
+  display: block;
+  margin: 30px auto;
+  background: linear-gradient(to right, gold, orange);
+  border: none;
+  border-radius: 50%;
+  width: 180px;
+  height: 180px;
+  font-size: 28px;
+  font-weight: bold;
+  color: #222;
+  box-shadow: 0 6px #b8860b;
+  touch-action: manipulation;
+  transition: transform 0.1s ease;
+}
+
+#click-btn.clicked {
+  animation: clickPulse 0.15s ease-in-out;
+}
+
+@keyframes clickPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(0.95); }
+  100% { transform: scale(1); }
+}
+
+.xp-bar {
+  background: #333;
+  height: 16px;
+  width: 85%;
+  max-width: 400px;
+  margin: 10px auto;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.xp-fill {
+  height: 100%;
+  background: limegreen;
+  width: 0%;
+  transition: width 0.3s ease;
+}
+.level-display {
+  text-align: center;
+  margin-bottom: 10px;
+  font-weight: bold;
 }
 
 .item {
@@ -32,11 +137,13 @@ body.light .item {
   box-shadow: 0 6px 18px rgba(0,0,0,0.3);
 }
 
-.item svg {
-  width: 28px;
-  height: 28px;
-  margin-right: 10px;
-  flex-shrink: 0;
+.item.animate-buy {
+  animation: bounce 0.25s ease-in-out;
+}
+@keyframes bounce {
+  0% { transform: scale(1); }
+  50% { transform: scale(0.95); }
+  100% { transform: scale(1); }
 }
 
 .item span {
@@ -46,7 +153,12 @@ body.light .item {
   display: flex;
   align-items: center;
 }
-
+.item svg {
+  width: 26px;
+  height: 26px;
+  margin-right: 10px;
+  flex-shrink: 0;
+}
 .item button {
   background: #4caf50;
   border: none;
@@ -57,17 +169,35 @@ body.light .item {
   transition: background 0.2s ease;
   cursor: pointer;
 }
-
 .item button:hover {
   background: #43a047;
 }
-
-.item.animate-buy {
-  animation: bounce 0.25s ease-in-out;
+.collect {
+  background: #2196f3 !important;
+  color: white;
+  font-weight: bold;
+  padding: 10px 18px;
+  border-radius: 10px;
+  margin: 20px auto;
+  display: block;
+  border: none;
+  cursor: pointer;
 }
 
-@keyframes bounce {
-  0% { transform: scale(1); }
-  50% { transform: scale(0.95); }
-  100% { transform: scale(1); }
+nav {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: #111;
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 0;
+  border-top: 1px solid #333;
+  z-index: 1000;
+}
+nav button {
+  background: none;
+  border: none;
+  font-size: 22px;
+  color: #eee;
 }
