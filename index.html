@@ -2,36 +2,24 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
   <title>ZARDO: Click Empire</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <header>
     <img src="zardo-logo.png" alt="ZARDO Logo" class="zardo-logo"/>
-    <div class="bar-group">
-      <div class="progress-group">
-        <img src="gold-icon.png" class="bar-icon"/>
-        <div class="bar-bar">
-          <div id="gold-bar-fill"></div>
-        </div>
-        <span id="gold-text">0</span>
-      </div>
-      <div class="progress-group">
-        <img src="level-icon.png" class="bar-icon"/>
-        <div class="bar-bar">
-          <div id="level-bar-fill"></div>
-        </div>
-        <span id="level-text">1</span>
-      </div>
-    </div>
+    <div id="gold-bar" class="gold-bar">💰 <span id="gold-amount">0</span></div>
     <div class="menu">
       <button id="toggle-theme">🌙</button>
       <button id="reset-btn">🔁</button>
     </div>
   </header>
-  <main id="click-zone">
-    <div class="center-fade">top</div>
+  <main>
+    <section id="business-tab" class="tab">
+      <h3>Businesses</h3>
+      <div id="biz-list"></div>
+    </section>
     <section id="game-tab" class="tab active">
       <div class="vault-bar">
         <img src="vault-icon.png" class="vault-icon"/>
@@ -40,16 +28,12 @@
         </div>
         <div class="vault-text"><span id="vault-amount">0</span>/<span id="vault-capacity">20</span></div>
       </div>
-      <!-- بقیه امکانات اصلی مثل xp و ... -->
-    </section>
-    <section id="business-tab" class="tab">
-      <button class="start-btn" id="show-market-btn">+ Start Business</button>
-      <div id="market-list" style="display:none"></div>
-      <h3 class="mybiz-title">My Businesses</h3>
-      <div id="my-biz-list"></div>
+      <div class="center-fade">top</div>
+      <!-- بقیه عناصر این تب -->
     </section>
     <section id="profile-tab" class="tab">
-      <!-- اطلاعات پروفایل -->
+      <h3>Profile</h3>
+      <p>اینجا می‌تونی عکس پروفایل یا تم رو بزاری...</p>
     </section>
   </main>
   <nav>
