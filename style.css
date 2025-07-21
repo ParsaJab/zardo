@@ -87,3 +87,32 @@ nav button {
 .icon-bank::before { content: '\1F3E6'; font-size: 22px; }
 .icon-coin::before { content: '\1FA99'; font-size: 22px; }
 .icon-user::before { content: '\1F464'; font-size: 22px; }
+#profile-box {
+  display: flex; flex-direction: column; align-items: center; margin: 28px 0;
+  background: #fff7de; border-radius: 14px; padding: 22px 18px; box-shadow: 0 2px 8px #edc57a22;
+}
+#profile-pic {
+  width: 85px; height: 85px; border-radius: 50%; margin-bottom: 16px; object-fit: cover; cursor: pointer;
+  border: 2.5px solid #7c55c9;
+  box-shadow: 0 3px 18px #ad7fcd2a;
+}
+#profile-name {
+  font-size: 23px; font-weight: 700; color: #7c55c9; margin-top: 5px; cursor: pointer;
+  background: #fff; border-radius: 9px; padding: 4px 13px;
+  box-shadow: 0 2px 9px #7c55c944;
+}
+
+#market-list, #my-biz-list { margin: 10px 0 0 0; }
+.market-card, .biz-card {
+  background: #fff; border: 2px solid #7c55c9;
+  border-radius: 14px; padding: 12px 18px;
+  box-shadow: 0 3px 9px #cfc6ef22;
+  margin-bottom: 8px;
+}
+.market-card h4, .biz-card h4 { margin: 0 0 5px 0; color: #7c55c9;}
+.market-card .buy-btn, .biz-card .upgrade-btn {
+  margin-top: 5px; padding: 8px 17px; background: #7c55c9; color: #fff;
+  border: none; border-radius: 10px; font-weight: bold; font-size: 15px;
+  box-shadow: 0 2px 7px #7c55c944; cursor: pointer; transition: 0.13s;
+}
+.market-card .buy-btn:active, .biz-card .upgrade-btn:active { background: #fff; color: #7c55c9;}
