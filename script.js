@@ -206,7 +206,7 @@ function renderRobotPanel() {
       <span><b>Vault:</b> ${vault} / ${vaultCapacity}</span>
       <span><b>Gold:</b> ${gold}</span>
       <span><b>Collect Power:</b> ${robotCollect} Gold / collect</span>
-      <span><b>Every:</b> 30 seconds</span>
+      <span><b>Every:</b> 10 seconds</span>
     </div>
     <div class="robot-timer">${robotOwned ? ("Next collect in: <span id='robot-timer-txt'>" + robotTimeLeft + "</span>s") : ""}</div>
   `;
@@ -222,7 +222,7 @@ function renderRobotPanel() {
         robotLevel = 1;
         robotCollect = 2;
         robotUpgradeCost = 400;
-        robotTimeLeft = 30;
+        robotTimeLeft = 10;
         startRobotInterval();
         updateUI();
         renderRobotPanel();
@@ -250,7 +250,7 @@ function renderRobotPanel() {
 }
 function startRobotInterval() {
   if (robotInterval) clearInterval(robotInterval);
-  robotTimeLeft = 30;
+  robotTimeLeft = 10;
   robotInterval = setInterval(() => {
     if (!robotOwned) return;
     robotTimeLeft -= 1;
@@ -261,7 +261,7 @@ function startRobotInterval() {
       let canCollect = Math.min(robotCollect, vault);
       gold += canCollect;
       vault -= canCollect;
-      robotTimeLeft = 30;
+      robotTimeLeft = 10;
       updateUI();
       renderRobotPanel();
     }
