@@ -7,6 +7,9 @@ let level = Number(localStorage.getItem("level")) || 1;
 let xpToNext = Number(localStorage.getItem("xpToNext")) || 10;
 let vaultLevel = Number(localStorage.getItem("vaultLevel")) || 1;
 let vaultCapacity = vaultLevel * 20;
+let userName = localStorage.getItem("profileName") || "Parsa";
+let userAvatar = localStorage.getItem("profileAvatar") || "avatar.png";
+let bgTheme = localStorage.getItem("bgTheme") || "1";
 
 const defaultBusinesses = [
   { id: 'kiosk', name: 'Kiosk', level: 0, max: 10, income: 1, price: 20 },
@@ -21,7 +24,6 @@ const defaultBusinesses = [
   { id: 'crypto', name: 'Crypto', level: 0, max: 10, income: 2300, price: 20000 }
 ];
 
-// Read/validate
 let businesses;
 try {
   let fromStore = JSON.parse(localStorage.getItem("businesses"));
@@ -40,6 +42,9 @@ function saveAll() {
   localStorage.setItem("xpToNext", xpToNext);
   localStorage.setItem("vaultLevel", vaultLevel);
   localStorage.setItem("businesses", JSON.stringify(businesses));
+  localStorage.setItem("profileName", userName);
+  localStorage.setItem("profileAvatar", userAvatar);
+  localStorage.setItem("bgTheme", bgTheme);
 }
 
 function updateUI() {
@@ -51,6 +56,8 @@ function updateUI() {
   document.getElementById("passiveGold").textContent = Math.floor(passiveGold);
   document.getElementById("vault-capacity").textContent = vaultCapacity;
   document.getElementById("vault-up-cost").textContent = `(💰${vaultLevel*200})`;
+  document.getElementById("profile-name").textContent = userName;
+  document.getElementById("profile-pic").src = userAvatar;
   // XP Bar
   let percent = Math.min(Math.floor((xp / xpToNext) * 100), 100);
   document.getElementById("xp-fill").style.width = percent + "%";
@@ -79,7 +86,7 @@ function updateMarketList() {
     `;
     market.appendChild(card);
   });
-  if(market.innerHTML==="") market.innerHTML = "<p style='color:#999; text-align:center;'>All businesses started!</p>";
+  if(market.innerHTML==="") market.innerHTML = "<p style='color:#aaa; text-align:center;'>All businesses started!</p>";
 }
 
 function updateMyBusinesses() {
@@ -176,16 +183,61 @@ document.getElementById("upgrade-vault-btn").addEventListener("click", () => {
   }
 });
 
+// تغییر تم روشن/تیره
+document.getElementById("toggle-theme").addEventListener("click", () => {
+  document.body.classList.toggle("theme-2");
+  if(document.body.classList.contains("theme-2")){
+    bgTheme = "2";
+  }else{
+    bgTheme = "1";
+  }
+  saveAll();
+});
+
+// تغییر پس زمینه از پروفایل
+document.getElementById("change-bg-btn").addEventListener("click", () => {
+  document.getElementById("bg-select").style.display =
+    document.getElementById("bg-select").style.display === "none" ? "flex" : "none";
+});
+document.querySelectorAll(".bg-thumb").forEach(el=>{
+  el.onclick = function(){
+    document.querySelectorAll(".bg-thumb").forEach(e=>e.classList.remove("selected"));
+    this.classList.add("selected");
+    let theme = this.getAttribute("data-bg").replace("bg","").replace(".jpg","");
+    bgTheme = theme;
+    document.body.className = `theme-${theme}`;
+    saveAll();
+  }
+});
+
+// تغییر عکس پروفایل
+document.getElementById("profile-pic").addEventListener("click", ()=>{
+  document.getElementById("avatar-input").click();
+});
+document.getElementById("avatar-input").addEventListener("change", function(event){
+  if(this.files && this.files[0]){
+    let reader = new FileReader();
+    reader.onload = function(e){
+      userAvatar = e.target.result;
+      updateUI();
+    }
+    reader.readAsDataURL(this.files[0]);
+  }
+});
+
+// تغییر نام کاربر
+document.getElementById("profile-name").addEventListener("click", ()=>{
+  let name = prompt("Enter your name:", userName);
+  if(name && name.length<20){
+    userName = name;
+    updateUI();
+  }
+});
+
 // ریست بازی
 document.getElementById("reset-btn").addEventListener("click", () => {
   localStorage.clear();
   location.reload();
-});
-
-// تغییر تم (آبی یا سفید کامل)
-document.getElementById("toggle-theme").addEventListener("click", () => {
-  document.body.classList.toggle("light");
-  saveAll();
 });
 
 function earnPassive() {
