@@ -22,7 +22,7 @@
   <!-- Main Click Area -->
   <main>
     <div id="score-display">Gold: <span id="gold-count">0</span></div>
-    <button id="click-button">💰 کلیک کن</button>
+    <button id="click-button">💰 Click for Gold</button>
 
     <!-- Vault Section -->
     <div class="vault">
@@ -30,11 +30,11 @@
         <div id="vault-fill"></div>
       </div>
       <div class="vault-info">
-        <p>در خزانه: <span id="vault-amount">0</span> Gold</p>
-        <p>ارتقاء بعدی: <span id="vault-upgrade-cost">50</span> Gold</p>
+        <p>Vault: <span id="vault-amount">0</span> Gold</p>
+        <p>Next Upgrade: <span id="vault-upgrade-cost">50</span> Gold</p>
         <div class="vault-actions">
-          <button id="collect-button">برداشت</button>
-          <button id="upgrade-vault-button">ارتقاء</button>
+          <button id="collect-button">Collect</button>
+          <button id="upgrade-vault-button">Upgrade</button>
         </div>
       </div>
     </div>
@@ -42,47 +42,47 @@
 
   <!-- Bottom Tabs -->
   <nav class="bottom-tabs">
-    <button class="tab" id="business-tab">🏢 بیزنس‌ها</button>
-    <button class="tab" id="robot-tab">🤖 ربات</button>
-    <button class="tab active" id="click-tab">🖱️ کلیک</button>
-    <button class="tab" id="referral-tab">🔗 زیرمجموعه‌ها</button>
+    <button class="tab" id="business-tab">🏢 Businesses</button>
+    <button class="tab" id="robot-tab">🤖 Robot</button>
+    <button class="tab active" id="click-tab">🖱️ Click</button>
+    <button class="tab" id="referral-tab">🔗 Referrals</button>
   </nav>
 
   <!-- Floating Profile Tab -->
   <div class="profile-tab">
     <img src="assets/images/profile.png" alt="Profile" />
     <div id="profile-info">
-      <p>لول: 1</p>
-      <p>درآمد/دقیقه: 0</p>
-      <p>تعداد کلیک: 0</p>
-      <p>درآمد کل: 0</p>
+      <p>Level: 1</p>
+      <p>Income/Minute: 0</p>
+      <p>Clicks: 0</p>
+      <p>Total Earnings: 0</p>
     </div>
   </div>
 
   <!-- Panels for Tabs (Hidden by default) -->
   <section id="business-panel" class="panel hidden">
-    <button id="start-business">استارت بیزنس</button>
+    <button id="start-business">Start Business</button>
     <div id="business-list"></div>
   </section>
 
   <section id="robot-panel" class="panel hidden">
     <div id="robot-status">
-      <p>ربات فعال نیست</p>
-      <button id="buy-robot">خرید ربات</button>
+      <p>Robot is not active</p>
+      <button id="buy-robot">Buy Robot</button>
     </div>
     <div id="robot-upgrade" class="hidden">
-      <p>قدرت برداشت: <span id="robot-power">1</span></p>
-      <p>هزینه ارتقاء: <span id="robot-upgrade-cost">100</span> Gold</p>
-      <button id="upgrade-robot">ارتقاء ربات</button>
+      <p>Collect Power: <span id="robot-power">1</span></p>
+      <p>Upgrade Cost: <span id="robot-upgrade-cost">100</span> Gold</p>
+      <button id="upgrade-robot">Upgrade Robot</button>
     </div>
   </section>
 
   <section id="settings-panel" class="panel hidden">
-    <button id="toggle-theme">تغییر تم (تیره/روشن)</button>
+    <button id="toggle-theme">Toggle Theme (Dark/Light)</button>
   </section>
 
   <section id="referral-panel" class="panel hidden">
-    <p>زیرمجموعه‌ها (به‌زودی...)</p>
+    <p>Invite referrals to earn bonus Gold!</p>
   </section>
 
   <script src="script.js"></script>
