@@ -1,5 +1,5 @@
 let gold = 0, level = 1, xp = 0, xpToNextLevel = 20, vault = 0, vaultCapacity = 100, vaultLevel = 1, clickCount = 0, totalEarnings = 0;
-let robotOwned = false, robotPower = 1, robotUpgradeCost = 100, darkMode = false;
+let robotOwned = false, robotLevel = 1, robotCollect = 2, robotBuyCost = 500, robotUpgradeCost = 400, robotTimer = 30, robotInterval = null, robotTimeLeft = 30, darkMode = false;
 const businessDefs = [
   {id:1, name:"Bakery", baseCost:100},
   {id:2, name:"Cafe", baseCost:250},
@@ -33,8 +33,11 @@ function loadGame() {
     clickCount = data.clickCount || 0;
     totalEarnings = data.totalEarnings || 0;
     robotOwned = data.robotOwned || false;
-    robotPower = data.robotPower || 1;
-    robotUpgradeCost = data.robotUpgradeCost || 100;
+    robotLevel = data.robotLevel || 1;
+    robotCollect = data.robotCollect || 2;
+    robotBuyCost = data.robotBuyCost || 500;
+    robotUpgradeCost = data.robotUpgradeCost || 400;
+    robotTimeLeft = 30;
     darkMode = data.darkMode || false;
     businesses = data.businesses || [];
     if (darkMode) document.body.classList.add('dark');
@@ -43,8 +46,9 @@ function loadGame() {
 function saveGame() {
   const data = {
     gold, level, xp, xpToNextLevel, vault, vaultCapacity, vaultLevel,
-    clickCount, totalEarnings, robotOwned, robotPower, robotUpgradeCost, darkMode,
-    businesses
+    clickCount, totalEarnings,
+    robotOwned, robotLevel, robotCollect, robotBuyCost, robotUpgradeCost,
+    darkMode, businesses
   };
   localStorage.setItem('zardoSave', JSON.stringify(data));
 }
@@ -103,26 +107,10 @@ document.getElementById("toggle-theme").onclick = () => {
   darkMode = document.body.classList.contains('dark');
   saveGame();
 };
-document.getElementById("buy-robot").onclick = () => {
-  if (gold >= 200) {
-    gold -= 200; robotOwned = true;
-    setInterval(() => {
-      vault = Math.min(vault + robotPower, vaultCapacity);
-      updateUI();
-    }, 6000);
-    updateUI();
-  }
-};
-document.getElementById("upgrade-robot").onclick = () => {
-  if (gold >= robotUpgradeCost) {
-    gold -= robotUpgradeCost; robotPower++; robotUpgradeCost = Math.floor(robotUpgradeCost*1.6); updateUI();
-  }
-};
 
 function renderBusinesses() {
   const bizList = document.getElementById("business-list");
   bizList.innerHTML = "";
-  // اگر هیچ بیزنسی نداره فقط دکمه استارت بیزنس نمایش داده شود
   if (businesses.length === 0) {
     let startBox = document.createElement("div");
     startBox.className = "business-item business-locked";
@@ -130,7 +118,6 @@ function renderBusinesses() {
     startBox.innerHTML = `<button class="biz-buy-btn" id="open-business-modal" style="font-size:19px;min-width:180px;min-height:54px;">Start Business</button>`;
     bizList.appendChild(startBox);
   } else {
-    // نمایش بیزنس‌های خریداری شده
     bizList.innerHTML += "<h3 style='margin:8px 0;'>Your Businesses</h3>";
     businesses.forEach((biz,i) => {
       const def = businessDefs[biz.id-1];
@@ -154,7 +141,6 @@ function renderBusinesses() {
       };
       bizList.appendChild(box);
     });
-    // نمایش دکمه خرید بیزنس جدید اگر هنوز بیزنسی مونده
     if (businessDefs.some(def=>!getBusiness(def.id))) {
       let startBox = document.createElement("div");
       startBox.className = "business-item business-locked";
@@ -163,11 +149,9 @@ function renderBusinesses() {
       bizList.appendChild(startBox);
     }
   }
-  // هندل باز شدن مودال انتخاب بیزنس
   let btn = document.getElementById("open-business-modal");
   if (btn) btn.onclick = showBusinessModal;
 }
-
 function showBusinessModal() {
   const modal = document.getElementById("business-select-modal");
   const list = document.getElementById("business-select-list");
@@ -207,6 +191,84 @@ bizIncomeInterval = setInterval(()=>{
   }
 }, 1000);
 
+// ==== ربات گرافیکی ====
+function renderRobotPanel() {
+  let panel = document.getElementById("panel-robot");
+  panel.innerHTML = ""; // پاک کردن محتوا
+  let card = document.createElement("div");
+  card.className = "robot-card";
+  card.innerHTML = `
+    <div class="robot-title">
+      🤖 Robot Collector
+      <span style="font-size:16px;font-weight:normal;color:#666;margin-left:8px;">${robotOwned ? "Level " + robotLevel : "Not owned"}</span>
+    </div>
+    <div class="robot-stat-list">
+      <span><b>Vault:</b> ${vault} / ${vaultCapacity}</span>
+      <span><b>Gold:</b> ${gold}</span>
+      <span><b>Collect Power:</b> ${robotCollect} Gold / collect</span>
+      <span><b>Every:</b> 30 seconds</span>
+    </div>
+    <div class="robot-timer">${robotOwned ? ("Next collect in: <span id='robot-timer-txt'>" + robotTimeLeft + "</span>s") : ""}</div>
+  `;
+  if (!robotOwned) {
+    let btn = document.createElement("button");
+    btn.className = "robot-buy-btn";
+    btn.innerText = `Buy Robot (${robotBuyCost} Gold)`;
+    btn.disabled = gold < robotBuyCost;
+    btn.onclick = function() {
+      if (gold >= robotBuyCost) {
+        gold -= robotBuyCost;
+        robotOwned = true;
+        robotLevel = 1;
+        robotCollect = 2;
+        robotUpgradeCost = 400;
+        robotTimeLeft = 30;
+        startRobotInterval();
+        updateUI();
+        renderRobotPanel();
+      }
+    };
+    card.appendChild(btn);
+  } else {
+    let btn = document.createElement("button");
+    btn.className = "robot-upgrade-btn";
+    btn.innerText = `Upgrade Robot (${robotUpgradeCost} Gold)`;
+    btn.disabled = gold < robotUpgradeCost;
+    btn.onclick = function() {
+      if (gold >= robotUpgradeCost) {
+        gold -= robotUpgradeCost;
+        robotLevel += 1;
+        robotCollect += 2;
+        robotUpgradeCost = Math.floor(robotUpgradeCost * 1.8);
+        updateUI();
+        renderRobotPanel();
+      }
+    };
+    card.appendChild(btn);
+  }
+  panel.appendChild(card);
+}
+function startRobotInterval() {
+  if (robotInterval) clearInterval(robotInterval);
+  robotTimeLeft = 30;
+  robotInterval = setInterval(() => {
+    if (!robotOwned) return;
+    robotTimeLeft -= 1;
+    let txt = document.getElementById("robot-timer-txt");
+    if (txt) txt.innerText = robotTimeLeft;
+    if (robotTimeLeft <= 0) {
+      // برداشت از Vault
+      let canCollect = Math.min(robotCollect, vault);
+      gold += canCollect;
+      vault -= canCollect;
+      robotTimeLeft = 30;
+      updateUI();
+      renderRobotPanel();
+    }
+  }, 1000);
+}
+if (robotOwned) startRobotInterval();
+
 document.querySelector(".bottom-tabs").onclick = function(e) {
   if(e.target.classList.contains("tab")) {
     let tab = e.target;
@@ -219,35 +281,20 @@ document.querySelector(".bottom-tabs").onclick = function(e) {
     updateUI();
   }
 };
-
-function renderRobotPanel() {
-  let robotStatus = document.getElementById("robot-status");
-  let robotUpgrade = document.getElementById("robot-upgrade");
-  if(!robotOwned){
-    robotStatus.classList.remove("hidden");
-    robotUpgrade.classList.add("hidden");
-  } else {
-    robotStatus.classList.add("hidden");
-    robotUpgrade.classList.remove("hidden");
-    document.getElementById("robot-power").textContent = robotPower;
-    document.getElementById("robot-upgrade-cost").textContent = robotUpgradeCost;
-  }
-}
-
 document.getElementById("settings-open").onclick = () => {
   document.querySelectorAll('.panel').forEach(p => p.classList.add("hidden"));
   document.getElementById("settings-panel").classList.remove("hidden");
   showProfileInfo();
   updateUI();
 };
-
 document.getElementById("reset-game-btn").onclick = () => {
   if(confirm("Are you sure? All your progress will be lost!")){
     localStorage.removeItem('zardoSave');
     location.reload();
   }
 };
-
 loadGame();
 updateUI();
 renderBusinesses();
+renderRobotPanel();
+if (robotOwned) startRobotInterval();
