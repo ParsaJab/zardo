@@ -1,26 +1,32 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&display=swap');
-
 body {
   font-family: 'Space Grotesk', sans-serif;
   background: linear-gradient(to bottom, #1e1f29, #0f0f18);
   color: #f0f0f0;
   margin: 0;
   padding: 0;
-  overflow: hidden;
 }
-
+body.light {
+  background: linear-gradient(to bottom, #e9ebf5, #fff);
+  color: #222;
+}
 header {
   display: flex;
   justify-content: space-between;
-  padding: 12px 16px;
+  align-items: center;
+  padding: 8px 18px;
   background: #13131c;
   border-bottom: 1px solid #333;
 }
+.gold-bar {
+  font-size: 19px;
+  font-weight: bold;
+}
 .title {
   font-weight: bold;
-  font-size: 20px;
+  font-size: 22px;
   color: gold;
+  text-shadow: 0 0 5px #ffd700;
 }
 .menu button {
   margin-left: 8px;
@@ -28,15 +34,18 @@ header {
   border: none;
   color: white;
   padding: 6px 12px;
-  border-radius: 6px;
+  border-radius: 7px;
+  font-size: 18px;
 }
-
 main {
-  padding: 16px;
+  padding: 0;
   height: calc(100vh - 110px);
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
-
 nav {
   display: flex;
   justify-content: space-around;
@@ -51,40 +60,39 @@ nav button {
   background: none;
   border: none;
   color: #ccc;
-  font-size: 20px;
+  font-size: 22px;
 }
-
 .tab {
   display: none;
+  width: 100vw;
+  max-width: 420px;
+  margin: 0 auto;
 }
 .tab.active {
   display: block;
 }
-
-.balance {
-  text-align: center;
-  font-size: 24px;
-  margin: 16px 0;
-}
 .main-button {
   display: block;
-  margin: 0 auto 16px;
+  margin: 22px auto 20px auto;
   width: 180px;
   height: 180px;
   border-radius: 50%;
-  font-size: 28px;
+  font-size: 32px;
   font-weight: bold;
   background: linear-gradient(to right, gold, orange);
   color: #222;
   border: none;
   box-shadow: 0 6px 12px #000;
+  position: relative;
+  z-index: 2;
 }
 .xp-bar {
   height: 14px;
-  width: 80%;
-  margin: 10px auto;
+  width: 85%;
+  margin: 12px auto;
   background: #333;
   border-radius: 10px;
+  overflow: hidden;
 }
 .xp-bar #xp-fill {
   height: 100%;
@@ -96,43 +104,94 @@ nav button {
 .level-info {
   text-align: center;
   font-weight: bold;
-  margin-top: 6px;
+  margin-top: 7px;
+  margin-bottom: 15px;
 }
-
 #business-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 16px;
+  margin: 20px auto 0 auto;
+  width: 95%;
+  max-width: 410px;
 }
 .business-card {
   background: #292b38;
   border: 1px solid #444;
-  border-radius: 10px;
-  padding: 10px 16px;
+  border-radius: 13px;
+  padding: 14px 18px;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.12);
 }
-.business-card span {
-  font-weight: bold;
+.business-card h3 {
+  margin: 0 0 8px 0;
+  font-size: 19px;
+  color: #ffe600;
 }
-.business-card button {
+.business-card p {
+  margin: 2px 0;
+}
+.business-card .upgrade-btn {
   background: #4caf50;
   color: white;
   border: none;
-  padding: 6px 10px;
-  border-radius: 6px;
+  padding: 6px 14px;
+  border-radius: 7px;
   font-weight: bold;
+  margin-top: 7px;
 }
-
-.collect {
-  background: #2196f3;
-  border: none;
-  padding: 10px;
-  margin: 20px auto 0;
-  display: block;
-  border-radius: 8px;
-  color: white;
-  font-weight: bold;
-  width: 90%;
+.vault-box {
+  background: #191a25;
+  padding: 9px 15px;
+  border-radius: 9px;
+  text-align: center;
+  font-size: 17px;
+  margin: 18px auto 0 auto;
+  width: 85%;
+  max-width: 350px;
+  box-shadow: 0 0 7px #0002;
+  color: #ffc700;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+}
+.profile-card {
+  margin: 24px auto;
+  padding: 28px 0;
+  width: 85%;
+  max-width: 350px;
+  background: #23253a;
+  border-radius: 13px;
+  box-shadow: 0 2px 10px #0002;
+  text-align: center;
+}
+.profile-card h2 {
+  margin: 0 0 15px 0;
+  color: #ffc700;
+  font-size: 22px;
+}
+.profile-card p {
+  margin: 7px 0;
+  font-size: 18px;
+}
+body.light .business-card, body.light .profile-card, body.light .vault-box {
+  background: #f6f6ff;
+  color: #333;
+  box-shadow: 0 3px 9px #ccd2ee44;
+}
+body.light .main-button {
+  background: linear-gradient(to right, #ffe066, #ffd53b);
+  color: #222;
+}
+body.light header {
+  background: #f3f6fa;
+}
+body.light .xp-bar {
+  background: #eee;
+}
+body.light {
+  color: #333;
 }
