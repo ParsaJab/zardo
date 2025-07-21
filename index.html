@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ZARDO Click Game</title>
+  <title>ZARDO: Click Empire</title>
   <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
@@ -14,6 +15,25 @@
       <p>👆 Clicks: <span id="clicks">0</span></p>
     </div>
     <button id="click-btn">CLICK</button>
+
+    <h2>🛒 Businesses</h2>
+    <div class="shop">
+      <div class="item">
+        <span>🏪 Shop (50G)</span>
+        <button onclick="buyBusiness('shop')">Buy</button>
+        <span id="shop-count">x0</span>
+      </div>
+      <div class="item">
+        <span>🏭 Factory (200G)</span>
+        <button onclick="buyBusiness('factory')">Buy</button>
+        <span id="factory-count">x0</span>
+      </div>
+      <div class="item">
+        <span>🏦 Bank (1000G)</span>
+        <button onclick="buyBusiness('bank')">Buy</button>
+        <span id="bank-count">x0</span>
+      </div>
+    </div>
   </div>
   <script src="script.js"></script>
 </body>
