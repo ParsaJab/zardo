@@ -1,3 +1,26 @@
+window.Telegram.WebApp.ready();
+
+const tg = window.Telegram.WebApp;
+
+// مثال: اطلاعات کاربر تلگرام
+if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+  let telegramUser = tg.initDataUnsafe.user;
+  // می‌تونی نمایش بدی: telegramUser.first_name, telegramUser.id و ...
+  console.log('Telegram User:', telegramUser);
+}
+
+// مثال: اگر می‌خوای مثلاً رکورد کاربر رو به بات تلگرام ارسال کنی:
+document.getElementById('send-score-btn').onclick = function() {
+  // این فقط یه مثال ارسال داده است:
+  tg.sendData(JSON.stringify({
+    gold: gold,
+    level: vaultLevel,
+    clickCount: clickCount,
+    time: Date.now()
+  }));
+  tg.close();
+}
+
 // ----- اطلاعات بیزنس -----
 const defaultBusinesses = [
   { id: 'kiosk',      name: 'Kiosk',       price: 20,    income: 20, level: 0, owned: false },
