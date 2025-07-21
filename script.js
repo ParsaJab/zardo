@@ -298,3 +298,20 @@ updateUI();
 renderBusinesses();
 renderRobotPanel();
 if (robotOwned) startRobotInterval();
+// باید بعد از لود شدن صفحه اجرا شه
+window.addEventListener('DOMContentLoaded', function() {
+  if (window.Telegram && window.Telegram.WebApp) {
+    const tg = window.Telegram.WebApp;
+    tg.expand(); // بهتره صفحه رو کامل باز کنه (اختیاری)
+    const user = tg.initDataUnsafe?.user;
+    if (user) {
+      // مثلاً نمایش نام و یوزرنیم
+      document.getElementById("profile-info-settings").innerHTML =
+        `<div style="margin-bottom:10px;"><b>Welcome, ${user.first_name}</b><br>
+        <small>@${user.username || ''} | ID: ${user.id}</small></div>` +
+        document.getElementById("profile-info-settings").innerHTML;
+      // یا هر جا خواستی مقدار user رو استفاده کن
+      // user.first_name, user.last_name, user.username, user.id, ...
+    }
+  }
+});
