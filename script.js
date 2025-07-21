@@ -110,27 +110,17 @@ function getPassivePerMin() {
 
 // ----- تب‌ها -----
 window.switchTab = function(id) {
+  // حذف کلاس 'active' از همه تب‌ها
   document.querySelectorAll(".tab").forEach(tab => tab.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-  updateUI();
-};
-
-// ----- کلیک (روی کل صفحه game-tab) -----
-document.getElementById("game-tab").addEventListener("click", function(e) {
-  if (!document.getElementById("game-tab").classList.contains("active")) return;
-  gold += goldPerClick;
-  clickCount++;
-  updateUI();
-});
-
-// ----- برداشت خزانه -----
-document.getElementById("collect-btn").onclick = function() {
-  if (passiveGold > 0) {
-    gold += Math.floor(passiveGold);
-    totalPassiveEarned += Math.floor(passiveGold);
-    passiveGold = 0;
-    updateUI();
+  
+  // اضافه کردن کلاس 'active' به تب انتخاب شده
+  const targetTab = document.getElementById(id);
+  if (targetTab) {
+    targetTab.classList.add("active");
   }
+
+  // اگر gold داخل تب‌ها نمایش داره، بروزرسانی کن
+  updateUI();
 };
 
 // ----- اپگرید خزانه -----
