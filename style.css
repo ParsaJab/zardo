@@ -81,3 +81,9 @@ body.dark .business-item { background: #262b3a; }
   .bottom-tabs { height: 62px; }
   .tab { font-size: 21px; }
 }
+.biz-gold-bar {
+  font-size: 18px;
+  font-weight: bold;
+  text-align: right;
+  margin: 10px 0 6px 0;
+}
