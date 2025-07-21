@@ -315,18 +315,17 @@ window.addEventListener('DOMContentLoaded', function() {
     }
   }
 });
-window.addEventListener('DOMContentLoaded', function() {
+function showTelegramConnectionStatus() {
+  const infoDiv = document.getElementById('tg-user-info');
+  if (!infoDiv) return;
   if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe) {
     const user = window.Telegram.WebApp.initDataUnsafe.user;
     if (user) {
-      document.getElementById('tg-user-info').innerHTML =
-        `🟢 Connected as <b>${user.first_name}</b> <span style="color:#888;">(${user.id})</span>`;
+      infoDiv.innerHTML = `🟢 Connected as <b>${user.first_name}</b> <span style="color:#888;">(${user.id})</span>`;
     } else {
-      document.getElementById('tg-user-info').innerHTML =
-        `🔴 Not connected to Telegram WebApp.`;
+      infoDiv.innerHTML = `🔴 Not connected to Telegram WebApp.`;
     }
   } else {
-    document.getElementById('tg-user-info').innerHTML =
-      `🔴 Not connected to Telegram WebApp.`;
+    infoDiv.innerHTML = `🔴 Not connected to Telegram WebApp.`;
   }
-});
+}
