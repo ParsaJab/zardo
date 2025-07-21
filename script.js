@@ -1,22 +1,35 @@
-let gold = 0;
-let passiveGold = 0;
-let clicks = 0;
-let xp = 0;
-let level = 1;
-let xpToNext = 10;
+let gold = Number(localStorage.getItem("gold")) || 0;
+let passiveGold = Number(localStorage.getItem("passiveGold")) || 0;
+let clicks = Number(localStorage.getItem("clicks")) || 0;
+let xp = Number(localStorage.getItem("xp")) || 0;
+let level = Number(localStorage.getItem("level")) || 1;
+let xpToNext = Number(localStorage.getItem("xpToNext")) || 10;
+let vaultLevel = Number(localStorage.getItem("vaultLevel")) || 1;
+let vaultCapacity = vaultLevel * 20;
 
-const businesses = [
-  { id: 'kiosk', name: 'Kiosk', count: 0, income: 0.2, price: 20, upgrade: 20 },
-  { id: 'taxi', name: 'Taxi Co.', count: 0, income: 1, price: 100, upgrade: 100 },
-  { id: 'office', name: 'Office', count: 0, income: 3, price: 250, upgrade: 250 },
-  { id: 'mall', name: 'Mall', count: 0, income: 6, price: 500, upgrade: 500 },
-  { id: 'bank', name: 'Bank', count: 0, income: 12, price: 1000, upgrade: 1000 },
-  { id: 'airline', name: 'Airline', count: 0, income: 25, price: 2000, upgrade: 2000 },
-  { id: 'hotel', name: 'Hotel', count: 0, income: 45, price: 4000, upgrade: 4000 },
-  { id: 'construct', name: 'Construct', count: 0, income: 75, price: 8000, upgrade: 8000 },
-  { id: 'startup', name: 'Startup', count: 0, income: 120, price: 12000, upgrade: 12000 },
-  { id: 'crypto', name: 'Crypto', count: 0, income: 200, price: 20000, upgrade: 20000 }
+const businesses = JSON.parse(localStorage.getItem("businesses")) || [
+  { id: 'kiosk', name: 'Kiosk', level: 0, max: 10, income: 0.2, price: 20 },
+  { id: 'taxi', name: 'Taxi Co.', level: 0, max: 10, income: 1, price: 100 },
+  { id: 'office', name: 'Office', level: 0, max: 10, income: 3, price: 250 },
+  { id: 'mall', name: 'Mall', level: 0, max: 10, income: 6, price: 500 },
+  { id: 'bank', name: 'Bank', level: 0, max: 10, income: 12, price: 1000 },
+  { id: 'airline', name: 'Airline', level: 0, max: 10, income: 25, price: 2000 },
+  { id: 'hotel', name: 'Hotel', level: 0, max: 10, income: 45, price: 4000 },
+  { id: 'construct', name: 'Construct', level: 0, max: 10, income: 75, price: 8000 },
+  { id: 'startup', name: 'Startup', level: 0, max: 10, income: 120, price: 12000 },
+  { id: 'crypto', name: 'Crypto', level: 0, max: 10, income: 200, price: 20000 }
 ];
+
+function saveAll() {
+  localStorage.setItem("gold", gold);
+  localStorage.setItem("passiveGold", passiveGold);
+  localStorage.setItem("clicks", clicks);
+  localStorage.setItem("xp", xp);
+  localStorage.setItem("level", level);
+  localStorage.setItem("xpToNext", xpToNext);
+  localStorage.setItem("vaultLevel", vaultLevel);
+  localStorage.setItem("businesses", JSON.stringify(businesses));
+}
 
 function updateUI() {
   document.getElementById("gold").textContent = Math.floor(gold);
@@ -25,15 +38,9 @@ function updateUI() {
   document.getElementById("xp").textContent = xp;
   document.getElementById("xp-next").textContent = xpToNext;
   document.getElementById("passiveGold").textContent = Math.floor(passiveGold);
+  document.getElementById("vault-capacity").textContent = `/ ${vaultCapacity}`;
   updateBusinessCards();
-  updateVault();
-}
-
-function updateVault() {
-  // In this version, passiveGold is always visible in Vault box (in click tab)
-  if (document.getElementById("passiveGold")) {
-    document.getElementById("passiveGold").textContent = Math.floor(passiveGold);
-  }
+  saveAll();
 }
 
 function switchTab(id) {
@@ -47,11 +54,14 @@ function updateBusinessCards() {
   businesses.forEach((b, i) => {
     let card = document.createElement("div");
     card.className = "business-card";
+    let canUpgrade = b.level < b.max;
+    let btnText = b.level === 0 ? `Buy (${b.price})` :
+      canUpgrade ? `Upgrade (${b.price})` : `Maxed`;
     card.innerHTML = `
-      <h3>${b.name}</h3>
-      <p>Owned: ${b.count}</p>
-      <p>Income: ${b.income * b.count}/sec</p>
-      <button class="upgrade-btn" onclick="buyBusiness('${b.id}')">Buy/Upgrade (${b.price})</button>
+      <h3>${b.name} (Lvl ${b.level})</h3>
+      <p>Income: ${Math.floor(b.income * b.level)}/sec</p>
+      <p>Upgrade cost: ${canUpgrade ? b.price : '---'}</p>
+      <button class="upgrade-btn" onclick="buyBusiness('${b.id}')" ${canUpgrade ? '' : 'disabled'}>${btnText}</button>
     `;
     container.appendChild(card);
   });
@@ -59,18 +69,19 @@ function updateBusinessCards() {
 
 window.buyBusiness = function(id) {
   const b = businesses.find(x => x.id === id);
+  if (!b || b.level >= b.max) return;
   if (gold >= b.price) {
     gold -= b.price;
-    b.count++;
-    b.income = Math.floor(b.income * 1.3 + 1); // درآمد بیزنس ارتقاء پیدا کنه
-    b.price = Math.floor(b.price * 1.5); // قیمت خرید و ارتقاء ۱.۵ برابر بشه
+    b.level++;
+    b.income = Math.round((b.income) * 1.16 * 10) / 10; // رشد درآمد
+    b.price = Math.floor(b.price * 1.5);
     updateUI();
   } else {
     alert("Not enough gold!");
   }
 }
 
-document.getElementById("click-btn").addEventListener("click", () => {
+document.getElementById("click-btn").addEventListener("click", (e) => {
   gold += level;
   xp++;
   clicks++;
@@ -79,6 +90,21 @@ document.getElementById("click-btn").addEventListener("click", () => {
     level++;
     xpToNext = Math.floor(xpToNext * 1.5);
   }
+
+  // افکت Drop طلا روی دکمه
+  let drop = document.createElement("div");
+  drop.className = "gold-drop";
+  let btnRect = e.target.getBoundingClientRect();
+  drop.style.left = (btnRect.left + btnRect.width/2) + "px";
+  drop.style.top = (btnRect.top - 10) + "px";
+  drop.textContent = "+ZDC";
+  document.body.appendChild(drop);
+  setTimeout(() => drop.remove(), 850);
+
+  // انیمیشن دکمه
+  e.target.style.transform = "scale(0.94)";
+  setTimeout(() => e.target.style.transform = "", 100);
+
   updateUI();
 });
 
@@ -88,19 +114,36 @@ document.getElementById("collect-btn").addEventListener("click", () => {
   updateUI();
 });
 
+document.getElementById("upgrade-vault-btn").addEventListener("click", () => {
+  let cost = vaultLevel * 200;
+  if (gold >= cost) {
+    gold -= cost;
+    vaultLevel++;
+    vaultCapacity = vaultLevel * 20;
+    updateUI();
+  } else {
+    alert("Not enough gold for Vault upgrade!");
+  }
+});
+
 document.getElementById("reset-btn").addEventListener("click", () => {
+  localStorage.clear();
   location.reload();
 });
 
 document.getElementById("toggle-theme").addEventListener("click", () => {
   document.body.classList.toggle("light");
+  saveAll();
 });
 
 function earnPassive() {
   let income = 0;
-  businesses.forEach(b => income += b.count * b.income);
-  passiveGold += income;
-  updateUI();
+  businesses.forEach(b => income += b.level * b.income);
+  if (passiveGold < vaultCapacity) {
+    passiveGold += income;
+    if (passiveGold > vaultCapacity) passiveGold = vaultCapacity;
+    updateUI();
+  }
 }
 
 setInterval(earnPassive, 1000);
