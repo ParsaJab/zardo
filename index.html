@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
   <title>ZARDO: Click Empire</title>
   <link rel="stylesheet" href="style.css" />
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
-<body>
+<body class="light">
   <header>
     <img src="zardo-logo.png" alt="ZARDO Logo" class="zardo-logo"/>
     <div id="gold-box" class="gold-box">
@@ -18,19 +18,24 @@
       <button onclick="switchTab('settings-tab')">⚙️</button>
     </div>
   </header>
+
   <main>
-    <!-- تب کلیک -->
     <section id="game-tab" class="tab active">
       <div id="gold-box-big" class="gold-box-big">
         <img src="coin.png" class="coin-icon-big" />
         <span id="gold-amount-big">0</span>
+      </div>
+      <div class="xp-bar">
+        <div id="xp-fill"></div>
       </div>
       <div class="vault-bar">
         <img src="vault-icon.png" class="vault-icon"/>
         <div class="vault-progress">
           <div id="vault-progress-fill"></div>
         </div>
-        <div class="vault-text"><span id="vault-amount">0</span>/<span id="vault-capacity">20</span></div>
+        <div class="vault-text">
+          <span id="vault-amount">0</span>/<span id="vault-capacity">20</span>
+        </div>
       </div>
       <div class="vault-actions">
         <button id="collect-btn">Collect</button>
@@ -40,55 +45,24 @@
       </div>
       <div id="click-area"></div>
     </section>
-    <!-- تب بیزنس -->
-    <section id="business-tab" class="tab">
-      <h4 class="mybiz-title">My Businesses</h4>
-      <div id="my-biz-list"></div>
-    </section>
-    <!-- تب پروفایل -->
-    <section id="profile-tab" class="tab">
-      <div id="profile-box">
-        <img id="profile-pic" src="avatar.png" alt="avatar"/>
-        <input type="file" id="avatar-input" accept="image/*" style="display:none"/>
-        <div id="profile-name">Player</div>
-        <div id="profile-info">
-          <div>Clicks: <span id="profile-clicks">0</span></div>
-          <div>Gold Per Click: <span id="profile-gpc">1</span></div>
-          <div>Businesses: <span id="profile-bizcount">0</span></div>
-          <div>Passive/Min: <span id="profile-passive">0</span></div>
-          <div>Total Passive: <span id="profile-totalpassive">0</span></div>
-        </div>
-      </div>
-    </section>
-    <!-- تب تنظیمات -->
+
+    <section id="business-tab" class="tab"></section>
+    <section id="profile-tab" class="tab"></section>
     <section id="settings-tab" class="tab">
       <h3>Settings</h3>
-      <div>
-        <label for="bg-select">Choose Background:</label>
-        <select id="bg-select">
-          <option value="bg1">Classic</option>
-          <option value="bg2">Light Blue</option>
-          <option value="bg3">Dark</option>
-        </select>
-      </div>
+      <button id="theme-toggle">Toggle Theme</button>
       <button id="reset-btn" class="reset-btn">Reset Game</button>
     </section>
-    <!-- تب بات -->
-    <section id="bot-tab" class="tab">
-      <h3>Auto Vault Bot</h3>
-      <div id="bot-box">
-        <div id="bot-status"></div>
-        <button id="buy-bot-btn"></button>
-        <button id="upgrade-bot-btn"></button>
-      </div>
-    </section>
+    <section id="bot-tab" class="tab"></section>
   </main>
+
   <nav>
-    <button onclick="switchTab('business-tab')"><span class="icon-bank"></span></button>
-    <button onclick="switchTab('game-tab')"><span class="icon-coin"></span></button>
-    <button onclick="switchTab('profile-tab')"><span class="icon-user"></span></button>
-    <button onclick="switchTab('bot-tab')"><span class="icon-robot"></span></button>
+    <button onclick="switchTab('business-tab')">🏢</button>
+    <button onclick="switchTab('game-tab')">🪙</button>
+    <button onclick="switchTab('profile-tab')">👤</button>
+    <button onclick="switchTab('bot-tab')">🤖</button>
   </nav>
+
   <script src="script.js"></script>
 </body>
 </html>
