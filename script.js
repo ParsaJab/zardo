@@ -141,35 +141,57 @@ document.getElementById("upgrade-robot").onclick = () => {
 
 // منطق نمایش و خرید و ارتقای بیزنس
 function renderBusinesses() {
-  // Owned Businesses
   const bizList = document.getElementById("business-list");
-  bizList.innerHTML = "<h3 style='margin:8px 0;'>Your Businesses</h3>";
+  bizList.innerHTML = "";
   if(businesses.length===0) {
-    bizList.innerHTML += "<p style='opacity:.7'>You don't own any business yet.</p>";
-  } else {
-    businesses.forEach(biz => {
-      const def = businessDefs[biz.id-1];
-      let box = document.createElement("div");
-      box.className = "business-item business-owned";
-      box.innerHTML = `<div class="biz-title">${def.name} <span class="biz-lvl">Lvl ${biz.level}</span></div>
-        <div class="biz-income">Income: <b>${biz.income}</b>/min</div>
-        <button class="biz-upgrade-btn" ${biz.level>=10?"disabled":""}>
-          Upgrade (${businessUpgradeCost(biz)} Gold)
-        </button>
-      `;
-      box.querySelector(".biz-upgrade-btn").onclick = ()=>{
-        let upCost = businessUpgradeCost(biz);
-        if(gold>=upCost && biz.level<10) {
-          gold-=upCost;
-          biz.level+=1;
-          biz.income+=2;
+    // فقط دکمه گرافیکی Start Business
+    let startBox = document.createElement("div");
+    startBox.className = "business-item business-locked";
+    startBox.style.margin = "40px auto 0 auto"; startBox.style.textAlign="center";
+    startBox.innerHTML = `<button class="biz-buy-btn" style="font-size:19px;min-width:180px;min-height:54px;">Start Business</button>`;
+    startBox.querySelector(".biz-buy-btn").onclick = ()=>{
+      // لیست بیزنس‌هایی که می‌تونه بخره
+      let list = businessDefs.filter(def=>!getBusiness(def.id));
+      if(list.length>0){
+        let select = prompt("Choose Business:
+" + list.map((b,i)=>`${i+1}- ${b.name} (${b.baseCost} Gold)`).join('
+'));
+        let idx = parseInt(select)-1;
+        if(!isNaN(idx) && list[idx] && gold>=list[idx].baseCost){
+          gold-=list[idx].baseCost;
+          businesses.push({id:list[idx].id,level:1,income:5});
           updateUI();
           renderBusinesses();
         }
-      };
-      bizList.appendChild(box);
-    });
+      }
+    };
+    bizList.appendChild(startBox);
+    return;
   }
+  // Owned Businesses
+  bizList.innerHTML = "<h3 style='margin:8px 0;'>Your Businesses</h3>";
+  businesses.forEach(biz => {
+    const def = businessDefs[biz.id-1];
+    let box = document.createElement("div");
+    box.className = "business-item business-owned";
+    box.innerHTML = `<div class="biz-title">${def.name} <span class="biz-lvl">Lvl ${biz.level}</span></div>
+      <div class="biz-income">Income: <b>${biz.income}</b>/min</div>
+      <button class="biz-upgrade-btn" ${biz.level>=10?"disabled":""}>
+        Upgrade (${businessUpgradeCost(biz)} Gold)
+      </button>
+    `;
+    box.querySelector(".biz-upgrade-btn").onclick = ()=>{
+      let upCost = businessUpgradeCost(biz);
+      if(gold>=upCost && biz.level<10) {
+        gold-=upCost;
+        biz.level+=1;
+        biz.income+=2;
+        updateUI();
+        renderBusinesses();
+      }
+    };
+    bizList.appendChild(box);
+  });
   // Start Business (only for NOT OWNED businesses)
   let startDiv = document.createElement("div");
   startDiv.innerHTML = "<h3 style='margin:12px 0 5px 0;'>Start New Business</h3>";
