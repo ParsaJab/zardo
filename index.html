@@ -11,7 +11,7 @@
   <div class="container">
     <h1>ZARDO: Click Empire</h1>
     <div id="stats">
-      <p>💰 Gold: <span id="gold">0</span></p>
+      <p>💰 Gold: <span id="gold">0</span> / <span id="storage-limit">20</span></p>
       <p>👆 Clicks: <span id="clicks">0</span></p>
       <p>⭐ Level: <span id="level">1</span></p>
       <p>⚡ XP: <span id="xp">0</span>/<span id="xp-next">10</span></p>
@@ -21,21 +21,27 @@
     <h2>🛒 Businesses</h2>
     <div class="shop">
       <div class="item">
-        <span>🏪 Shop (50G) — +1/s</span>
+        <span>🏪 Shop (50G) — +0.2 x <span id="shop-count">0</span>/s</span>
         <button onclick="buyBusiness('shop')">Buy</button>
-        <span id="shop-count">x0</span>
       </div>
       <div class="item">
-        <span>🏭 Factory (200G) — +5/s</span>
+        <span>🏭 Factory (200G) — +1 x <span id="factory-count">0</span>/s</span>
         <button onclick="buyBusiness('factory')">Buy</button>
-        <span id="factory-count">x0</span>
       </div>
       <div class="item">
-        <span>🏦 Bank (1000G) — +20/s</span>
+        <span>🏦 Bank (1000G) — +5 x <span id="bank-count">0</span>/s</span>
         <button onclick="buyBusiness('bank')">Buy</button>
-        <span id="bank-count">x0</span>
+      </div>
+      <div class="item">
+        <span>🛢 Storage Upgrade (500G)</span>
+        <button onclick="upgradeStorage()">Upgrade</button>
+        <span id="storage-capacity">Level 1</span>
       </div>
     </div>
+
+    <button id="reset-btn" style="margin-top: 20px; background: crimson; color: white; padding: 10px 20px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer;">
+      🔁 Reset Game
+    </button>
   </div>
   <script src="script.js"></script>
 </body>
