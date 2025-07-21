@@ -1,0 +1,27 @@
+body {
+  background-color: #111;
+  color: #fff;
+  font-family: sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.container {
+  text-align: center;
+}
+
+#click-btn {
+  padding: 20px 40px;
+  font-size: 24px;
+  background-color: gold;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+#click-btn:hover {
+  background-color: orange;
+}
