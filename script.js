@@ -13,13 +13,12 @@ const businessDefs = [
   {id:10, name:"Bank", baseCost:44000}
 ];
 let businesses = [];
-let bizInterval = null;
+let bizIncomeInterval = null;
 
-// Utility functions
+// Utility
 function getBusiness(id) { return businesses.find(b=>b.id===id); }
 function businessUpgradeCost(biz) { return Math.floor(businessDefs[biz.id-1].baseCost * Math.pow(1.7, biz.level)); }
 
-// LocalStorage
 function loadGame() {
   try {
     const data = JSON.parse(localStorage.getItem('zardoSave'));
@@ -50,30 +49,18 @@ function saveGame() {
   localStorage.setItem('zardoSave', JSON.stringify(data));
 }
 
-// Event delegation for tabs
-document.querySelector(".bottom-tabs").onclick = function(e) {
-  if(e.target.classList.contains("tab")) {
-    let tab = e.target;
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    tab.classList.add('active');
-    document.querySelectorAll('.panel').forEach(p => p.classList.add('hidden'));
-    document.getElementById(tab.dataset.panel).classList.remove('hidden');
-    if(tab.dataset.panel==="panel-business") renderBusinesses();
-    if(tab.dataset.panel==="panel-robot") renderRobotPanel();
-  }
-};
-document.getElementById("settings-open").onclick = () => {
-  document.querySelectorAll('.panel').forEach(p => p.classList.add("hidden"));
-  document.getElementById("settings-panel").classList.remove("hidden");
-  showProfileInfo();
-};
-document.getElementById("reset-game-btn").onclick = () => {
-  if(confirm("Are you sure? All your progress will be lost!")){
-    localStorage.removeItem('zardoSave');
-    location.reload();
-  }
-};
 function updateUI() {
+  // فقط در تب کلیک نمایش
+  let mainPanel = !document.getElementById("panel-main").classList.contains("hidden");
+  document.getElementById("score-display").style.display = mainPanel ? "" : "none";
+  document.getElementById("click-button").style.display = mainPanel ? "" : "none";
+  document.querySelector(".vault").style.display = mainPanel ? "" : "none";
+
+  // Gold همیشه در تب بیزنس نمایش داده شود
+  let bizGoldBar = document.getElementById("biz-gold-amount");
+  if (bizGoldBar) bizGoldBar.textContent = gold;
+
+  // Gold، Vault و غیره
   document.getElementById("gold-count").textContent = gold;
   document.getElementById("vault-amount").textContent = vault;
   document.getElementById("vault-fill").style.width = `${(vault/vaultCapacity)*100}%`;
@@ -86,7 +73,7 @@ function showProfileInfo() {
   document.getElementById("profile-info-settings").innerHTML =
     `<div style="border-radius:12px;background:#e9e9e9;padding:10px 14px;">
       <p><b>Level:</b> ${level}</p>
-      <p><b>Income/Minute:</b> ${robotOwned ? robotPower : 0}</p>
+      <p><b>Income/sec:</b> ${businesses.reduce((sum,b)=>sum+b.income,0)}</p>
       <p><b>Clicks:</b> ${clickCount}</p>
       <p><b>Total Earnings:</b> ${totalEarnings}</p>
     </div>`;
@@ -136,15 +123,7 @@ document.getElementById("upgrade-robot").onclick = () => {
     gold -= robotUpgradeCost; robotPower++; robotUpgradeCost = Math.floor(robotUpgradeCost*1.6); updateUI();
   }
 };
-// لحظه‌ای درآمد بیزنس رو به Vault اضافه کن
-function instantBusinessIncome() {
-  let total = 0;
-  businesses.forEach(biz=>{ total+=biz.income; });
-  if(total>0){
-    vault = Math.min(vault+total, vaultCapacity);
-    updateUI();
-  }
-}
+
 function renderBusinesses() {
   const bizList = document.getElementById("business-list");
   bizList.innerHTML = "";
@@ -163,7 +142,6 @@ function renderBusinesses() {
           businesses.push({id:list[idx].id,level:1,income:5});
           updateUI();
           renderBusinesses();
-          instantBusinessIncome();
         }
       }
     };
@@ -189,7 +167,6 @@ function renderBusinesses() {
         biz.income+=2;
         updateUI();
         renderBusinesses();
-        instantBusinessIncome();
       }
     };
     bizList.appendChild(box);
@@ -210,7 +187,6 @@ function renderBusinesses() {
         businesses.push({id:def.id,level:1,income:5});
         updateUI();
         renderBusinesses();
-        instantBusinessIncome();
       }
     };
     startDiv.appendChild(startBox);
@@ -230,15 +206,43 @@ function renderRobotPanel() {
     document.getElementById("robot-upgrade-cost").textContent = robotUpgradeCost;
   }
 }
-// درآمد بیزنس رو هر 1 ثانیه به خزانه اضافه کن
-setInterval(()=>{
-  let total = 0;
-  businesses.forEach(biz=>{ total+=biz.income; });
+
+// درآمد بیزنس‌ها هر ثانیه به Vault اضافه شود
+if (bizIncomeInterval) clearInterval(bizIncomeInterval);
+bizIncomeInterval = setInterval(()=>{
+  let total = businesses.reduce((sum,b)=>sum+b.income,0);
   if(total>0){
     vault = Math.min(vault+total, vaultCapacity);
     updateUI();
   }
 }, 1000);
+
+document.querySelector(".bottom-tabs").onclick = function(e) {
+  if(e.target.classList.contains("tab")) {
+    let tab = e.target;
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    document.querySelectorAll('.panel').forEach(p => p.classList.add('hidden'));
+    document.getElementById(tab.dataset.panel).classList.remove('hidden');
+    if(tab.dataset.panel==="panel-business") renderBusinesses();
+    if(tab.dataset.panel==="panel-robot") renderRobotPanel();
+    updateUI();
+  }
+};
+
+document.getElementById("settings-open").onclick = () => {
+  document.querySelectorAll('.panel').forEach(p => p.classList.add("hidden"));
+  document.getElementById("settings-panel").classList.remove("hidden");
+  showProfileInfo();
+  updateUI();
+};
+
+document.getElementById("reset-game-btn").onclick = () => {
+  if(confirm("Are you sure? All your progress will be lost!")){
+    localStorage.removeItem('zardoSave');
+    location.reload();
+  }
+};
 
 loadGame();
 updateUI();
