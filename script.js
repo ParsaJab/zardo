@@ -57,20 +57,24 @@ function saveGame() {
 }
 
 // ==== TAB SWITCHER ====
-const allTabs = document.querySelectorAll('.tab');
-const allPanels = document.querySelectorAll('.panel');
-allTabs.forEach(tab => {
-  tab.onclick = () => {
-    allTabs.forEach(t => t.classList.remove('active'));
-    tab.classList.add('active');
-    allPanels.forEach(p => p.classList.add('hidden'));
-    document.getElementById(tab.dataset.panel).classList.remove('hidden');
-    if(tab.dataset.panel==="panel-business") renderBusinesses();
-    if(tab.dataset.panel==="panel-robot") renderRobotPanel();
-  }
-});
+function setTabEvents() {
+  const allTabs = document.querySelectorAll('.tab');
+  const allPanels = document.querySelectorAll('.panel');
+  allTabs.forEach(tab => {
+    tab.onclick = () => {
+      allTabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      allPanels.forEach(p => p.classList.add('hidden'));
+      document.getElementById(tab.dataset.panel).classList.remove('hidden');
+      if(tab.dataset.panel==="panel-business") renderBusinesses();
+      if(tab.dataset.panel==="panel-robot") renderRobotPanel();
+    }
+  });
+}
+setTabEvents();
+
 document.getElementById("settings-open").onclick = () => {
-  allPanels.forEach(p => p.classList.add("hidden"));
+  document.querySelectorAll('.panel').forEach(p => p.classList.add("hidden"));
   document.getElementById("settings-panel").classList.remove("hidden");
   showProfileInfo();
 };
@@ -115,6 +119,7 @@ function gainXP(amount) {
     xpToNextLevel = Math.floor(xpToNextLevel * 1.5);
   }
 }
+
 document.getElementById("click-button").onclick = () => {
   const earned = level;
   gold += earned; // مستقیم به Gold اضافه شود
@@ -122,7 +127,7 @@ document.getElementById("click-button").onclick = () => {
   clickCount++;
   totalEarnings += earned;
   document.getElementById("click-button").classList.add("clicked");
-  setTimeout(()=>document.getElementById("click-button").classList.remove("clicked"), 100);
+  setTimeout(()=>document.getElementById("click-button").classList.remove("clicked"), 120);
   updateUI();
 };
 document.getElementById("collect-button").onclick = () => {
@@ -133,7 +138,7 @@ document.getElementById("upgrade-vault-button").onclick = () => {
   if (gold >= cost) { gold -= cost; vaultLevel++; vaultCapacity = vaultLevel*100; updateUI(); }
 };
 document.getElementById("toggle-theme").onclick = () => {
-  document.body.classList.toggle("dark");
+  document.body.classList.toggle('dark');
   darkMode = document.body.classList.contains('dark');
   saveGame();
 };
@@ -181,8 +186,7 @@ function renderBusinesses() {
     startBox.querySelector(".biz-buy-btn").onclick = ()=>{
       let list = businessDefs.filter(def=>!getBusiness(def.id));
       if(list.length>0){
-        let select = prompt("Choose Business:
-" + list.map((b,i)=>`${i+1}- ${b.name} (${b.baseCost} Gold)`).join('\n'));
+        let select = prompt("Choose Business:\n" + list.map((b,i)=>\`\${i+1}- \${b.name} (\${b.baseCost} Gold)\`).join('\n'));
         let idx = parseInt(select)-1;
         if(!isNaN(idx) && list[idx] && gold>=list[idx].baseCost){
           gold-=list[idx].baseCost;
@@ -198,7 +202,7 @@ function renderBusinesses() {
   }
   // Owned Businesses
   bizList.innerHTML += "<h3 style='margin:8px 0;'>Your Businesses</h3>";
-  businesses.forEach(biz => {
+  businesses.forEach((biz,i) => {
     const def = businessDefs[biz.id-1];
     let box = document.createElement("div");
     box.className = "business-item business-owned";
@@ -208,16 +212,19 @@ function renderBusinesses() {
         Upgrade (${businessUpgradeCost(biz)} Gold)
       </button>
     `;
-    box.querySelector(".biz-upgrade-btn").onclick = ()=>{
-      let upCost = businessUpgradeCost(biz);
-      if(gold>=upCost && biz.level<10) {
-        gold-=upCost;
-        biz.level+=1;
-        biz.income+=2;
-        updateUI();
-        renderBusinesses();
+    setTimeout(()=>{
+      let btn = box.querySelector(".biz-upgrade-btn");
+      if(btn) btn.onclick = ()=>{
+        let upCost = businessUpgradeCost(biz);
+        if(gold>=upCost && biz.level<10) {
+          gold-=upCost;
+          biz.level+=1;
+          biz.income+=2;
+          updateUI();
+          renderBusinesses();
+        }
       }
-    };
+    },10);
     bizList.appendChild(box);
   });
   // Start Business (only for NOT OWNED businesses)
@@ -231,18 +238,22 @@ function renderBusinesses() {
     <button class="biz-buy-btn">
       Buy (${def.baseCost} Gold)
     </button>`;
-    startBox.querySelector(".biz-buy-btn").onclick = ()=>{
-      if(gold>=def.baseCost) {
-        gold-=def.baseCost;
-        businesses.push({id:def.id,level:1,income:5});
-        updateUI();
-        renderBusinesses();
-        startBusinessIncome();
+    setTimeout(()=>{
+      let btn = startBox.querySelector(".biz-buy-btn");
+      if(btn) btn.onclick = ()=>{
+        if(gold>=def.baseCost) {
+          gold-=def.baseCost;
+          businesses.push({id:def.id,level:1,income:5});
+          updateUI();
+          renderBusinesses();
+          startBusinessIncome();
+        }
       }
-    };
+    },10);
     startDiv.appendChild(startBox);
   });
   bizList.appendChild(startDiv);
+  setTabEvents();
 }
 
 // Gold در ربات
@@ -259,8 +270,10 @@ function renderRobotPanel() {
   else {
     goldDiv.innerHTML = `Gold: <span id="robot-gold-amount">${gold}</span>`;
   }
+  setTabEvents();
 }
 
 loadGame();
 updateUI();
+setTabEvents();
 startBusinessIncome();
