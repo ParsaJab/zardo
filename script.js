@@ -15,9 +15,9 @@ const businessDefs = [
 let businesses = [];
 let bizInterval = null;
 
+// ============ Load/Save ============
 function getBusiness(id) { return businesses.find(b=>b.id===id); }
 function businessUpgradeCost(biz) { return Math.floor(businessDefs[biz.id-1].baseCost * Math.pow(1.7, biz.level)); }
-
 function loadGame() {
   try {
     const data = JSON.parse(localStorage.getItem('zardoSave'));
@@ -47,22 +47,18 @@ function saveGame() {
   };
   localStorage.setItem('zardoSave', JSON.stringify(data));
 }
-
-function setTabEvents() {
-  document.querySelector(".bottom-tabs").onclick = function(e) {
-    if(e.target.classList.contains("tab")) {
-      let tab = e.target;
-      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-      document.querySelectorAll('.panel').forEach(p => p.classList.add('hidden'));
-      document.getElementById(tab.dataset.panel).classList.remove('hidden');
-      if(tab.dataset.panel==="panel-business") renderBusinesses();
-      if(tab.dataset.panel==="panel-robot") renderRobotPanel();
-    }
-  };
-}
-setTabEvents();
-
+// ============ UI EVENTS ============
+document.querySelector(".bottom-tabs").onclick = function(e) {
+  if(e.target.classList.contains("tab")) {
+    let tab = e.target;
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    document.querySelectorAll('.panel').forEach(p => p.classList.add('hidden'));
+    document.getElementById(tab.dataset.panel).classList.remove('hidden');
+    if(tab.dataset.panel==="panel-business") renderBusinesses();
+    if(tab.dataset.panel==="panel-robot") renderRobotPanel();
+  }
+};
 document.getElementById("settings-open").onclick = () => {
   document.querySelectorAll('.panel').forEach(p => p.classList.add("hidden"));
   document.getElementById("settings-panel").classList.remove("hidden");
@@ -106,7 +102,7 @@ function gainXP(amount) {
 }
 document.getElementById("click-button").onclick = () => {
   const earned = level;
-  gold += earned; // مستقیم به Gold اضافه شود
+  gold += earned;
   gainXP(1);
   clickCount++;
   totalEarnings += earned;
@@ -167,7 +163,7 @@ function renderBusinesses() {
     startBox.querySelector(".biz-buy-btn").onclick = ()=>{
       let list = businessDefs.filter(def=>!getBusiness(def.id));
       if(list.length>0){
-        let select = prompt("Choose Business:\\n" + list.map((b,i)=>\`\${i+1}- \${b.name} (\${b.baseCost} Gold)\`).join('\\n'));
+        let select = prompt("Choose Business:\n" + list.map((b,i)=>`${i+1}- ${b.name} (${b.baseCost} Gold)`).join('\n'));
         let idx = parseInt(select)-1;
         if(!isNaN(idx) && list[idx] && gold>=list[idx].baseCost){
           gold-=list[idx].baseCost;
@@ -243,8 +239,6 @@ function renderRobotPanel() {
     document.getElementById("robot-upgrade-cost").textContent = robotUpgradeCost;
   }
 }
-
 loadGame();
 updateUI();
-setTabEvents();
 startBusinessIncome();
