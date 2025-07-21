@@ -15,39 +15,38 @@
       <button id="reset-btn">🔁</button>
     </div>
   </header>
-
   <main>
     <section id="business-tab" class="tab">
-      <h2>🏭 Businesses</h2>
-      <div id="business-list"></div>
+      <button class="start-btn" id="show-market-btn">+ Start Business</button>
+      <div id="market-list" style="display:none"></div>
+      <h3 class="mybiz-title">My Businesses</h3>
+      <div id="my-biz-list"></div>
     </section>
-
     <section id="game-tab" class="tab active">
       <div class="vault-box">
-        Vault: <span id="passiveGold">0</span> / <span id="vault-capacity">20</span>
-        <button id="collect-btn">📥 Collect</button>
-        <button id="upgrade-vault-btn">⬆️ Upgrade Vault</button>
+        <span>Vault: <span id="passiveGold">0</span> / <span id="vault-capacity">20</span></span>
+        <button class="glass-btn" id="collect-btn">Collect</button>
+        <button class="glass-btn" id="upgrade-vault-btn">
+          Upgrade Vault <span id="vault-up-cost"></span>
+        </button>
       </div>
-      <button id="click-btn" class="main-button">ZDC</button>
+      <button id="click-btn" class="main-button glass-btn">ZDC</button>
       <div class="xp-bar"><div id="xp-fill"></div></div>
       <div class="level-info">Level <span id="level">1</span></div>
     </section>
-
     <section id="profile-tab" class="tab">
-      <div class="profile-card">
+      <div class="profile-card glass-box">
         <h2>👤 Profile</h2>
         <p>Clicks: <span id="clicks">0</span></p>
         <p>XP: <span id="xp">0</span> / <span id="xp-next">10</span></p>
       </div>
     </section>
   </main>
-
   <nav>
     <button onclick="switchTab('business-tab')">🏭</button>
     <button onclick="switchTab('game-tab')">🎮</button>
     <button onclick="switchTab('profile-tab')">👤</button>
   </nav>
-
   <script src="script.js"></script>
 </body>
 </html>
