@@ -28,6 +28,9 @@
       <div class="xp-bar">
         <div id="xp-fill"></div>
       </div>
+      <div class="level-display">
+        Level: <span id="level-display">1</span>
+      </div>
       <div class="vault-bar">
         <img src="vault-icon.png" class="vault-icon"/>
         <div class="vault-progress">
@@ -46,14 +49,31 @@
       <div id="click-area"></div>
     </section>
 
-    <section id="business-tab" class="tab"></section>
-    <section id="profile-tab" class="tab"></section>
+    <section id="business-tab" class="tab">
+      <h2>Businesses</h2>
+      <div id="my-biz-list"></div>
+    </section>
+
+    <section id="profile-tab" class="tab">
+      <h2>Profile</h2>
+      <p>Clicks: <span id="profile-clicks">0</span></p>
+      <p>Gold Per Click: <span id="profile-gpc">1</span></p>
+      <p>Level: <span id="profile-level">1</span></p>
+      <p>Passive/Min: <span id="profile-passive">0</span></p>
+    </section>
+
     <section id="settings-tab" class="tab">
       <h3>Settings</h3>
       <button id="theme-toggle">Toggle Theme</button>
       <button id="reset-btn" class="reset-btn">Reset Game</button>
     </section>
-    <section id="bot-tab" class="tab"></section>
+
+    <section id="bot-tab" class="tab">
+      <h2>Bot</h2>
+      <div id="bot-status">Bot Level: <span id="bot-level">0</span></div>
+      <button id="buy-bot-btn">Buy Bot (1000)</button>
+      <button id="upgrade-bot-btn">Upgrade Bot</button>
+    </section>
   </main>
 
   <nav>
