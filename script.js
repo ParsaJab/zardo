@@ -40,6 +40,15 @@ function updateUI() {
 
 document.getElementById("click-btn").addEventListener("click", () => {
   gold += level;
+  clicks += 1;
+  xp += 1;
+
+  if (xp >= xpToNext) {
+    xp -= xpToNext;
+    level += 1;
+    xpToNext = Math.floor(xpToNext * 1.5);
+  }
+
   saveData();
   updateUI();
 });
