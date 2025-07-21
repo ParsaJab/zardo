@@ -2,86 +2,88 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-  <title>ZARDO: Click Empire</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ZARDO Clicker Game</title>
   <link rel="stylesheet" href="style.css" />
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
-<body class="light">
+<body>
+  <!-- Header -->
   <header>
-    <img src="icon.png" alt="ZARDO Logo" class="zardo-logo" style="height: 50px;"/>
-    <div id="gold-box" class="gold-box">
-      <img src="icon.png" class="coin-icon" style="height: 20px;"/>
-      <span id="gold-amount">0</span>
-    </div>
-    <div class="menu">
-      <button onclick="switchTab('settings-tab')">⚙️</button>
-    </div>
-  </header>
-
-  <main>
-    <section id="game-tab" class="tab active">
-      <div id="gold-box-big" class="gold-box-big">
-        <img src="icon.png" class="coin-icon-big" style="height: 40px;"/>
-        <span id="gold-amount-big">0</span>
-      </div>
-      <div class="xp-bar">
+    <div class="xp-bar">
+      <span id="level">Lvl 1</span>
+      <div class="xp-track">
         <div id="xp-fill"></div>
       </div>
-      <div class="level-display">
-        Level: <span id="level-display">1</span>
-      </div>
+    </div>
+    <div class="title">ZARDO</div>
+    <div class="settings-tab">⚙️</div>
+  </header>
+
+  <!-- Main Click Area -->
+  <main>
+    <div id="score-display">Gold: <span id="gold-count">0</span></div>
+    <button id="click-button">💰 کلیک کن</button>
+
+    <!-- Vault Section -->
+    <div class="vault">
       <div class="vault-bar">
-        <img src="icon.png" class="vault-icon" style="height: 40px;"/>
-        <div class="vault-progress">
-          <div id="vault-progress-fill"></div>
-        </div>
-        <div class="vault-text">
-          <span id="vault-amount">0</span>/<span id="vault-capacity">20</span>
+        <div id="vault-fill"></div>
+      </div>
+      <div class="vault-info">
+        <p>در خزانه: <span id="vault-amount">0</span> Gold</p>
+        <p>ارتقاء بعدی: <span id="vault-upgrade-cost">50</span> Gold</p>
+        <div class="vault-actions">
+          <button id="collect-button">برداشت</button>
+          <button id="upgrade-vault-button">ارتقاء</button>
         </div>
       </div>
-      <div class="vault-actions">
-        <button id="collect-btn">Collect</button>
-        <button id="upgrade-vault-btn">
-          Upgrade Vault (<span id="vault-upgrade-cost">100</span>)
-        </button>
-      </div>
-      <div id="click-area"></div>
-    </section>
-
-    <section id="business-tab" class="tab">
-      <h2>Businesses</h2>
-      <div id="my-biz-list"></div>
-    </section>
-
-    <section id="profile-tab" class="tab">
-      <h2>Profile</h2>
-      <p>Clicks: <span id="profile-clicks">0</span></p>
-      <p>Gold Per Click: <span id="profile-gpc">1</span></p>
-      <p>Level: <span id="profile-level">1</span></p>
-      <p>Passive/Min: <span id="profile-passive">0</span></p>
-    </section>
-
-    <section id="settings-tab" class="tab">
-      <h3>Settings</h3>
-      <button id="theme-toggle">Toggle Theme</button>
-      <button id="reset-btn" class="reset-btn">Reset Game</button>
-    </section>
-
-    <section id="bot-tab" class="tab">
-      <h2>Bot</h2>
-      <div id="bot-status">Bot Level: <span id="bot-level">0</span></div>
-      <button id="buy-bot-btn">Buy Bot (1000)</button>
-      <button id="upgrade-bot-btn">Upgrade Bot</button>
-    </section>
+    </div>
   </main>
 
-  <nav>
-    <button onclick="switchTab('business-tab')">🏢</button>
-    <button onclick="switchTab('game-tab')">🪙</button>
-    <button onclick="switchTab('profile-tab')">👤</button>
-    <button onclick="switchTab('bot-tab')">🤖</button>
+  <!-- Bottom Tabs -->
+  <nav class="bottom-tabs">
+    <button class="tab" id="business-tab">🏢 بیزنس‌ها</button>
+    <button class="tab" id="robot-tab">🤖 ربات</button>
+    <button class="tab active" id="click-tab">🖱️ کلیک</button>
+    <button class="tab" id="referral-tab">🔗 زیرمجموعه‌ها</button>
   </nav>
+
+  <!-- Floating Profile Tab -->
+  <div class="profile-tab">
+    <img src="assets/images/profile.png" alt="Profile" />
+    <div id="profile-info">
+      <p>لول: 1</p>
+      <p>درآمد/دقیقه: 0</p>
+      <p>تعداد کلیک: 0</p>
+      <p>درآمد کل: 0</p>
+    </div>
+  </div>
+
+  <!-- Panels for Tabs (Hidden by default) -->
+  <section id="business-panel" class="panel hidden">
+    <button id="start-business">استارت بیزنس</button>
+    <div id="business-list"></div>
+  </section>
+
+  <section id="robot-panel" class="panel hidden">
+    <div id="robot-status">
+      <p>ربات فعال نیست</p>
+      <button id="buy-robot">خرید ربات</button>
+    </div>
+    <div id="robot-upgrade" class="hidden">
+      <p>قدرت برداشت: <span id="robot-power">1</span></p>
+      <p>هزینه ارتقاء: <span id="robot-upgrade-cost">100</span> Gold</p>
+      <button id="upgrade-robot">ارتقاء ربات</button>
+    </div>
+  </section>
+
+  <section id="settings-panel" class="panel hidden">
+    <button id="toggle-theme">تغییر تم (تیره/روشن)</button>
+  </section>
+
+  <section id="referral-panel" class="panel hidden">
+    <p>زیرمجموعه‌ها (به‌زودی...)</p>
+  </section>
 
   <script src="script.js"></script>
 </body>
