@@ -12,6 +12,12 @@
   --card-bg-dark: #23213a;
 }
 
+html, body {
+  overflow-x: hidden;
+  height: 100%;
+  overscroll-behavior: none;
+}
+
 body {
   background: var(--bg-light);
   color: var(--text-dark);
@@ -19,6 +25,9 @@ body {
   min-height: 100vh;
   font-family: 'Space Grotesk', Vazirmatn, Tahoma, Arial, sans-serif;
   transition: background .25s;
+  touch-action: manipulation;
+  max-width: 480px;
+  margin: 0 auto;
 }
 body.dark {
   background: var(--bg-dark);
@@ -28,7 +37,7 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 18px;
+  padding: 8px 8px;
   background: var(--main-white);
   border-bottom: 2px solid var(--main-purple);
   position: sticky;
@@ -40,43 +49,47 @@ body.dark header {
   color: #fff;
   border-bottom: 2px solid #444066;
 }
-.zardo-logo {
-  height: 32px;
-}
+.zardo-logo { height: 32px; }
+.coin-icon, .coin-icon-big { vertical-align: middle; }
+.coin-icon { width: 28px; height: 28px; margin-right: 6px; }
+.coin-icon-big { width: 34px; height: 34px; margin-right: 10px; }
 .gold-box {
-  font-size: 18px;
+  font-size: 19px;
   font-weight: bold;
   color: #b59533;
   background: #fff7de;
-  padding: 7px 14px;
-  border-radius: 11px;
+  padding: 6px 10px;
+  border-radius: 12px;
   border: 1.3px solid #edc57a;
-  margin: 0 16px;
-  min-width: 80px;
+  min-width: 85px;
   text-align: center;
-  display: inline-block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .gold-box-big {
   font-size: 28px;
   font-weight: bold;
   color: #b59533;
   background: #fff7de;
-  padding: 13px 18px;
+  padding: 10px 10px;
   border-radius: 16px;
   border: 2px solid #edc57a;
-  margin: 0 auto 12px auto;
-  display: block;
-  max-width: 220px;
+  margin: 2px auto 11px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 210px;
   text-align: center;
   box-shadow: 0 2px 9px #edc57a33;
 }
 .menu button {
-  margin-left: 8px;
+  margin-left: 4px;
   background: #ece7fd;
   border: 2px solid var(--main-purple);
   color: var(--main-purple);
-  padding: 7px 13px;
-  border-radius: 9px;
+  padding: 7px 10px;
+  border-radius: 8px;
   font-size: 17px;
   box-shadow: 0 2px 7px #cfc6ef55;
   transition: 0.13s;
@@ -87,14 +100,15 @@ body.dark header {
   color: var(--main-white);
 }
 main {
-  min-height: 72vh;
-  max-width: 430px;
-  margin: 0 auto;
-  padding-bottom: 75px;
+  min-height: 73vh;
+  width: 100%;
+  padding-bottom: 72px;
+  overflow: hidden;
 }
 .tab {
   display: none;
-  padding: 0 6px;
+  padding: 0 3px;
+  min-height: 370px;
 }
 .tab.active {
   display: block;
@@ -102,23 +116,16 @@ main {
 
 #game-tab {
   position: relative;
-  min-height: 320px;
-  padding-top: 18px;
+  min-height: 280px;
+  padding-top: 14px;
+  overflow: hidden;
 }
-
-.center-fade {
-  position: absolute;
-  left: 50%;
-  top: 49%;
-  transform: translate(-50%, -50%);
-  font-size: 64px;
-  color: #7c55c942;
-  font-weight: bold;
-  letter-spacing: 8px;
-  user-select: none;
-  pointer-events: none;
-  z-index: 1;
-  text-align: center;
+#click-area {
+  width: 90vw;
+  height: 170px;
+  max-width: 400px;
+  margin: 0 auto;
+  cursor: pointer;
 }
 
 .vault-bar {
@@ -127,27 +134,27 @@ main {
   background: var(--vault-bg);
   border: 2px solid var(--vault-border);
   border-radius: 12px;
-  padding: 6px 15px 6px 8px;
-  margin: 15px auto 7px auto;
-  width: 97%;
-  max-width: 350px;
+  padding: 5px 10px 5px 6px;
+  margin: 9px auto 4px auto;
+  width: 99%;
+  max-width: 330px;
   box-shadow: 0 2px 7px #ffecba44;
   position: relative;
 }
 .vault-icon {
-  width: 32px;
-  height: 32px;
-  margin-right: 12px;
+  width: 28px;
+  height: 28px;
+  margin-right: 9px;
 }
 .vault-progress {
   flex: 1;
-  height: 13px;
+  height: 11px;
   background: #fff8e2;
   border-radius: 7px;
-  margin-right: 13px;
+  margin-right: 10px;
   position: relative;
   overflow: hidden;
-  border: 1.3px solid #e4cb87;
+  border: 1.1px solid #e4cb87;
 }
 #vault-progress-fill {
   background: var(--vault-fill);
@@ -157,17 +164,17 @@ main {
 }
 .vault-text {
   font-weight: bold;
-  font-size: 16px;
+  font-size: 15px;
   color: #b59533;
-  min-width: 54px;
+  min-width: 46px;
   text-align: right;
-  margin-left: 9px;
+  margin-left: 6px;
 }
 .vault-actions {
   display: flex;
   justify-content: center;
-  gap: 13px;
-  margin: 7px auto 13px auto;
+  gap: 12px;
+  margin: 3px auto 6px auto;
 }
 .vault-actions button {
   background: #7c55c9;
@@ -176,7 +183,7 @@ main {
   border-radius: 10px;
   font-weight: bold;
   font-size: 15px;
-  padding: 8px 16px;
+  padding: 8px 12px;
   box-shadow: 0 2px 7px #7c55c944;
   cursor: pointer;
   transition: 0.13s;
@@ -184,77 +191,58 @@ main {
 .vault-actions button:active {
   background: #fff;
   color: #7c55c9;
-  border: 1.5px solid #b59533;
-}
-
-/* Businesses */
-.start-btn {
-  display: block;
-  background: #52c1ef;
-  color: #fff;
-  border: none;
-  border-radius: 11px;
-  font-size: 17px;
-  font-weight: 600;
-  padding: 11px 16px;
-  margin: 18px auto 13px auto;
-  box-shadow: 0 2px 12px #a7e6ff33;
-  cursor: pointer;
-  transition: .14s;
-}
-.start-btn:active {
-  background: #fff;
-  color: #52c1ef;
-  border: 1.5px solid #52c1ef;
+  border: 1.2px solid #b59533;
 }
 
 .mybiz-title {
-  margin-top: 28px;
+  margin-top: 12px;
   margin-bottom: 6px;
   color: #7c55c9;
-  font-size: 19px;
+  font-size: 18px;
   font-weight: bold;
   text-align: left;
 }
-#market-list, #my-biz-list {
-  margin: 9px 0 0 0;
+#my-biz-list {
+  margin: 5px 0 0 0;
+  overflow-y: auto;
+  max-height: 260px;
 }
-.market-card, .biz-card {
+.biz-card {
   background: var(--card-bg);
   border: 2px solid #7c55c9;
   border-radius: 14px;
-  padding: 12px 18px;
+  padding: 8px 11px;
   box-shadow: 0 3px 9px #cfc6ef22;
-  margin-bottom: 8px;
+  margin-bottom: 7px;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 1px;
 }
-body.dark .market-card, body.dark .biz-card {
+body.dark .biz-card {
   background: var(--card-bg-dark);
   border: 2px solid #9b8ad6;
 }
-.market-card h4, .biz-card h4 {
-  margin: 0 0 5px 0;
+.biz-card h4 {
+  margin: 0 0 3px 0;
   color: #7c55c9;
 }
-body.dark .market-card h4, body.dark .biz-card h4 {
+body.dark .biz-card h4 {
   color: #ad7fcd;
 }
-.market-card .buy-btn, .biz-card .upgrade-btn {
-  margin-top: 5px;
-  padding: 8px 17px;
+.biz-card .upgrade-btn {
+  margin-top: 3px;
+  padding: 7px 13px;
   background: #7c55c9;
   color: #fff;
   border: none;
   border-radius: 10px;
   font-weight: bold;
-  font-size: 15px;
+  font-size: 14px;
   box-shadow: 0 2px 7px #7c55c944;
   cursor: pointer;
   transition: 0.13s;
 }
-.market-card .buy-btn:active, .biz-card .upgrade-btn:active {
+.biz-card .upgrade-btn:active {
   background: #fff;
   color: #7c55c9;
 }
@@ -264,13 +252,13 @@ body.dark .market-card h4, body.dark .biz-card h4 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 28px 0 16px 0;
+  margin: 22px 0 11px 0;
   background: #fff7de;
-  border-radius: 14px;
-  padding: 22px 18px;
+  border-radius: 13px;
+  padding: 14px 9px;
   box-shadow: 0 2px 8px #edc57a22;
-  min-width: 220px;
-  max-width: 350px;
+  min-width: 170px;
+  max-width: 320px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -279,24 +267,24 @@ body.dark #profile-box {
   box-shadow: 0 2px 8px #22203244;
 }
 #profile-pic {
-  width: 85px;
-  height: 85px;
+  width: 65px;
+  height: 65px;
   border-radius: 50%;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
   object-fit: cover;
   cursor: pointer;
-  border: 2.5px solid #7c55c9;
+  border: 2px solid #7c55c9;
   box-shadow: 0 3px 18px #ad7fcd2a;
 }
 #profile-name {
-  font-size: 23px;
+  font-size: 18px;
   font-weight: 700;
   color: #7c55c9;
-  margin-top: 5px;
+  margin-top: 2px;
   cursor: pointer;
   background: #fff;
-  border-radius: 9px;
-  padding: 4px 13px;
+  border-radius: 8px;
+  padding: 3px 9px;
   box-shadow: 0 2px 9px #7c55c944;
 }
 body.dark #profile-name {
@@ -305,39 +293,39 @@ body.dark #profile-name {
   box-shadow: 0 2px 9px #443a6644;
 }
 #profile-info {
-  margin-top: 15px;
+  margin-top: 11px;
   text-align: left;
   color: #444;
-  font-size: 17px;
+  font-size: 15px;
   width: 100%;
-  max-width: 210px;
+  max-width: 180px;
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 2px;
 }
 body.dark #profile-info {
   color: #e0e0e0;
 }
 
-/* Settings */
 #settings-tab {
-  padding: 16px 20px;
+  padding: 14px 12px;
+  min-height: 210px;
 }
 #bg-select {
-  margin: 0 0 14px 7px;
+  margin: 0 0 11px 7px;
   font-size: 15px;
-  padding: 4px 7px;
-  border-radius: 7px;
+  padding: 3px 6px;
+  border-radius: 6px;
 }
 .reset-btn {
   background: #ed5765;
   color: #fff;
   font-weight: bold;
-  padding: 10px 22px;
-  font-size: 17px;
+  padding: 8px 17px;
+  font-size: 16px;
   border: none;
   border-radius: 11px;
-  margin-top: 16px;
+  margin-top: 12px;
   box-shadow: 0 2px 13px #f9d3d6;
   cursor: pointer;
   transition: .14s;
@@ -348,29 +336,29 @@ body.dark #profile-info {
   border: 2px solid #ed5765;
 }
 
-/* Bot Tab */
 #bot-tab {
-  padding: 18px 14px;
+  padding: 11px 6px;
   text-align: center;
 }
 #bot-status {
-  font-size: 17px;
-  margin-bottom: 13px;
+  font-size: 15px;
+  margin-bottom: 7px;
+  min-height: 22px;
 }
-#buy-bot-btn {
+#buy-bot-btn, #upgrade-bot-btn {
   background: #66c96c;
   color: #fff;
   font-weight: bold;
-  padding: 10px 22px;
-  font-size: 16px;
+  padding: 8px 15px;
+  font-size: 14px;
   border: none;
-  border-radius: 11px;
-  margin: 12px 0;
+  border-radius: 10px;
+  margin: 8px 6px 0 6px;
   box-shadow: 0 2px 12px #a4ffbd55;
   cursor: pointer;
   transition: .13s;
 }
-#buy-bot-btn:active {
+#buy-bot-btn:active, #upgrade-bot-btn:active {
   background: #fff;
   color: #59b657;
   border: 2px solid #6dca8d;
@@ -381,10 +369,11 @@ nav {
   display: flex;
   justify-content: space-around;
   background: #fff;
-  padding: 13px 0;
+  padding: 9px 0;
   border-top: 2px solid #7c55c9;
   position: fixed;
   width: 100%;
+  max-width: 480px;
   bottom: 0;
   left: 0;
   z-index: 100;
@@ -399,7 +388,7 @@ nav button {
   background: none;
   border: none;
   color: #7c55c9;
-  font-size: 24px;
+  font-size: 23px;
   font-weight: bold;
   transition: 0.11s;
   outline: none;
@@ -413,14 +402,7 @@ nav button:active {
 }
 
 /* Navbar Icons */
-.icon-bank::before    { content: '\1F3E6'; font-size: 22px; }
-.icon-coin::before    { content: '\1FA99'; font-size: 22px; }
-.icon-user::before    { content: '\1F464'; font-size: 22px; }
-.icon-robot::before   { content: '\1F916'; font-size: 22px; }
-.icon-settings::before{ content: '\2699';  font-size: 22px; }
-
-@media (max-width: 480px) {
-  .gold-box-big { font-size: 22px; padding: 9px 8px;}
-  .vault-bar { max-width: 99vw; }
-  main { max-width: 100vw;}
-}
+.icon-bank::before    { content: '\1F3E6'; font-size: 21px; }
+.icon-coin::before    { content: '\1FA99'; font-size: 21px; }
+.icon-user::before    { content: '\1F464'; font-size: 21px; }
+.icon-robot::before   { content: '\1F916'; font-size: 21px; }
