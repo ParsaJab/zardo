@@ -1,121 +1,50 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&display=swap');
 
-body {
-  margin: 0;
-  padding: 0;
-  font-family: 'Space Grotesk', sans-serif;
-  background: linear-gradient(to bottom, #1b2735, #090a0f);
-  color: #fff;
-  overflow: hidden;
-}
-
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 16px;
-  background: rgba(0,0,0,0.5);
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-}
-
-header h1 {
-  font-size: 20px;
-  margin: 0;
-  color: gold;
-}
-
-.settings button {
-  background: #444;
-  border: none;
-  color: #fff;
-  font-size: 18px;
-  padding: 6px 10px;
-  border-radius: 8px;
-  margin-left: 8px;
-}
-
-main {
-  padding: 10px;
-  height: calc(100vh - 120px);
-  overflow: auto;
-}
-
-.tab {
-  display: none;
-}
-
-.tab.active {
-  display: block;
-  animation: fade 0.3s ease-in-out;
-}
-
-@keyframes fade {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-.gold-display {
-  font-size: 20px;
-  margin-bottom: 10px;
-}
-
-#click-btn {
-  background: linear-gradient(to right, gold, orange);
-  border: none;
-  border-radius: 50%;
-  width: 180px;
-  height: 180px;
-  font-size: 28px;
+body.light {
+  background: linear-gradient(to bottom, #f5f5f5, #ffffff);
   color: #222;
-  font-weight: bold;
-  margin: 30px auto;
-  display: block;
-  box-shadow: 0 6px #b8860b;
-  touch-action: manipulation;
-}
-
-#click-btn:active {
-  transform: scale(0.96);
-  box-shadow: 0 2px #b8860b;
-}
-
-.xp-bar {
-  background: #333;
-  height: 18px;
-  width: 90%;
-  max-width: 400px;
-  margin: 0 auto;
-  border-radius: 10px;
-  overflow: hidden;
-  margin-bottom: 10px;
-}
-
-.xp-fill {
-  height: 100%;
-  background: limegreen;
-  width: 0%;
-  transition: width 0.3s ease-in-out;
-}
-
-.level-display {
-  text-align: center;
-  font-weight: bold;
-  margin-top: 6px;
 }
 
 .item {
-  background: #1f2c3a;
-  border-radius: 10px;
-  padding: 12px 16px;
-  margin: 10px auto;
+  background: linear-gradient(135deg, #1e2a38, #283a4d);
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin: 12px auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
   max-width: 480px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid rgba(255,255,255,0.08);
+  position: relative;
+}
+
+body.light .item {
+  background: #ffffff;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.item:hover {
+  transform: scale(1.02);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.3);
+}
+
+.item svg {
+  width: 28px;
+  height: 28px;
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+
+.item span {
+  font-size: 16px;
+  font-weight: bold;
+  flex: 1;
+  display: flex;
+  align-items: center;
 }
 
 .item button {
@@ -123,30 +52,22 @@ main {
   border: none;
   color: white;
   font-weight: bold;
-  padding: 6px 10px;
-  border-radius: 6px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  transition: background 0.2s ease;
+  cursor: pointer;
 }
 
-.collect {
-  margin-top: 16px;
-  background: #2196f3 !important;
+.item button:hover {
+  background: #43a047;
 }
 
-nav {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  background: #111;
-  display: flex;
-  justify-content: space-around;
-  padding: 10px 0;
-  border-top: 1px solid #333;
-  z-index: 1000;
+.item.animate-buy {
+  animation: bounce 0.25s ease-in-out;
 }
 
-nav button {
-  background: none;
-  border: none;
-  font-size: 22px;
-  color: #eee;
+@keyframes bounce {
+  0% { transform: scale(1); }
+  50% { transform: scale(0.95); }
+  100% { transform: scale(1); }
 }

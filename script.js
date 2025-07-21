@@ -7,12 +7,15 @@ let level = parseInt(localStorage.getItem("level")) || 1;
 let xpToNext = parseInt(localStorage.getItem("xpToNext")) || 10;
 let storageLevel = parseInt(localStorage.getItem("storageLevel")) || 1;
 let storageLimit = storageLevel * 20;
+let isDark = JSON.parse(localStorage.getItem("isDark")) ?? true;
 
 let businesses = JSON.parse(localStorage.getItem("businesses")) || {
   shop: 0,
   factory: 0,
   bank: 0
 };
+
+const clickSound = new Audio("https://cdn.pixabay.com/download/audio/2022/03/15/audio_99fa8233be.mp3?filename=click-124467.mp3");
 
 function updateUI() {
   document.getElementById("gold").textContent = gold;
@@ -26,7 +29,6 @@ function updateUI() {
   document.getElementById("bank-count").textContent = businesses.bank;
   document.getElementById("storage-capacity").textContent = "Lvl " + storageLevel;
 
-  // XP Bar
   const percent = Math.floor((xp / xpToNext) * 100);
   document.getElementById("xp-fill").style.width = percent + "%";
 }
@@ -40,6 +42,16 @@ document.getElementById("click-btn").addEventListener("click", () => {
     level += 1;
     xpToNext = Math.floor(xpToNext * 1.5);
   }
+
+  // انیمیشن کلیک
+  const btn = document.getElementById("click-btn");
+  btn.classList.add("clicked");
+  setTimeout(() => btn.classList.remove("clicked"), 100);
+
+  // صدا
+  clickSound.currentTime = 0;
+  clickSound.play();
+
   saveData();
   updateUI();
 });
@@ -57,7 +69,9 @@ document.getElementById("reset-btn").addEventListener("click", () => {
 });
 
 document.getElementById("toggle-theme").addEventListener("click", () => {
-  alert("Dark/Light mode will be added soon!");
+  document.body.classList.toggle("light");
+  isDark = !document.body.classList.contains("light");
+  localStorage.setItem("isDark", JSON.stringify(isDark));
 });
 
 function buyBusiness(type) {
@@ -110,6 +124,8 @@ function switchTab(tabId) {
   document.querySelectorAll(".tab").forEach(tab => tab.classList.remove("active"));
   document.getElementById(tabId).classList.add("active");
 }
+
+if (!isDark) document.body.classList.add("light");
 
 setInterval(earnPassiveGold, 1000);
 updateUI();
