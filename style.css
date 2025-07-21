@@ -9,59 +9,224 @@
   --text-light: #fff;
   --text-dark: #222a38;
 }
-body { background: var(--bg-light); color: var(--text-dark); margin: 0; }
-body.dark { background: var(--bg-dark); color: var(--text-light); }
+
+body {
+  background: var(--bg-light);
+  color: var(--text-dark);
+  margin: 0;
+  min-height: 100vh;
+  font-family: 'Space Grotesk', Vazirmatn, Tahoma, Arial, sans-serif;
+}
+body.dark {
+  background: var(--bg-dark);
+  color: var(--text-light);
+}
 header {
-  display: flex; justify-content: space-between; align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding: 12px 18px;
   background: var(--main-white);
   border-bottom: 2px solid var(--main-purple);
-  position: sticky; top: 0; z-index: 20;
+  position: sticky;
+  top: 0;
+  z-index: 20;
 }
-body.dark header { background: #23213a; color: #fff; border-bottom: 2px solid #444066;}
-.zardo-logo { height: 32px; }
+body.dark header {
+  background: #23213a;
+  color: #fff;
+  border-bottom: 2px solid #444066;
+}
+.zardo-logo {
+  height: 32px;
+}
 .gold-bar {
-  font-size: 18px; font-weight: bold; color: #b59533;
-  background: #fff7de; padding: 7px 14px; border-radius: 11px; border: 1.3px solid #edc57a;
+  font-size: 18px;
+  font-weight: bold;
+  color: #b59533;
+  background: #fff7de;
+  padding: 7px 14px;
+  border-radius: 11px;
+  border: 1.3px solid #edc57a;
 }
 .menu button {
   margin-left: 8px;
-  background: #ece7fd; border: 2px solid var(--main-purple); color: var(--main-purple);
-  padding: 7px 13px; border-radius: 9px; font-size: 17px; box-shadow: 0 2px 7px #cfc6ef55;
+  background: #ece7fd;
+  border: 2px solid var(--main-purple);
+  color: var(--main-purple);
+  padding: 7px 13px;
+  border-radius: 9px;
+  font-size: 17px;
+  box-shadow: 0 2px 7px #cfc6ef55;
   transition: 0.13s;
+  cursor: pointer;
 }
-.menu button:active { background: var(--main-purple); color: var(--main-white);}
-main { min-height: 75vh; max-width: 420px; margin: 0 auto; }
-.tab { display: none; }
-.tab.active { display: block; }
-#game-tab { position: relative; min-height: 320px;}
+.menu button:active {
+  background: var(--main-purple);
+  color: var(--main-white);
+}
+main {
+  min-height: 74vh;
+  max-width: 430px;
+  margin: 0 auto;
+}
+.tab {
+  display: none;
+  padding: 0 4px;
+}
+.tab.active {
+  display: block;
+}
+
+#game-tab {
+  position: relative;
+  min-height: 320px;
+  padding-top: 15px;
+}
+
 .center-fade {
-  position: absolute; left: 50%; top: 38%; transform: translate(-50%,-50%);
-  font-size: 64px; color: #7c55c932; font-weight: bold; letter-spacing: 8px;
-  user-select: none; pointer-events: none; z-index: 1;
+  position: absolute;
+  left: 50%;
+  top: 38%;
+  transform: translate(-50%, -50%);
+  font-size: 64px;
+  color: #7c55c932;
+  font-weight: bold;
+  letter-spacing: 8px;
+  user-select: none;
+  pointer-events: none;
+  z-index: 1;
 }
-#business-tab .center-fade, #profile-tab .center-fade { display: none;}
+#business-tab .center-fade, #profile-tab .center-fade {
+  display: none;
+}
+
 /* Vault Bar */
 .vault-bar {
-  display: flex; align-items: center;
+  display: flex;
+  align-items: center;
   background: var(--vault-bg);
   border: 2px solid var(--vault-border);
-  border-radius: 12px; padding: 6px 15px 6px 8px;
-  margin: 20px auto 30px auto; width: 95%; max-width: 340px;
+  border-radius: 12px;
+  padding: 6px 15px 6px 8px;
+  margin: 18px auto 28px auto;
+  width: 95%;
+  max-width: 340px;
   box-shadow: 0 2px 7px #ffecba44;
 }
-.vault-icon { width: 32px; height: 32px; margin-right: 12px; }
+.vault-icon {
+  width: 32px;
+  height: 32px;
+  margin-right: 12px;
+}
 .vault-progress {
-  flex: 1; height: 13px; background: #fff8e2; border-radius: 7px;
-  margin-right: 13px; position: relative; overflow: hidden;
+  flex: 1;
+  height: 13px;
+  background: #fff8e2;
+  border-radius: 7px;
+  margin-right: 13px;
+  position: relative;
+  overflow: hidden;
   border: 1.3px solid #e4cb87;
 }
 #vault-progress-fill {
   background: var(--vault-fill);
-  height: 100%; width: 0%;
+  height: 100%;
+  width: 0%;
   transition: width .4s cubic-bezier(.77,2,.29,.8);
 }
-.vault-text { font-weight: bold; font-size: 16px; color: #b59533; min-width: 54px; text-align: right;}
+.vault-text {
+  font-weight: bold;
+  font-size: 16px;
+  color: #b59533;
+  min-width: 54px;
+  text-align: right;
+}
+
+/* Businesses */
+#market-list, #my-biz-list {
+  margin: 10px 0 0 0;
+}
+.market-card, .biz-card {
+  background: #fff;
+  border: 2px solid #7c55c9;
+  border-radius: 14px;
+  padding: 12px 18px;
+  box-shadow: 0 3px 9px #cfc6ef22;
+  margin-bottom: 8px;
+}
+body.dark .market-card, body.dark .biz-card {
+  background: #24213b;
+  border: 2px solid #9b8ad6;
+}
+.market-card h4, .biz-card h4 {
+  margin: 0 0 5px 0;
+  color: #7c55c9;
+}
+body.dark .market-card h4, body.dark .biz-card h4 {
+  color: #ad7fcd;
+}
+.market-card .buy-btn, .biz-card .upgrade-btn {
+  margin-top: 5px;
+  padding: 8px 17px;
+  background: #7c55c9;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 15px;
+  box-shadow: 0 2px 7px #7c55c944;
+  cursor: pointer;
+  transition: 0.13s;
+}
+.market-card .buy-btn:active, .biz-card .upgrade-btn:active {
+  background: #fff;
+  color: #7c55c9;
+}
+
+/* Profile */
+#profile-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 28px 0;
+  background: #fff7de;
+  border-radius: 14px;
+  padding: 22px 18px;
+  box-shadow: 0 2px 8px #edc57a22;
+}
+body.dark #profile-box {
+  background: #2a2347;
+  box-shadow: 0 2px 8px #22203244;
+}
+#profile-pic {
+  width: 85px;
+  height: 85px;
+  border-radius: 50%;
+  margin-bottom: 16px;
+  object-fit: cover;
+  cursor: pointer;
+  border: 2.5px solid #7c55c9;
+  box-shadow: 0 3px 18px #ad7fcd2a;
+}
+#profile-name {
+  font-size: 23px;
+  font-weight: 700;
+  color: #7c55c9;
+  margin-top: 5px;
+  cursor: pointer;
+  background: #fff;
+  border-radius: 9px;
+  padding: 4px 13px;
+  box-shadow: 0 2px 9px #7c55c944;
+}
+body.dark #profile-name {
+  background: #352e52;
+  color: #b89df9;
+  box-shadow: 0 2px 9px #443a6644;
+}
+
+/* Navbar */
 nav {
   display: flex;
   justify-content: space-around;
@@ -75,6 +240,11 @@ nav {
   z-index: 100;
   box-shadow: 0 0px 14px #7c55c922;
 }
+body.dark nav {
+  background: #292447;
+  border-top: 2px solid #4e4697;
+  box-shadow: 0 0px 16px #00000044;
+}
 nav button {
   background: none;
   border: none;
@@ -82,37 +252,17 @@ nav button {
   font-size: 24px;
   font-weight: bold;
   transition: 0.11s;
+  outline: none;
+  cursor: pointer;
 }
-/* آیکون‌ها */
+body.dark nav button {
+  color: #a992eb;
+}
+nav button:active {
+  color: #36d39a;
+}
+
+/* آیکون‌های نوار پایین */
 .icon-bank::before { content: '\1F3E6'; font-size: 22px; }
 .icon-coin::before { content: '\1FA99'; font-size: 22px; }
 .icon-user::before { content: '\1F464'; font-size: 22px; }
-#profile-box {
-  display: flex; flex-direction: column; align-items: center; margin: 28px 0;
-  background: #fff7de; border-radius: 14px; padding: 22px 18px; box-shadow: 0 2px 8px #edc57a22;
-}
-#profile-pic {
-  width: 85px; height: 85px; border-radius: 50%; margin-bottom: 16px; object-fit: cover; cursor: pointer;
-  border: 2.5px solid #7c55c9;
-  box-shadow: 0 3px 18px #ad7fcd2a;
-}
-#profile-name {
-  font-size: 23px; font-weight: 700; color: #7c55c9; margin-top: 5px; cursor: pointer;
-  background: #fff; border-radius: 9px; padding: 4px 13px;
-  box-shadow: 0 2px 9px #7c55c944;
-}
-
-#market-list, #my-biz-list { margin: 10px 0 0 0; }
-.market-card, .biz-card {
-  background: #fff; border: 2px solid #7c55c9;
-  border-radius: 14px; padding: 12px 18px;
-  box-shadow: 0 3px 9px #cfc6ef22;
-  margin-bottom: 8px;
-}
-.market-card h4, .biz-card h4 { margin: 0 0 5px 0; color: #7c55c9;}
-.market-card .buy-btn, .biz-card .upgrade-btn {
-  margin-top: 5px; padding: 8px 17px; background: #7c55c9; color: #fff;
-  border: none; border-radius: 10px; font-weight: bold; font-size: 15px;
-  box-shadow: 0 2px 7px #7c55c944; cursor: pointer; transition: 0.13s;
-}
-.market-card .buy-btn:active, .biz-card .upgrade-btn:active { background: #fff; color: #7c55c9;}
