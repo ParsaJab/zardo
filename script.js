@@ -1,22 +1,16 @@
+
 let gold = 0, level = 1, xp = 0, xpToNextLevel = 20, vault = 0, vaultCapacity = 100, vaultLevel = 1, clickCount = 0, totalEarnings = 0;
 let robotOwned = false, robotPower = 1, robotUpgradeCost = 100, businessStarted = false, darkMode = false;
 
-const panels = {
-  "tab-main": document.getElementById("main-panel"),
-  "tab-business": document.getElementById("business-panel"),
-  "tab-robot": document.getElementById("robot-panel"),
-  "tab-referral": document.getElementById("referral-panel"),
-};
-const allTabs = document.querySelectorAll(".tab");
-const allPanels = Object.values(panels);
-
+const allTabs = document.querySelectorAll('.tab');
+const allPanels = document.querySelectorAll('.panel');
 allTabs.forEach(tab => {
   tab.onclick = () => {
-    allTabs.forEach(t => t.classList.remove("active"));
-    tab.classList.add("active");
-    allPanels.forEach(p => p.classList.add("hidden"));
-    panels[tab.id].classList.remove("hidden");
-  };
+    allTabs.forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    allPanels.forEach(p => p.classList.add('hidden'));
+    document.getElementById(tab.dataset.panel).classList.remove('hidden');
+  }
 });
 document.getElementById("settings-open").onclick = () => {
   allPanels.forEach(p => p.classList.add("hidden"));
@@ -116,5 +110,4 @@ window.upgradeBusiness = function(id){
     updateUI();
   }
 };
-// ===== INIT =====
 updateUI();

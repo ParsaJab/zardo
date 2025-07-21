@@ -1,3 +1,4 @@
+
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
 body { background: #f1f4f9; color: #222; min-height: 100vh; }
 body.dark { background: #1d1f27; color: #eee; }
@@ -12,7 +13,7 @@ header {
 .settings-tab { cursor: pointer; font-size: 18px; }
 .panel { display: none; padding: 16px; }
 .panel:not(.hidden) { display: block; }
-#main-panel { display: block; }
+#panel-main { display: block; }
 #score-display { font-size: 22px; margin-bottom: 12px; }
 #click-button { font-size: 24px; padding: 20px 40px; border-radius: 12px; background: gold; border: none; box-shadow: 0 4px 10px rgba(0,0,0,0.2); cursor: pointer; transition: transform .08s; }
 #click-button.clicked { transform: scale(1.09); }
@@ -26,7 +27,7 @@ body.dark .vault { background: #2a2d3a; }
 .tab { background: none; border: none; color: white; font-size: 16px; cursor: pointer; }
 .tab.active { font-weight: bold; border-bottom: 2px solid white; }
 .profile-tab { position: absolute; top: 58px; left: 10px; background: white; padding: 8px; border-radius: 10px; width: 150px; text-align: center; }
-body.dark .profile-tab { background: #2d2f39; color: white; }
+body.dark .profile-tab { background: #2d2f39; }
 .profile-tab img { width: 50px; height: 50px; border-radius: 50%; margin-bottom: 8px; }
 .business-item { background: #fff; margin: 10px 0; padding: 10px; border-radius: 8px; box-shadow: 0 2px 8px #eee; }
 body.dark .business-item { background: #262b3a; }
