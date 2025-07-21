@@ -8,7 +8,7 @@
 </head>
 <body>
   <header>
-    <div class="gold-bar">💰 <span id="gold">0</span></div>
+    <img src="zardo-logo.png" alt="ZARDO Logo" class="zardo-logo"/>
     <div class="title">ZARDO</div>
     <div class="menu">
       <button id="toggle-theme">🌙</button>
@@ -36,16 +36,26 @@
     </section>
     <section id="profile-tab" class="tab">
       <div class="profile-card glass-box">
-        <h2>👤 Profile</h2>
+        <div class="profile-top">
+          <img src="avatar.png" id="profile-pic" alt="Avatar" class="avatar"/>
+          <input type="file" id="avatar-input" accept="image/*" style="display:none" />
+          <div class="profile-name"><span id="profile-name">Parsa</span></div>
+        </div>
+        <button class="glass-btn" id="change-bg-btn">Change Background</button>
+        <div class="bg-select" id="bg-select" style="display:none">
+          <img src="bg1.jpg" class="bg-thumb" data-bg="bg1.jpg">
+          <img src="bg2.jpg" class="bg-thumb" data-bg="bg2.jpg">
+          <img src="bg3.jpg" class="bg-thumb" data-bg="bg3.jpg">
+        </div>
         <p>Clicks: <span id="clicks">0</span></p>
         <p>XP: <span id="xp">0</span> / <span id="xp-next">10</span></p>
       </div>
     </section>
   </main>
   <nav>
-    <button onclick="switchTab('business-tab')">🏭</button>
-    <button onclick="switchTab('game-tab')">🎮</button>
-    <button onclick="switchTab('profile-tab')">👤</button>
+    <button onclick="switchTab('business-tab')"><span class="icon-bank"></span></button>
+    <button onclick="switchTab('game-tab')"><span class="icon-coin"></span></button>
+    <button onclick="switchTab('profile-tab')"><span class="icon-user"></span></button>
   </nav>
   <script src="script.js"></script>
 </body>
