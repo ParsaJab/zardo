@@ -281,40 +281,8 @@ document.querySelector(".bottom-tabs").onclick = function(e) {
     updateUI();
   }
 };
-document.getElementById("settings-open").onclick = () => {
-  document.querySelectorAll('.panel').forEach(p => p.classList.add("hidden"));
-  document.getElementById("settings-panel").classList.remove("hidden");
-  showProfileInfo();
-  updateUI();
-};
-document.getElementById("reset-game-btn").onclick = () => {
-  if(confirm("Are you sure? All your progress will be lost!")){
-    localStorage.removeItem('zardoSave');
-    location.reload();
-  }
-};
-loadGame();
-updateUI();
-renderBusinesses();
-renderRobotPanel();
-if (robotOwned) startRobotInterval();
-// باید بعد از لود شدن صفحه اجرا شه
-window.addEventListener('DOMContentLoaded', function() {
-  if (window.Telegram && window.Telegram.WebApp) {
-    const tg = window.Telegram.WebApp;
-    tg.expand(); // بهتره صفحه رو کامل باز کنه (اختیاری)
-    const user = tg.initDataUnsafe?.user;
-    if (user) {
-      // مثلاً نمایش نام و یوزرنیم
-      document.getElementById("profile-info-settings").innerHTML =
-        `<div style="margin-bottom:10px;"><b>Welcome, ${user.first_name}</b><br>
-        <small>@${user.username || ''} | ID: ${user.id}</small></div>` +
-        document.getElementById("profile-info-settings").innerHTML;
-      // یا هر جا خواستی مقدار user رو استفاده کن
-      // user.first_name, user.last_name, user.username, user.id, ...
-    }
-  }
-});
+
+// نمایش وضعیت اتصال به تلگرام فقط در تب تنظیمات
 function showTelegramConnectionStatus() {
   const infoDiv = document.getElementById('tg-user-info');
   if (!infoDiv) return;
@@ -337,3 +305,16 @@ document.getElementById("settings-open").onclick = () => {
   showTelegramConnectionStatus();
   updateUI();
 };
+
+document.getElementById("reset-game-btn").onclick = () => {
+  if(confirm("Are you sure? All your progress will be lost!")){
+    localStorage.removeItem('zardoSave');
+    location.reload();
+  }
+};
+
+loadGame();
+updateUI();
+renderBusinesses();
+renderRobotPanel();
+if (robotOwned) startRobotInterval();
