@@ -15,9 +15,11 @@ const businessDefs = [
 let businesses = [];
 let bizInterval = null;
 
-// ============ Load/Save ============
+// Utility functions
 function getBusiness(id) { return businesses.find(b=>b.id===id); }
 function businessUpgradeCost(biz) { return Math.floor(businessDefs[biz.id-1].baseCost * Math.pow(1.7, biz.level)); }
+
+// LocalStorage
 function loadGame() {
   try {
     const data = JSON.parse(localStorage.getItem('zardoSave'));
@@ -47,7 +49,8 @@ function saveGame() {
   };
   localStorage.setItem('zardoSave', JSON.stringify(data));
 }
-// ============ UI EVENTS ============
+
+// Event delegation for tabs
 document.querySelector(".bottom-tabs").onclick = function(e) {
   if(e.target.classList.contains("tab")) {
     let tab = e.target;
@@ -77,10 +80,6 @@ function updateUI() {
   document.getElementById("vault-upgrade-cost").textContent = vaultLevel * 50;
   document.getElementById("level").textContent = `Lvl ${level}`;
   document.getElementById("xp-fill").style.width = `${(xp/xpToNextLevel)*100}%`;
-  let bizGold = document.getElementById("biz-gold-amount");
-  if(bizGold) bizGold.textContent = gold;
-  let robotGold = document.getElementById("robot-gold-amount");
-  if(robotGold) robotGold.textContent = gold;
   saveGame();
 }
 function showProfileInfo() {
@@ -137,24 +136,18 @@ document.getElementById("upgrade-robot").onclick = () => {
     gold -= robotUpgradeCost; robotPower++; robotUpgradeCost = Math.floor(robotUpgradeCost*1.6); updateUI();
   }
 };
-function startBusinessIncome() {
-  if(bizInterval) clearInterval(bizInterval);
-  bizInterval = setInterval(()=>{
-    let total = 0;
-    businesses.forEach(biz=>{ total+=biz.income; });
-    if(total>0){
-      vault = Math.min(vault+total, vaultCapacity);
-      updateUI();
-    }
-  }, 60000);
+// لحظه‌ای درآمد بیزنس رو به Vault اضافه کن
+function instantBusinessIncome() {
+  let total = 0;
+  businesses.forEach(biz=>{ total+=biz.income; });
+  if(total>0){
+    vault = Math.min(vault+total, vaultCapacity);
+    updateUI();
+  }
 }
 function renderBusinesses() {
   const bizList = document.getElementById("business-list");
   bizList.innerHTML = "";
-  let goldDiv = document.createElement("div");
-  goldDiv.style = "font-size:17px;font-weight:bold;text-align:right;margin:8px 0 4px 0;";
-  goldDiv.innerHTML = `Gold: <span id="biz-gold-amount">${gold}</span>`;
-  bizList.appendChild(goldDiv);
   if(businesses.length===0) {
     let startBox = document.createElement("div");
     startBox.className = "business-item business-locked";
@@ -170,7 +163,7 @@ function renderBusinesses() {
           businesses.push({id:list[idx].id,level:1,income:5});
           updateUI();
           renderBusinesses();
-          startBusinessIncome();
+          instantBusinessIncome();
         }
       }
     };
@@ -183,7 +176,7 @@ function renderBusinesses() {
     let box = document.createElement("div");
     box.className = "business-item business-owned";
     box.innerHTML = `<div class="biz-title">${def.name} <span class="biz-lvl">Lvl ${biz.level}</span></div>
-      <div class="biz-income">Income: <b>${biz.income}</b>/min</div>
+      <div class="biz-income">Income: <b>${biz.income}</b>/sec</div>
       <button class="biz-upgrade-btn" ${biz.level>=10?"disabled":""}>
         Upgrade (${businessUpgradeCost(biz)} Gold)
       </button>
@@ -196,6 +189,7 @@ function renderBusinesses() {
         biz.income+=2;
         updateUI();
         renderBusinesses();
+        instantBusinessIncome();
       }
     };
     bizList.appendChild(box);
@@ -206,7 +200,7 @@ function renderBusinesses() {
     let startBox = document.createElement("div");
     startBox.className = "business-item business-locked";
     startBox.innerHTML = `<div class="biz-title">${def.name}</div>
-    <div class="biz-income">Income: <b>5</b>/min</div>
+    <div class="biz-income">Income: <b>5</b>/sec</div>
     <button class="biz-buy-btn">
       Buy (${def.baseCost} Gold)
     </button>`;
@@ -216,7 +210,7 @@ function renderBusinesses() {
         businesses.push({id:def.id,level:1,income:5});
         updateUI();
         renderBusinesses();
-        startBusinessIncome();
+        instantBusinessIncome();
       }
     };
     startDiv.appendChild(startBox);
@@ -224,11 +218,8 @@ function renderBusinesses() {
   bizList.appendChild(startDiv);
 }
 function renderRobotPanel() {
-  let panel = document.getElementById("panel-robot");
-  let robotTopBar = document.getElementById("robot-top-bar");
   let robotStatus = document.getElementById("robot-status");
   let robotUpgrade = document.getElementById("robot-upgrade");
-  document.getElementById("robot-gold-amount").textContent = gold;
   if(!robotOwned){
     robotStatus.classList.remove("hidden");
     robotUpgrade.classList.add("hidden");
@@ -239,6 +230,16 @@ function renderRobotPanel() {
     document.getElementById("robot-upgrade-cost").textContent = robotUpgradeCost;
   }
 }
+// درآمد بیزنس رو هر 1 ثانیه به خزانه اضافه کن
+setInterval(()=>{
+  let total = 0;
+  businesses.forEach(biz=>{ total+=biz.income; });
+  if(total>0){
+    vault = Math.min(vault+total, vaultCapacity);
+    updateUI();
+  }
+}, 1000);
+
 loadGame();
 updateUI();
-startBusinessIncome();
+renderBusinesses();
