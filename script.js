@@ -2,6 +2,37 @@
 let gold = 0, level = 1, xp = 0, xpToNextLevel = 20, vault = 0, vaultCapacity = 100, vaultLevel = 1, clickCount = 0, totalEarnings = 0;
 let robotOwned = false, robotPower = 1, robotUpgradeCost = 100, businessStarted = false, darkMode = false;
 
+// LOAD DATA FROM LOCALSTORAGE
+function loadGame() {
+  try {
+    const data = JSON.parse(localStorage.getItem('zardoSave'));
+    if (!data) return;
+    gold = data.gold || 0;
+    level = data.level || 1;
+    xp = data.xp || 0;
+    xpToNextLevel = data.xpToNextLevel || 20;
+    vault = data.vault || 0;
+    vaultCapacity = data.vaultCapacity || 100;
+    vaultLevel = data.vaultLevel || 1;
+    clickCount = data.clickCount || 0;
+    totalEarnings = data.totalEarnings || 0;
+    robotOwned = data.robotOwned || false;
+    robotPower = data.robotPower || 1;
+    robotUpgradeCost = data.robotUpgradeCost || 100;
+    darkMode = data.darkMode || false;
+    if (darkMode) document.body.classList.add('dark');
+  } catch {}
+}
+// SAVE DATA TO LOCALSTORAGE
+function saveGame() {
+  const data = {
+    gold, level, xp, xpToNextLevel, vault, vaultCapacity, vaultLevel,
+    clickCount, totalEarnings, robotOwned, robotPower, robotUpgradeCost, darkMode
+  };
+  localStorage.setItem('zardoSave', JSON.stringify(data));
+}
+
+// ==== TAB SWITCHER ====
 const allTabs = document.querySelectorAll('.tab');
 const allPanels = document.querySelectorAll('.panel');
 allTabs.forEach(tab => {
@@ -15,6 +46,7 @@ allTabs.forEach(tab => {
 document.getElementById("settings-open").onclick = () => {
   allPanels.forEach(p => p.classList.add("hidden"));
   document.getElementById("settings-panel").classList.remove("hidden");
+  showProfileInfo();
 };
 
 function updateUI() {
@@ -24,17 +56,17 @@ function updateUI() {
   document.getElementById("vault-upgrade-cost").textContent = vaultLevel * 50;
   document.getElementById("level").textContent = `Lvl ${level}`;
   document.getElementById("xp-fill").style.width = `${(xp/xpToNextLevel)*100}%`;
-  document.getElementById("profile-info").innerHTML =
-    `<p>Level: ${level}</p>
-    <p>Income/Minute: ${robotOwned ? robotPower : 0}</p>
-    <p>Clicks: ${clickCount}</p>
-    <p>Total Earnings: ${totalEarnings}</p>`;
-  if (robotOwned) {
-    document.getElementById("robot-status").classList.add("hidden");
-    document.getElementById("robot-upgrade").classList.remove("hidden");
-    document.getElementById("robot-power").textContent = robotPower;
-    document.getElementById("robot-upgrade-cost").textContent = robotUpgradeCost;
-  }
+  saveGame();
+}
+
+function showProfileInfo() {
+  document.getElementById("profile-info-settings").innerHTML =
+    `<div style="border-radius:12px;background:#e9e9e9;padding:10px 14px;">
+      <p><b>Level:</b> ${level}</p>
+      <p><b>Income/Minute:</b> ${robotOwned ? robotPower : 0}</p>
+      <p><b>Clicks:</b> ${clickCount}</p>
+      <p><b>Total Earnings:</b> ${totalEarnings}</p>
+    </div>`;
 }
 
 function gainXP(amount) {
@@ -64,6 +96,8 @@ document.getElementById("upgrade-vault-button").onclick = () => {
 };
 document.getElementById("toggle-theme").onclick = () => {
   document.body.classList.toggle("dark");
+  darkMode = document.body.classList.contains('dark');
+  saveGame();
 };
 document.getElementById("buy-robot").onclick = () => {
   if (gold >= 200) {
@@ -110,4 +144,6 @@ window.upgradeBusiness = function(id){
     updateUI();
   }
 };
+// ===== INIT =====
+loadGame();
 updateUI();
