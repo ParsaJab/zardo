@@ -9,22 +9,15 @@
 <body>
   <header>
     <img src="zardo-logo.png" alt="ZARDO Logo" class="zardo-logo"/>
-    <div id="gold-bar" class="gold-bar">💰 <span id="gold-amount">0</span></div>
+    <div id="gold-box" class="gold-box">💰 <span id="gold-amount">0</span></div>
     <div class="menu">
-      <button id="toggle-theme">🌙</button>
-      <button id="reset-btn">🔁</button>
+      <button onclick="switchTab('settings-tab')">⚙️</button>
     </div>
   </header>
   <main>
-    <!-- تب بیزنس -->
-    <section id="business-tab" class="tab">
-      <h3>Businesses</h3>
-      <div id="market-list"></div>
-      <h4 style="margin-top:24px;">My Businesses</h4>
-      <div id="my-biz-list"></div>
-    </section>
     <!-- تب کلیک -->
     <section id="game-tab" class="tab active">
+      <div id="gold-box-big" class="gold-box-big">💰 <span id="gold-amount-big">0</span></div>
       <div class="vault-bar">
         <img src="vault-icon.png" class="vault-icon"/>
         <div class="vault-progress">
@@ -32,15 +25,53 @@
         </div>
         <div class="vault-text"><span id="vault-amount">0</span>/<span id="vault-capacity">20</span></div>
       </div>
+      <div class="vault-actions">
+        <button id="collect-btn">Collect</button>
+        <button id="upgrade-vault-btn">Upgrade Vault (<span id="vault-upgrade-cost">100</span>)</button>
+      </div>
       <div class="center-fade">top</div>
+    </section>
+    <!-- تب بیزنس -->
+    <section id="business-tab" class="tab">
+      <button id="start-business-btn" class="start-btn">+ Start Business</button>
+      <div id="market-list"></div>
+      <h4 class="mybiz-title">My Businesses</h4>
+      <div id="my-biz-list"></div>
     </section>
     <!-- تب پروفایل -->
     <section id="profile-tab" class="tab">
-      <h3>Profile</h3>
       <div id="profile-box">
         <img id="profile-pic" src="avatar.png" alt="avatar"/>
         <input type="file" id="avatar-input" accept="image/*" style="display:none"/>
         <div id="profile-name">Player</div>
+        <div id="profile-info">
+          <div>Clicks: <span id="profile-clicks">0</span></div>
+          <div>Gold Per Click: <span id="profile-gpc">1</span></div>
+          <div>Businesses: <span id="profile-bizcount">0</span></div>
+          <div>Passive/Min: <span id="profile-passive">0</span></div>
+          <div>Total Passive: <span id="profile-totalpassive">0</span></div>
+        </div>
+      </div>
+    </section>
+    <!-- تب تنظیمات -->
+    <section id="settings-tab" class="tab">
+      <h3>Settings</h3>
+      <div>
+        <label for="bg-select">Choose Background:</label>
+        <select id="bg-select">
+          <option value="bg1">Classic</option>
+          <option value="bg2">Light Blue</option>
+          <option value="bg3">Dark</option>
+        </select>
+      </div>
+      <button id="reset-btn" class="reset-btn">Reset Game</button>
+    </section>
+    <!-- تب بات -->
+    <section id="bot-tab" class="tab">
+      <h3>Auto Vault Bot</h3>
+      <div id="bot-box">
+        <div id="bot-status"></div>
+        <button id="buy-bot-btn">Buy Bot (1000)</button>
       </div>
     </section>
   </main>
@@ -48,6 +79,8 @@
     <button onclick="switchTab('business-tab')"><span class="icon-bank"></span></button>
     <button onclick="switchTab('game-tab')"><span class="icon-coin"></span></button>
     <button onclick="switchTab('profile-tab')"><span class="icon-user"></span></button>
+    <button onclick="switchTab('bot-tab')"><span class="icon-robot"></span></button>
+    <button onclick="switchTab('settings-tab')"><span class="icon-settings"></span></button>
   </nav>
   <script src="script.js"></script>
 </body>
