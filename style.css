@@ -1,188 +1,33 @@
-/* style.css */
-
-/* Basic Reset */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: sans-serif;
-}
-
-body {
-  background: #f1f4f9;
-  color: #222;
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  direction: rtl;
-}
-
-body.dark {
-  background: #1d1f27;
-  color: #eee;
-}
-
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
+body { background: #f1f4f9; color: #222; min-height: 100vh; }
+body.dark { background: #1d1f27; color: #eee; }
 header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 16px;
-  background: #0095ff;
-  color: white;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 16px; background: #0095ff; color: white;
 }
-
-.xp-bar {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-.xp-track {
-  width: 100px;
-  height: 6px;
-  background: #ddd;
-  margin-top: 4px;
-  border-radius: 3px;
-  overflow: hidden;
-}
-
-#xp-fill {
-  height: 100%;
-  width: 0%;
-  background: gold;
-}
-
-.title {
-  font-size: 24px;
-  font-weight: bold;
-}
-
-.settings-tab {
-  cursor: pointer;
-  font-size: 18px;
-}
-
-main {
-  flex: 1;
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-}
-
-#score-display {
-  font-size: 22px;
-  margin-bottom: 12px;
-}
-
-#click-button {
-  font-size: 24px;
-  padding: 20px 40px;
-  border-radius: 12px;
-  background: gold;
-  border: none;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-  cursor: pointer;
-}
-
-.vault {
-  margin-top: 20px;
-  width: 100%;
-  max-width: 400px;
-  background: #e0e0e0;
-  padding: 12px;
-  border-radius: 10px;
-}
-
-body.dark .vault {
-  background: #2a2d3a;
-}
-
-.vault-bar {
-  width: 100%;
-  height: 10px;
-  background: #ccc;
-  border-radius: 5px;
-  overflow: hidden;
-  margin-bottom: 8px;
-}
-
-#vault-fill {
-  height: 100%;
-  width: 0%;
-  background: #0095ff;
-}
-
-.vault-actions {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 8px;
-}
-
-.vault-actions button {
-  flex: 1;
-  margin: 0 4px;
-  padding: 6px 12px;
-  border: none;
-  border-radius: 8px;
-  background: #0073e6;
-  color: white;
-  cursor: pointer;
-}
-
-.bottom-tabs {
-  display: flex;
-  justify-content: space-around;
-  padding: 10px;
-  background: #0095ff;
-}
-
-.tab {
-  background: none;
-  border: none;
-  color: white;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.tab.active {
-  font-weight: bold;
-  border-bottom: 2px solid white;
-}
-
-.profile-tab {
-  position: absolute;
-  top: 58px;
-  left: 10px;
-  background: white;
-  padding: 8px;
-  border-radius: 10px;
-  width: 150px;
-  text-align: center;
-}
-
-body.dark .profile-tab {
-  background: #2d2f39;
-  color: white;
-}
-
-.profile-tab img {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  margin-bottom: 8px;
-}
-
-.panel {
-  display: none;
-  padding: 16px;
-}
-
-.panel.hidden {
-  display: none;
-}
-
-.panel.visible {
-  display: block;
-}
+.xp-bar { display: flex; flex-direction: column; align-items: flex-start; }
+.xp-track { width: 100px; height: 6px; background: #ddd; margin-top: 4px; border-radius: 3px; overflow: hidden; }
+#xp-fill { height: 100%; width: 0%; background: gold; }
+.title { font-size: 24px; font-weight: bold; }
+.settings-tab { cursor: pointer; font-size: 18px; }
+.panel { display: none; padding: 16px; }
+.panel:not(.hidden) { display: block; }
+#main-panel { display: block; }
+#score-display { font-size: 22px; margin-bottom: 12px; }
+#click-button { font-size: 24px; padding: 20px 40px; border-radius: 12px; background: gold; border: none; box-shadow: 0 4px 10px rgba(0,0,0,0.2); cursor: pointer; transition: transform .08s; }
+#click-button.clicked { transform: scale(1.09); }
+.vault { margin-top: 20px; width: 100%; max-width: 400px; background: #e0e0e0; padding: 12px; border-radius: 10px; }
+body.dark .vault { background: #2a2d3a; }
+.vault-bar { width: 100%; height: 10px; background: #ccc; border-radius: 5px; overflow: hidden; margin-bottom: 8px; }
+#vault-fill { height: 100%; width: 0%; background: #0095ff; }
+.vault-actions { display: flex; justify-content: space-between; margin-top: 8px; }
+.vault-actions button { flex: 1; margin: 0 4px; padding: 6px 12px; border: none; border-radius: 8px; background: #0073e6; color: white; cursor: pointer; }
+.bottom-tabs { display: flex; justify-content: space-around; padding: 10px; background: #0095ff; }
+.tab { background: none; border: none; color: white; font-size: 16px; cursor: pointer; }
+.tab.active { font-weight: bold; border-bottom: 2px solid white; }
+.profile-tab { position: absolute; top: 58px; left: 10px; background: white; padding: 8px; border-radius: 10px; width: 150px; text-align: center; }
+body.dark .profile-tab { background: #2d2f39; color: white; }
+.profile-tab img { width: 50px; height: 50px; border-radius: 50%; margin-bottom: 8px; }
+.business-item { background: #fff; margin: 10px 0; padding: 10px; border-radius: 8px; box-shadow: 0 2px 8px #eee; }
+body.dark .business-item { background: #262b3a; }
+.hidden { display: none !important; }
