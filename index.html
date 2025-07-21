@@ -16,10 +16,14 @@
     </div>
   </header>
   <main>
+    <!-- تب بیزنس -->
     <section id="business-tab" class="tab">
       <h3>Businesses</h3>
-      <div id="biz-list"></div>
+      <div id="market-list"></div>
+      <h4 style="margin-top:24px;">My Businesses</h4>
+      <div id="my-biz-list"></div>
     </section>
+    <!-- تب کلیک -->
     <section id="game-tab" class="tab active">
       <div class="vault-bar">
         <img src="vault-icon.png" class="vault-icon"/>
@@ -29,11 +33,15 @@
         <div class="vault-text"><span id="vault-amount">0</span>/<span id="vault-capacity">20</span></div>
       </div>
       <div class="center-fade">top</div>
-      <!-- بقیه عناصر این تب -->
     </section>
+    <!-- تب پروفایل -->
     <section id="profile-tab" class="tab">
       <h3>Profile</h3>
-      <p>اینجا می‌تونی عکس پروفایل یا تم رو بزاری...</p>
+      <div id="profile-box">
+        <img id="profile-pic" src="avatar.png" alt="avatar"/>
+        <input type="file" id="avatar-input" accept="image/*" style="display:none"/>
+        <div id="profile-name">Player</div>
+      </div>
     </section>
   </main>
   <nav>
