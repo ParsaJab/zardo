@@ -8,6 +8,8 @@
   --bg-dark: #23213a;
   --text-light: #fff;
   --text-dark: #222a38;
+  --card-bg: #fff;
+  --card-bg-dark: #23213a;
 }
 
 body {
@@ -16,6 +18,7 @@ body {
   margin: 0;
   min-height: 100vh;
   font-family: 'Space Grotesk', Vazirmatn, Tahoma, Arial, sans-serif;
+  transition: background .25s;
 }
 body.dark {
   background: var(--bg-dark);
@@ -40,7 +43,7 @@ body.dark header {
 .zardo-logo {
   height: 32px;
 }
-.gold-bar {
+.gold-box {
   font-size: 18px;
   font-weight: bold;
   color: #b59533;
@@ -48,6 +51,24 @@ body.dark header {
   padding: 7px 14px;
   border-radius: 11px;
   border: 1.3px solid #edc57a;
+  margin: 0 16px;
+  min-width: 80px;
+  text-align: center;
+  display: inline-block;
+}
+.gold-box-big {
+  font-size: 28px;
+  font-weight: bold;
+  color: #b59533;
+  background: #fff7de;
+  padding: 13px 18px;
+  border-radius: 16px;
+  border: 2px solid #edc57a;
+  margin: 0 auto 12px auto;
+  display: block;
+  max-width: 220px;
+  text-align: center;
+  box-shadow: 0 2px 9px #edc57a33;
 }
 .menu button {
   margin-left: 8px;
@@ -66,13 +87,14 @@ body.dark header {
   color: var(--main-white);
 }
 main {
-  min-height: 74vh;
+  min-height: 72vh;
   max-width: 430px;
   margin: 0 auto;
+  padding-bottom: 75px;
 }
 .tab {
   display: none;
-  padding: 0 4px;
+  padding: 0 6px;
 }
 .tab.active {
   display: block;
@@ -81,27 +103,24 @@ main {
 #game-tab {
   position: relative;
   min-height: 320px;
-  padding-top: 15px;
+  padding-top: 18px;
 }
 
 .center-fade {
   position: absolute;
   left: 50%;
-  top: 38%;
+  top: 49%;
   transform: translate(-50%, -50%);
   font-size: 64px;
-  color: #7c55c932;
+  color: #7c55c942;
   font-weight: bold;
   letter-spacing: 8px;
   user-select: none;
   pointer-events: none;
   z-index: 1;
-}
-#business-tab .center-fade, #profile-tab .center-fade {
-  display: none;
+  text-align: center;
 }
 
-/* Vault Bar */
 .vault-bar {
   display: flex;
   align-items: center;
@@ -109,10 +128,11 @@ main {
   border: 2px solid var(--vault-border);
   border-radius: 12px;
   padding: 6px 15px 6px 8px;
-  margin: 18px auto 28px auto;
-  width: 95%;
-  max-width: 340px;
+  margin: 15px auto 7px auto;
+  width: 97%;
+  max-width: 350px;
   box-shadow: 0 2px 7px #ffecba44;
+  position: relative;
 }
 .vault-icon {
   width: 32px;
@@ -141,22 +161,77 @@ main {
   color: #b59533;
   min-width: 54px;
   text-align: right;
+  margin-left: 9px;
+}
+.vault-actions {
+  display: flex;
+  justify-content: center;
+  gap: 13px;
+  margin: 7px auto 13px auto;
+}
+.vault-actions button {
+  background: #7c55c9;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 15px;
+  padding: 8px 16px;
+  box-shadow: 0 2px 7px #7c55c944;
+  cursor: pointer;
+  transition: 0.13s;
+}
+.vault-actions button:active {
+  background: #fff;
+  color: #7c55c9;
+  border: 1.5px solid #b59533;
 }
 
 /* Businesses */
+.start-btn {
+  display: block;
+  background: #52c1ef;
+  color: #fff;
+  border: none;
+  border-radius: 11px;
+  font-size: 17px;
+  font-weight: 600;
+  padding: 11px 16px;
+  margin: 18px auto 13px auto;
+  box-shadow: 0 2px 12px #a7e6ff33;
+  cursor: pointer;
+  transition: .14s;
+}
+.start-btn:active {
+  background: #fff;
+  color: #52c1ef;
+  border: 1.5px solid #52c1ef;
+}
+
+.mybiz-title {
+  margin-top: 28px;
+  margin-bottom: 6px;
+  color: #7c55c9;
+  font-size: 19px;
+  font-weight: bold;
+  text-align: left;
+}
 #market-list, #my-biz-list {
-  margin: 10px 0 0 0;
+  margin: 9px 0 0 0;
 }
 .market-card, .biz-card {
-  background: #fff;
+  background: var(--card-bg);
   border: 2px solid #7c55c9;
   border-radius: 14px;
   padding: 12px 18px;
   box-shadow: 0 3px 9px #cfc6ef22;
   margin-bottom: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 body.dark .market-card, body.dark .biz-card {
-  background: #24213b;
+  background: var(--card-bg-dark);
   border: 2px solid #9b8ad6;
 }
 .market-card h4, .biz-card h4 {
@@ -189,11 +264,15 @@ body.dark .market-card h4, body.dark .biz-card h4 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 28px 0;
+  margin: 28px 0 16px 0;
   background: #fff7de;
   border-radius: 14px;
   padding: 22px 18px;
   box-shadow: 0 2px 8px #edc57a22;
+  min-width: 220px;
+  max-width: 350px;
+  margin-left: auto;
+  margin-right: auto;
 }
 body.dark #profile-box {
   background: #2a2347;
@@ -224,6 +303,77 @@ body.dark #profile-name {
   background: #352e52;
   color: #b89df9;
   box-shadow: 0 2px 9px #443a6644;
+}
+#profile-info {
+  margin-top: 15px;
+  text-align: left;
+  color: #444;
+  font-size: 17px;
+  width: 100%;
+  max-width: 210px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+body.dark #profile-info {
+  color: #e0e0e0;
+}
+
+/* Settings */
+#settings-tab {
+  padding: 16px 20px;
+}
+#bg-select {
+  margin: 0 0 14px 7px;
+  font-size: 15px;
+  padding: 4px 7px;
+  border-radius: 7px;
+}
+.reset-btn {
+  background: #ed5765;
+  color: #fff;
+  font-weight: bold;
+  padding: 10px 22px;
+  font-size: 17px;
+  border: none;
+  border-radius: 11px;
+  margin-top: 16px;
+  box-shadow: 0 2px 13px #f9d3d6;
+  cursor: pointer;
+  transition: .14s;
+}
+.reset-btn:active {
+  background: #fff;
+  color: #ed5765;
+  border: 2px solid #ed5765;
+}
+
+/* Bot Tab */
+#bot-tab {
+  padding: 18px 14px;
+  text-align: center;
+}
+#bot-status {
+  font-size: 17px;
+  margin-bottom: 13px;
+}
+#buy-bot-btn {
+  background: #66c96c;
+  color: #fff;
+  font-weight: bold;
+  padding: 10px 22px;
+  font-size: 16px;
+  border: none;
+  border-radius: 11px;
+  margin: 12px 0;
+  box-shadow: 0 2px 12px #a4ffbd55;
+  cursor: pointer;
+  transition: .13s;
+}
+#buy-bot-btn:active {
+  background: #fff;
+  color: #59b657;
+  border: 2px solid #6dca8d;
 }
 
 /* Navbar */
@@ -262,7 +412,15 @@ nav button:active {
   color: #36d39a;
 }
 
-/* آیکون‌های نوار پایین */
-.icon-bank::before { content: '\1F3E6'; font-size: 22px; }
-.icon-coin::before { content: '\1FA99'; font-size: 22px; }
-.icon-user::before { content: '\1F464'; font-size: 22px; }
+/* Navbar Icons */
+.icon-bank::before    { content: '\1F3E6'; font-size: 22px; }
+.icon-coin::before    { content: '\1FA99'; font-size: 22px; }
+.icon-user::before    { content: '\1F464'; font-size: 22px; }
+.icon-robot::before   { content: '\1F916'; font-size: 22px; }
+.icon-settings::before{ content: '\2699';  font-size: 22px; }
+
+@media (max-width: 480px) {
+  .gold-box-big { font-size: 22px; padding: 9px 8px;}
+  .vault-bar { max-width: 99vw; }
+  main { max-width: 100vw;}
+}
