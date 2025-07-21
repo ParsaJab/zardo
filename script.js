@@ -1,67 +1,91 @@
 
-let gold = parseInt(localStorage.getItem("gold")) || 0;
-let passiveGold = parseFloat(localStorage.getItem("passiveGold")) || 0;
-let clicks = parseInt(localStorage.getItem("clicks")) || 0;
-let xp = parseInt(localStorage.getItem("xp")) || 0;
-let level = parseInt(localStorage.getItem("level")) || 1;
-let xpToNext = parseInt(localStorage.getItem("xpToNext")) || 10;
-let storageLevel = parseInt(localStorage.getItem("storageLevel")) || 1;
+let gold = 0;
+let passiveGold = 0;
+let clicks = 0;
+let xp = 0;
+let level = 1;
+let xpToNext = 10;
+let storageLevel = 1;
 let storageLimit = storageLevel * 20;
 
-let businesses = JSON.parse(localStorage.getItem("businesses")) || {
-  shop: 0,
-  factory: 0,
-  bank: 0
-};
-
-const clickSound = new Audio("https://cdn.pixabay.com/download/audio/2022/03/15/audio_99fa8233be.mp3?filename=click-124467.mp3");
+const businesses = [
+  { id: 'kiosk', name: 'Kiosk', count: 0, income: 0.2, price: 20 },
+  { id: 'taxi', name: 'Taxi Co.', count: 0, income: 1, price: 100 },
+  { id: 'office', name: 'Office', count: 0, income: 3, price: 250 },
+  { id: 'mall', name: 'Mall', count: 0, income: 6, price: 500 },
+  { id: 'bank', name: 'Bank', count: 0, income: 12, price: 1000 },
+  { id: 'airline', name: 'Airline', count: 0, income: 25, price: 2000 },
+  { id: 'hotel', name: 'Hotel', count: 0, income: 45, price: 4000 },
+  { id: 'construct', name: 'Construct', count: 0, income: 75, price: 8000 },
+  { id: 'startup', name: 'Startup', count: 0, income: 120, price: 12000 },
+  { id: 'crypto', name: 'Crypto', count: 0, income: 200, price: 20000 }
+];
 
 function updateUI() {
-  document.getElementById("gold").textContent = gold;
+  document.getElementById("gold").textContent = Math.floor(gold);
   document.getElementById("clicks").textContent = clicks;
   document.getElementById("level").textContent = level;
   document.getElementById("xp").textContent = xp;
   document.getElementById("xp-next").textContent = xpToNext;
   document.getElementById("passiveGold").textContent = Math.floor(passiveGold);
-  document.getElementById("shop-count").textContent = businesses.shop;
-  document.getElementById("factory-count").textContent = businesses.factory;
-  document.getElementById("bank-count").textContent = businesses.bank;
-  document.getElementById("storage-capacity").textContent = "Lvl " + storageLevel;
 
   const percent = Math.floor((xp / xpToNext) * 100);
   document.getElementById("xp-fill").style.width = percent + "%";
 }
 
+function initBusinesses() {
+  const container = document.getElementById("business-list");
+  businesses.forEach(b => {
+    const div = document.createElement("div");
+    div.className = "business-card";
+    div.id = `card-${b.id}`;
+    div.innerHTML = `
+      <span>${b.name}: ${b.count}</span>
+      <button onclick="buyBusiness('${b.id}')">Buy (${b.price})</button>
+    `;
+    container.appendChild(div);
+  });
+}
+
+function buyBusiness(id) {
+  const b = businesses.find(x => x.id === id);
+  if (gold >= b.price) {
+    gold -= b.price;
+    b.count++;
+    b.price = Math.floor(b.price * 1.5);
+    updateBusinesses();
+  } else {
+    alert("Not enough gold!");
+  }
+}
+
+function updateBusinesses() {
+  businesses.forEach(b => {
+    document.querySelector(`#card-${b.id} span`).textContent = `${b.name}: ${b.count}`;
+    document.querySelector(`#card-${b.id} button`).textContent = `Buy (${b.price})`;
+  });
+  updateUI();
+}
+
 document.getElementById("click-btn").addEventListener("click", () => {
   gold += level;
-  xp += 1;
-  clicks += 1;
+  xp++;
+  clicks++;
   if (xp >= xpToNext) {
     xp -= xpToNext;
-    level += 1;
+    level++;
     xpToNext = Math.floor(xpToNext * 1.5);
   }
-
-  const btn = document.getElementById("click-btn");
-  btn.classList.add("clicked");
-  setTimeout(() => btn.classList.remove("clicked"), 100);
-
-  clickSound.currentTime = 0;
-  clickSound.play();
-
-  saveData();
   updateUI();
 });
 
 document.getElementById("collect-btn").addEventListener("click", () => {
   gold += Math.floor(passiveGold);
   passiveGold = 0;
-  saveData();
   updateUI();
 });
 
 document.getElementById("reset-btn").addEventListener("click", () => {
-  localStorage.clear();
   location.reload();
 });
 
@@ -69,56 +93,21 @@ document.getElementById("toggle-theme").addEventListener("click", () => {
   document.body.classList.toggle("light");
 });
 
-function buyBusiness(type, cardId) {
-  const prices = { shop: 50, factory: 200, bank: 1000 };
-  if (gold >= prices[type]) {
-    gold -= prices[type];
-    businesses[type]++;
-    saveData();
-    updateUI();
-  } else {
-    alert("Not enough gold!");
-  }
-}
-
-function upgradeStorage() {
-  const cost = 500;
-  if (gold >= cost) {
-    gold -= cost;
-    storageLevel++;
-    storageLimit = storageLevel * 20;
-    saveData();
-    updateUI();
-  } else {
-    alert("Not enough gold!");
-  }
-}
-
-function earnPassiveGold() {
-  let income = businesses.shop * 0.2 + businesses.factory * 1 + businesses.bank * 5;
+function earnPassive() {
+  let income = 0;
+  businesses.forEach(b => income += b.count * b.income);
   if (passiveGold < storageLimit) {
     passiveGold += income;
     if (passiveGold > storageLimit) passiveGold = storageLimit;
-    saveData();
-    updateUI();
   }
+  updateUI();
 }
 
-function saveData() {
-  localStorage.setItem("gold", gold);
-  localStorage.setItem("passiveGold", passiveGold);
-  localStorage.setItem("clicks", clicks);
-  localStorage.setItem("xp", xp);
-  localStorage.setItem("level", level);
-  localStorage.setItem("xpToNext", xpToNext);
-  localStorage.setItem("storageLevel", storageLevel);
-  localStorage.setItem("businesses", JSON.stringify(businesses));
-}
-
-function switchTab(tabId) {
+function switchTab(id) {
   document.querySelectorAll(".tab").forEach(tab => tab.classList.remove("active"));
-  document.getElementById(tabId).classList.add("active");
+  document.getElementById(id).classList.add("active");
 }
 
-setInterval(earnPassiveGold, 1000);
+initBusinesses();
+setInterval(earnPassive, 1000);
 updateUI();
