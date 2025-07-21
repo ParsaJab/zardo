@@ -35,10 +35,36 @@
 
     <section id="shop-tab" class="tab">
       <h2>🏭 Businesses</h2>
-      <div class="item">🏪 Shop: <span id="shop-count">0</span> <button onclick="buyBusiness('shop')">Buy</button></div>
-      <div class="item">🏭 Factory: <span id="factory-count">0</span> <button onclick="buyBusiness('factory')">Buy</button></div>
-      <div class="item">🏦 Bank: <span id="bank-count">0</span> <button onclick="buyBusiness('bank')">Buy</button></div>
-      <div class="item">🛢 Storage: <span id="storage-capacity">Lvl 1</span> <button onclick="upgradeStorage()">Upgrade</button></div>
+
+      <div class="item" id="shop-card">
+        <span>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h16v2H4zm1 4h14v13H5z"/></svg>
+          🏪 Shop: <span id="shop-count">0</span>
+        </span>
+        <button onclick="buyBusiness('shop', 'shop-card')">Buy</button>
+      </div>
+
+      <div class="item" id="factory-card">
+        <span>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 21h20v-2H2v2zm16-10h-2V5H8v6H6V3h12v8z"/></svg>
+          🏭 Factory: <span id="factory-count">0</span>
+        </span>
+        <button onclick="buyBusiness('factory', 'factory-card')">Buy</button>
+      </div>
+
+      <div class="item" id="bank-card">
+        <span>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L1 9h2v13h6v-6h6v6h6V9h2z"/></svg>
+          🏦 Bank: <span id="bank-count">0</span>
+        </span>
+        <button onclick="buyBusiness('bank', 'bank-card')">Buy</button>
+      </div>
+
+      <div class="item">
+        <span>🛢 Storage: <span id="storage-capacity">Lvl 1</span></span>
+        <button onclick="upgradeStorage()">Upgrade</button>
+      </div>
+
       <button id="collect-btn" class="collect">📥 Collect</button>
     </section>
   </main>
