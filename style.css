@@ -176,3 +176,54 @@ body.dark .business-item { background: #262b3a; }
 @media (max-width:500px) {
   .modal-content { width: 96vw; padding: 18px 2vw 10px 2vw; }
 }
+.robot-card {
+  background: #f1f9ff;
+  border-radius: 16px;
+  padding: 22px 16px 18px 16px;
+  margin: 32px auto 20px auto;
+  max-width: 390px;
+  box-shadow: 0 6px 24px #56aaff12;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.robot-title {
+  font-size: 21px;
+  font-weight: bold;
+  color: #0073e6;
+  margin-bottom: 8px;
+  display: flex; align-items: center; gap: 7px;
+}
+.robot-stat-list {
+  width: 100%;
+  margin: 14px 0 12px 0;
+  display: flex; flex-direction: column; gap: 5px;
+}
+.robot-stat-list span {
+  font-size: 16px;
+  color: #222;
+}
+.robot-buy-btn, .robot-upgrade-btn {
+  padding: 9px 18px;
+  margin: 7px 0 0 0;
+  font-size: 17px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: .14s;
+}
+.robot-buy-btn {
+  background: linear-gradient(90deg,#4edc7d,#bfffde);
+  color: #165d37;
+}
+.robot-upgrade-btn {
+  background: linear-gradient(90deg,#ffe071,#ffae00);
+  color: #322a00;
+}
+.robot-upgrade-btn:disabled, .robot-buy-btn:disabled {
+  background: #ccc !important; color: #fff !important; cursor: not-allowed;
+}
+.robot-timer {
+  margin-top: 10px; font-size: 15px; color: #0095ff;
+}
