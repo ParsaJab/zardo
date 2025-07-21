@@ -134,7 +134,7 @@ function renderBusinesses() {
         if(gold>=upCost && biz.level<10) {
           gold-=upCost;
           biz.level+=1;
-          biz.income+=2;
+          biz.income+=*1.5;
           updateUI();
           renderBusinesses();
         }
