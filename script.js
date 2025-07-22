@@ -297,7 +297,7 @@ window.addEventListener('DOMContentLoaded', function() {
   document.getElementById("settings-open").onclick = () => {
     document.querySelectorAll('.panel').forEach(p => p.classList.add("hidden"));
     document.getElementById("settings-panel").classList.remove("hidden");
-    showProfileInfo();
+    showTelegramUserProfile();
     updateUI();
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
     document.querySelector('.tab[data-panel="settings-panel"]').classList.add('active');
