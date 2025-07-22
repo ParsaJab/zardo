@@ -392,5 +392,22 @@ document.getElementById("copy-ref-link").onclick = function() {
   this.textContent = "Copied!";
   setTimeout(()=>{ this.textContent = "Copy"; }, 1200);
 };
+function getReferralFromURL() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get('ref');
+}
 
+window.addEventListener('DOMContentLoaded', function() {
+  // ... سایر کدها
+  let referralId = getReferralFromURL();
+  if(referralId && !localStorage.getItem('ref-done')) {
+    gold += 50; // جایزه به کاربر جدید
+    localStorage.setItem('ref-done', '1');
+
+    // ذخیره اینکه زیرمجموعه اضافه شد (فقط جهت تست لوکال)
+    let rc = localStorage.getItem('my-ref-count') || 0;
+    localStorage.setItem('my-ref-count', (+rc) + 1);
+    // این بخش رو در عمل باید توی سرور ذخیره کنی نه لوکال!
+  }
+});
 
