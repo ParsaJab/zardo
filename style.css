@@ -170,7 +170,7 @@ header {
 .tab.active, .tab:hover {
   color: #fec43b;
   background: #21324b66;
-  border-radius: 8px 8px 0 0;
+  border-radius: 0px 0px 0 0;
 }
 
 .panel { display: none; }
