@@ -1,7 +1,5 @@
 window.addEventListener('DOMContentLoaded', function() {
-let telegramUserId = null; // کد رفرال اینجا ذخیره میشه
 
-  
   // ---- VARIABLES ----
   let gold = 0, level = 1, xp = 0, xpToNextLevel = 20, vault = 0, vaultCapacity = 100, vaultLevel = 1, clickCount = 0, totalEarnings = 0;
   let robotOwned = false, robotLevel = 1, robotCollect = 2, robotBuyCost = 500, robotUpgradeCost = 400, robotTimeLeft = 10, robotInterval = null, darkMode = false;
@@ -19,7 +17,8 @@ let telegramUserId = null; // کد رفرال اینجا ذخیره میشه
   ];
   let businesses = [];
   let bizIncomeInterval = null;
-
+  let telegramUserId = null; // کد رفرال اینجا ذخیره میشه
+  
   // ---- LOCAL SAVE/LOAD ----
   function loadGame() {
     try {
