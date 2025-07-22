@@ -1,5 +1,3 @@
-const SERVER_URL = 'https://zardo-server.onrender.com';
-
 let gold = 0, level = 1, xp = 0, xpToNextLevel = 20, vault = 0, vaultCapacity = 100, vaultLevel = 1, clickCount = 0, totalEarnings = 0;
 let robotOwned = false, robotLevel = 1, robotCollect = 2, robotBuyCost = 500, robotUpgradeCost = 400, robotTimer = 30, robotInterval = null, robotTimeLeft = 30, darkMode = false;
 const businessDefs = [
@@ -16,57 +14,45 @@ const businessDefs = [
 ];
 let businesses = [];
 let bizIncomeInterval = null;
-let telegramUser = null;
 
-// ====== سرور =======
-function saveUserDataToServer() {
-  if (!telegramUser) return;
-  fetch(`${SERVER_URL}/api/save`, {
-    method: "POST",
-    headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({
-      user_id: telegramUser.id,
-      gold, level, xp, xpToNextLevel, vault, vaultCapacity, vaultLevel, clickCount, totalEarnings,
-      robotOwned, robotLevel, robotCollect, robotBuyCost, robotUpgradeCost, darkMode, businesses
-    })
-  });
-}
-
-function loadUserDataFromServer(callback) {
-  if (!telegramUser) return;
-  fetch(`${SERVER_URL}/api/load?user_id=${telegramUser.id}`)
-    .then(r=>r.json())
-    .then(data => {
-      if (data && data.user_id) {
-        gold = data.gold ?? gold;
-        level = data.level ?? level;
-        xp = data.xp ?? xp;
-        xpToNextLevel = data.xpToNextLevel ?? xpToNextLevel;
-        vault = data.vault ?? vault;
-        vaultCapacity = data.vaultCapacity ?? vaultCapacity;
-        vaultLevel = data.vaultLevel ?? vaultLevel;
-        clickCount = data.clickCount ?? clickCount;
-        totalEarnings = data.totalEarnings ?? totalEarnings;
-        robotOwned = data.robotOwned ?? robotOwned;
-        robotLevel = data.robotLevel ?? robotLevel;
-        robotCollect = data.robotCollect ?? robotCollect;
-        robotBuyCost = data.robotBuyCost ?? robotBuyCost;
-        robotUpgradeCost = data.robotUpgradeCost ?? robotUpgradeCost;
-        darkMode = data.darkMode ?? darkMode;
-        businesses = data.businesses ?? businesses;
-        updateUI();
-        renderBusinesses();
-        renderRobotPanel();
-        if (callback) callback();
-      }
-    });
-}
-
-// ====== Utility Functions =======
+// Utility
 function getBusiness(id) { return businesses.find(b=>b.id===id); }
 function businessUpgradeCost(biz) { return Math.floor(businessDefs[biz.id-1].baseCost * Math.pow(1.7, biz.level)); }
 
-// ====== Game UI =======
+function loadGame() {
+  try {
+    const data = JSON.parse(localStorage.getItem('zardoSave'));
+    if (!data) return;
+    gold = data.gold || 0;
+    level = data.level || 1;
+    xp = data.xp || 0;
+    xpToNextLevel = data.xpToNextLevel || 20;
+    vault = data.vault || 0;
+    vaultCapacity = data.vaultCapacity || 100;
+    vaultLevel = data.vaultLevel || 1;
+    clickCount = data.clickCount || 0;
+    totalEarnings = data.totalEarnings || 0;
+    robotOwned = data.robotOwned || false;
+    robotLevel = data.robotLevel || 1;
+    robotCollect = data.robotCollect || 2;
+    robotBuyCost = data.robotBuyCost || 500;
+    robotUpgradeCost = data.robotUpgradeCost || 400;
+    robotTimeLeft = 30;
+    darkMode = data.darkMode || false;
+    businesses = data.businesses || [];
+    if (darkMode) document.body.classList.add('dark');
+  } catch {}
+}
+function saveGame() {
+  const data = {
+    gold, level, xp, xpToNextLevel, vault, vaultCapacity, vaultLevel,
+    clickCount, totalEarnings,
+    robotOwned, robotLevel, robotCollect, robotBuyCost, robotUpgradeCost,
+    darkMode, businesses
+  };
+  localStorage.setItem('zardoSave', JSON.stringify(data));
+}
+
 function updateUI() {
   let mainPanel = !document.getElementById("panel-main").classList.contains("hidden");
   document.getElementById("score-display").style.display = mainPanel ? "" : "none";
@@ -80,6 +66,7 @@ function updateUI() {
   document.getElementById("vault-upgrade-cost").textContent = vaultLevel * 50;
   document.getElementById("level").textContent = `Lvl ${level}`;
   document.getElementById("xp-fill").style.width = `${(xp/xpToNextLevel)*100}%`;
+  saveGame();
 }
 function showProfileInfo() {
   document.getElementById("profile-info-settings").innerHTML =
@@ -98,8 +85,6 @@ function gainXP(amount) {
     xpToNextLevel = Math.floor(xpToNextLevel * 1.5);
   }
 }
-
-// ==== Click Handler ====
 document.getElementById("click-button").onclick = () => {
   const earned = level;
   gold += earned;
@@ -109,19 +94,18 @@ document.getElementById("click-button").onclick = () => {
   document.getElementById("click-button").classList.add("clicked");
   setTimeout(()=>document.getElementById("click-button").classList.remove("clicked"), 120);
   updateUI();
-  saveUserDataToServer();
 };
 document.getElementById("collect-button").onclick = () => {
-  gold += vault; vault = 0; updateUI(); saveUserDataToServer();
+  gold += vault; vault = 0; updateUI();
 };
 document.getElementById("upgrade-vault-button").onclick = () => {
   let cost = vaultLevel*50;
-  if (gold >= cost) { gold -= cost; vaultLevel++; vaultCapacity = vaultLevel*100; updateUI(); saveUserDataToServer(); }
+  if (gold >= cost) { gold -= cost; vaultLevel++; vaultCapacity = vaultLevel*100; updateUI(); }
 };
 document.getElementById("toggle-theme").onclick = () => {
   document.body.classList.toggle('dark');
   darkMode = document.body.classList.contains('dark');
-  saveUserDataToServer();
+  saveGame();
 };
 
 function renderBusinesses() {
@@ -153,7 +137,6 @@ function renderBusinesses() {
           biz.income+=2;
           updateUI();
           renderBusinesses();
-          saveUserDataToServer();
         }
       };
       bizList.appendChild(box);
@@ -188,7 +171,6 @@ function showBusinessModal() {
         modal.classList.add('hidden');
         renderBusinesses();
         updateUI();
-        saveUserDataToServer();
       }
     };
     list.appendChild(card);
@@ -206,7 +188,6 @@ bizIncomeInterval = setInterval(()=>{
   if(total>0){
     vault = Math.min(vault+total, vaultCapacity);
     updateUI();
-    saveUserDataToServer();
   }
 }, 1000);
 
@@ -245,7 +226,6 @@ function renderRobotPanel() {
         startRobotInterval();
         updateUI();
         renderRobotPanel();
-        saveUserDataToServer();
       }
     };
     card.appendChild(btn);
@@ -262,7 +242,6 @@ function renderRobotPanel() {
         robotUpgradeCost = Math.floor(robotUpgradeCost * 1.8);
         updateUI();
         renderRobotPanel();
-        saveUserDataToServer();
       }
     };
     card.appendChild(btn);
@@ -285,7 +264,6 @@ function startRobotInterval() {
       robotTimeLeft = 10;
       updateUI();
       renderRobotPanel();
-      saveUserDataToServer();
     }
   }, 1000);
 }
@@ -335,28 +313,8 @@ document.getElementById("reset-game-btn").onclick = () => {
   }
 };
 
-// ==== دریافت اطلاعات کاربر تلگرام و اجرای بازی ====
-window.addEventListener('DOMContentLoaded', function() {
-  if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe) {
-    telegramUser = window.Telegram.WebApp.initDataUnsafe.user;
-    if (telegramUser) {
-      loadUserDataFromServer(() => {
-        updateUI();
-        renderBusinesses();
-        renderRobotPanel();
-      });
-    } else {
-      // fallback به localStorage فقط اگر یوزر تلگرام نبود
-      loadGame();
-      updateUI();
-      renderBusinesses();
-      renderRobotPanel();
-    }
-  } else {
-    // fallback به localStorage فقط اگر یوزر تلگرام نبود
-    loadGame();
-    updateUI();
-    renderBusinesses();
-    renderRobotPanel();
-  }
-});
+loadGame();
+updateUI();
+renderBusinesses();
+renderRobotPanel();
+if (robotOwned) startRobotInterval();
