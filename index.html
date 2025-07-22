@@ -1,303 +1,86 @@
-body {
-  min-height: 100vh;
-  background: linear-gradient(120deg, #1a1537 0%, #183b68 65%, #13c9ee 100%);
-  font-family: 'Poppins', 'Vazirmatn', Arial, sans-serif;
-  color: #e8fbfc;
-  margin: 0;
-  padding: 0;
-  font-size: 15px;
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>ZARDO Clicker Game</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <div class="xp-bar">
+      <span id="level">Lvl 1</span>
+      <div class="xp-track"><div id="xp-fill"></div></div>
+    </div>
+    <div class="title">ZARDO</div>
+    <div class="settings-tab" id="settings-open">⚙️</div>
+  </header>
 
-header {
-  background: rgba(14,17,44,0.85);
-  box-shadow: 0 2px 16px #12e3c455, 0 1px 9px #212;
-  padding: 15px 12px 14px 12px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-radius: 0 0 20px 20px;
-  border-bottom: 2px solid #12e3e980;
-}
+  <!-- Main Click Panel -->
+  <section id="panel-main" class="panel">
+    <div id="score-display">Gold: <span id="gold-count">0</span></div>
+    <button id="click-button">TOP</button>
+    <div class="vault">
+      <div class="vault-bar"><div id="vault-fill"></div></div>
+      <div class="vault-info">
+        <p>Vault: <span id="vault-amount">0</span> Gold</p>
+        <p>Next Upgrade: <span id="vault-upgrade-cost">50</span> Gold</p>
+        <div class="vault-actions">
+          <button id="collect-button">Collect</button>
+          <button id="upgrade-vault-button">Upgrade</button>
+        </div>
+      </div>
+    </div>
+  </section>
 
-.title {
-  font-size: 28px;
-  font-weight: bold;
-  letter-spacing: 1px;
-  color: #20f9ff;
-  text-shadow: 0 0 19px #3cf8ff90, 0 2px 8px #1bced5cc;
-}
+  <!-- Businesses Panel -->
+  <section id="panel-business" class="panel hidden">
+    <div class="biz-gold-bar">Gold: <span id="biz-gold-amount">0</span></div>
+    <div id="business-list"></div>
+    <div id="business-select-modal" class="modal hidden">
+      <div class="modal-content">
+        <h3>Buy a Business</h3>
+        <div id="business-select-list"></div>
+        <button class="modal-close" id="close-business-modal">Close</button>
+      </div>
+    </div>
+  </section>
 
-.settings-tab {
-  font-size: 26px;
-  cursor: pointer;
-  transition: color 0.18s;
-  color: #ffd600;
-  text-shadow: 0 0 13px #ffd60099, 0 1px 8px #fffa;
-}
-.settings-tab:hover { color: #ffe346; }
+  <!-- Robot Panel -->
+  <section id="panel-robot" class="panel hidden">
+    <div id="robot-status"></div>
+  </section>
 
-.xp-bar {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-#level {
-  background: #13e7ff33;
-  color: #05c1bb;
-  padding: 4px 12px;
-  font-weight: bold;
-  border-radius: 15px;
-  font-size: 14px;
-  letter-spacing: 1px;
-  box-shadow: 0 2px 14px #13e7ff30;
-}
-.xp-track {
-  background: #142242;
-  border-radius: 10px;
-  width: 70px;
-  height: 10px;
-  position: relative;
-  overflow: hidden;
-}
-#xp-fill {
-  background: linear-gradient(90deg, #27f8fe 0%, #24fe92 90%);
-  height: 100%;
-  border-radius: 12px 0 0 12px;
-  transition: width 0.24s cubic-bezier(.76,-0.05,.33,1.29);
-  width: 40%;
-}
+  <!-- Referral Panel -->
+ <section id="panel-referral" class="panel hidden">
+  <p style="text-align:center;">Invite your friends and earn rewards!</p>
+  <div style="margin:18px 0; text-align:center;">
+    <input id="ref-link" readonly style="width:85%;font-size:16px;padding:8px 6px;text-align:center;border-radius:7px;border:1px solid #bbb;">
+    <button id="copy-ref-link" style="margin-left:6px;padding:6px 16px;">Copy</button>
+  </div>
+  <div id="referral-stats" style="text-align:center; margin-top:20px;"></div>
+  <!-- بخش نمایش تعداد رفرال و درآمد -->
+  <div id="referral-info" style="margin-top:20px;text-align:center;">
+    <div>Total Referrals: <b id="ref-count">0</b></div>
+    <div>Referral Income: <b id="ref-income">0</b> Gold</div>
+  </div>
+</section>
 
-#score-display {
-  text-align: center;
-  font-size: 22px;
-  font-weight: bold;
-  letter-spacing: 1px;
-  color: #fffde6;
-  text-shadow: 0 0 9px #ffd600cc, 0 2px 10px #ffdb6e66;
-  margin-top: 15px;
-}
 
-/* دکمه کلیک نئونی */
-#click-button {
-  background: linear-gradient(180deg, #fffad0 10%, #ffd600 50%, #fffad0 100%);
-  box-shadow: 0 0 40px #ffe16990, 0 4px 18px #ffec8c80;
-  border: none;
-  border-radius: 50%;
-  font-size: 36px;
-  font-weight: bold;
-  width: 100px;
-  height: 100px;
-  margin: 35px auto 18px auto;
-  display: block;
-  color: #a58a00;
-  text-shadow: 0 2px 7px #fff8, 0 4px 18px #ffe16966;
-  transition: transform 0.12s cubic-bezier(.6,1.7,.33,1.01), box-shadow 0.22s;
-  cursor: pointer;
-  outline: none;
-  position: relative;
-}
-#click-button.clicked {
-  transform: scale(1.17) rotate(-7deg);
-  box-shadow: 0 0 65px #ffe344dd, 0 8px 32px #ffd600bb;
-}
 
-.vault {
-  margin: 22px auto 0 auto;
-  background: linear-gradient(100deg, #15172eaa 40%, #0b2b49cc 100%);
-  border-radius: 21px;
-  max-width: 97vw;
-  box-shadow: 0 4px 36px #13e7ff33, 0 1px 10px #120b2440;
-  padding: 17px 19px;
-  border: 1.5px solid #20f9ff66;
-}
-.vault-bar {
-  background: #181f2c;
-  border-radius: 8px;
-  width: 97%;
-  height: 11px;
-  margin: 11px auto 4px auto;
-  overflow: hidden;
-}
-#vault-fill {
-  background: linear-gradient(90deg, #ffd600 0%, #f9fe54 90%);
-  border-radius: 8px;
-  height: 100%;
-  transition: width 0.20s;
-  width: 40%;
-  box-shadow: 0 0 11px #fff688aa;
-}
-.vault-info { text-align: center; font-size: 14px; }
-.vault-actions {
-  display: flex; gap: 15px; justify-content: center; margin-top: 11px;
-}
-.vault-actions button {
-  background: linear-gradient(90deg, #1ae3cb 0%, #27cfff 90%);
-  color: #202a35;
-  font-size: 16px;
-  border: none;
-  border-radius: 12px;
-  font-weight: bold;
-  padding: 8px 22px;
-  margin: 0 3px;
-  box-shadow: 0 3px 16px #1ae3cb22;
-  cursor: pointer;
-  transition: background 0.17s, color 0.14s, transform 0.13s;
-}
-.vault-actions button:hover { background: #31fdcd; color: #083849; transform: scale(1.07);}
-.vault-actions button:active { background: #18cb99; }
-
-.bottom-tabs {
-  background: rgba(18,25,41,0.95);
-  box-shadow: 0 0 21px #11e3e930;
-  border-radius: 18px 18px 0 0;
-  display: flex;
-  justify-content: space-between;
-  position: fixed;
-  bottom: 0; left: 0; width: 100vw;
-  z-index: 12;
-  border-top: 2.5px solid #19c9fe90;
-}
-.tab {
-  flex: 1;
-  border: none;
-  font-size: 25px;
-  background: none;
-  padding: 18px 0 18px 0;
-  color: #12e7f9;
-  cursor: pointer;
-  transition: color 0.22s, background 0.18s;
-  border-radius: 0;
-  font-family: inherit;
-}
-.tab.active, .tab:hover {
-  color: #ffd600;
-  background: #23324b77;
-  border-radius: 15px 15px 0 0;
-}
-
-.panel { display: none; }
-.panel:not(.hidden) { display: block; animation: fadeIn 0.22s;}
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px);}
-  to { opacity: 1; transform: translateY(0);}
-}
-
-.business-item, .robot-card {
-  background: linear-gradient(120deg, #1a2a4b77 60%, #0b1d38c5 100%);
-  border-radius: 18px;
-  margin: 18px auto 15px auto;
-  box-shadow: 0 2px 17px #1ae3cb21;
-  padding: 15px 15px 11px 15px;
-  max-width: 98vw;
-  color: #fff;
-  position: relative;
-  border: 1.3px solid #16f9ff44;
-  font-size: 15px;
-  backdrop-filter: blur(1.5px);
-}
-.business-item .biz-title {
-  font-size: 20px;
-  font-weight: bold;
-  color: #16f9f3;
-  margin-bottom: 6px;
-  letter-spacing: .5px;
-  text-shadow: 0 2px 8px #1ae3e944;
-}
-.business-item .biz-lvl {
-  background: #ffd600;
-  color: #4c3e00;
-  font-size: 13px;
-  border-radius: 9px;
-  margin-left: 8px;
-  padding: 2px 9px;
-  font-weight: bold;
-  text-shadow: 0 1px 6px #ffeeba80;
-}
-.business-item .biz-income {
-  color: #e2f9ff;
-  font-size: 15px;
-  margin-bottom: 9px;
-}
-.biz-upgrade-btn, .biz-buy-btn {
-  background: linear-gradient(90deg, #ffd600 0%, #13e7ff 100%);
-  color: #093946;
-  border: none;
-  border-radius: 12px;
-  font-weight: bold;
-  font-size: 15px;
-  padding: 8px 18px;
-  box-shadow: 0 3px 11px #ffd60011;
-  cursor: pointer;
-  margin-top: 9px;
-  transition: background 0.18s, color 0.13s, transform 0.13s;
-}
-.biz-upgrade-btn:disabled { background: #ccc8a8; color: #817f59;}
-.biz-upgrade-btn:hover, .biz-buy-btn:hover { background: #13e3f7; color: #072b32;}
-.business-locked { opacity: .82; filter: blur(.2px);}
-.business-buy-card {
-  background: #15243744;
-  border-radius: 13px;
-  margin: 10px 0 7px 0;
-  padding: 9px 15px;
-  display: flex; align-items: center; justify-content: space-between;
-  font-size: 15px;
-}
-
-.robot-card {
-  margin-top: 38px;
-  background: linear-gradient(120deg, #183c3b90 50%, #151e2a 100%);
-  border-radius: 18px;
-  box-shadow: 0 2px 18px #ffd60022;
-  border: 1.3px solid #16e3e944;
-  font-size: 15px;
-}
-.robot-title {
-  font-size: 18px; color: #fff; font-weight: bold; text-align: center; margin-bottom: 7px;
-  text-shadow: 0 2px 8px #ffd60022;
-}
-.robot-stat-list { color: #c3f9ee; font-size: 13px; text-align: center; margin-bottom: 12px;}
-.robot-timer { text-align: center; color: #ffd600; margin: 6px 0 0 0; font-size: 13px;}
-.robot-buy-btn, .robot-upgrade-btn {
-  background: linear-gradient(90deg, #ffd600 0%, #13e3cb 100%);
-  color: #143233;
-  border: none; border-radius: 12px;
-  font-weight: bold; font-size: 15px; padding: 8px 18px;
-  box-shadow: 0 3px 11px #ffd60033;
-  cursor: pointer; margin-top: 13px;
-  transition: background 0.18s, color 0.13s, transform 0.13s;
-}
-.robot-buy-btn:hover, .robot-upgrade-btn:hover { background: #13e3f7; color: #072b32;}
-
-input#ref-link {
-  background: #1c2746;
-  color: #13e7e0;
-  font-size: 15px;
-  border: 1.5px solid #13e7ff;
-  border-radius: 9px;
-  margin-top: 2px;
-  box-shadow: 0 2px 12px #13e7ff11;
-  padding: 8px 7px;
-}
-#copy-ref-link {
-  background: #13e7ff;
-  color: #1b2c36;
-  border: none;
-  border-radius: 9px;
-  font-size: 15px;
-  padding: 7px 17px;
-  margin-left: 7px;
-  box-shadow: 0 1px 8px #13e3f722;
-  transition: background 0.14s;
-}
-#copy-ref-link:hover { background: #ffd600; color: #09463b; }
-
-#referral-info {
-  margin-top: 16px;
-  background: #0e1b2485;
-  border-radius: 15px;
-  color: #13e3e9;
-  font-size: 14px;
-  padding: 8px 11px 12px 11px;
-  box-shadow: 0 2px 8px #13e3cb16;
-}
-#referral-info b { color: #ffd600; font-size: 17px; }
+  <!-- Settings Panel -->
+  <section id="settings-panel" class="panel hidden">
+  <div id="tg-user-profile" style="text-align:center;margin-bottom:22px;"></div>
+  <button id="toggle-theme">Toggle Theme</button>
+</section>
+  
+  <nav class="bottom-tabs">
+    <button class="tab active" data-panel="panel-main">🖱️</button>
+    <button class="tab" data-panel="panel-business">🏢</button>
+    <button class="tab" data-panel="panel-robot">🤖</button>
+    <button class="tab" data-panel="panel-referral">🔗</button>
+  </nav>
+  <script src="script.js"></script>
+</body>
+</html>
