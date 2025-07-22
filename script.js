@@ -18,7 +18,9 @@ window.addEventListener('DOMContentLoaded', function() {
   let businesses = [];
   let bizIncomeInterval = null;
   let telegramUserId = null; // کد رفرال اینجا ذخیره میشه
-  
+  let referralCount = 0;       // تعداد زیرمجموعه‌ها
+  let referralIncome = 0;      // درآمد از زیرمجموعه
+
   // ---- LOCAL SAVE/LOAD ----
   function loadGame() {
     try {
