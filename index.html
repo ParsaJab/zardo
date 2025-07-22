@@ -1,81 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>ZARDO Clicker Game</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header>
-    <div class="xp-bar">
-      <span id="level">Lvl 1</span>
-      <div class="xp-track"><div id="xp-fill"></div></div>
-    </div>
-    <div class="title">ZARDO</div>
-    <div class="settings-tab" id="settings-open">⚙️</div>
-  </header>
-
   <!-- Main Click Panel -->
   <section id="panel-main" class="panel">
     <div id="score-display">Gold: <span id="gold-count">0</span></div>
     <button id="click-button">💰 Click for Gold</button>
-    <div class="vault">
-      <div class="vault-bar"><div id="vault-fill"></div></div>
-      <div class="vault-info">
-        <p>Vault: <span id="vault-amount">0</span> Gold</p>
-        <p>Next Upgrade: <span id="vault-upgrade-cost">50</span> Gold</p>
-        <div class="vault-actions">
-          <button id="collect-button">Collect</button>
-          <button id="upgrade-vault-button">Upgrade</button>
-        </div>
-      </div>
-    </div>
   </section>
 
   <!-- Businesses Panel -->
   <section id="panel-business" class="panel hidden">
-    <div class="biz-gold-bar">Gold: <span id="biz-gold-amount">0</span></div>
-    <div id="business-list"></div>
-    <div id="business-select-modal" class="modal hidden">
-      <div class="modal-content">
-        <h3>Buy a Business</h3>
-        <div id="business-select-list"></div>
-        <button class="modal-close" id="close-business-modal">Close</button>
-      </div>
-    </div>
+    <div id="business-list">Your Businesses will appear here.</div>
   </section>
 
-  <!-- Robot Panel -->
-  <section id="panel-robot" class="panel hidden">
-    <div id="robot-status">
-      <p>Robot is not active</p>
-      <button id="buy-robot">Buy Robot</button>
-    </div>
-    <div id="robot-upgrade" class="hidden">
-      <p>Collect Power: <span id="robot-power">1</span></p>
-      <p>Upgrade Cost: <span id="robot-upgrade-cost">100</span> Gold</p>
-      <button id="upgrade-robot">Upgrade Robot</button>
-    </div>
-  </section>
+  <!-- (مثال، می‌تونی پنل‌های بیشتری اضافه کنی) -->
+  <!-- <section id="panel-robot" class="panel hidden">...</section> -->
 
-  <!-- Referral Panel -->
-  <section id="panel-referral" class="panel hidden">
-    <p>Invite referrals to earn bonus Gold!</p>
-  </section>
-
-  <!-- Settings Panel -->
-  <section id="settings-panel" class="panel hidden">
-    <div id="tg-user-info" style="text-align:center;font-size:18px;margin-bottom:16px;"></div>
-    <div id="profile-info-settings" style="margin-top:20px;"></div>
-  </section>
-  
   <nav class="bottom-tabs">
     <button class="tab active" data-panel="panel-main">🖱️ Click</button>
     <button class="tab" data-panel="panel-business">🏢 Businesses</button>
-    <button class="tab" data-panel="panel-robot">🤖 Robot</button>
-    <button class="tab" data-panel="panel-referral">🔗 Referrals</button>
   </nav>
   <script src="script.js"></script>
 </body>
