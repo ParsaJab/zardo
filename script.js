@@ -332,10 +332,9 @@ function showTelegramUserProfile() {
   if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe) {
     const user = window.Telegram.WebApp.initDataUnsafe.user;
     if (user) {
-      // عکس پروفایل تلگرام (اگر نبود، یک عکس دیفالت)
       let photoUrl = user.photo_url
         ? user.photo_url
-        : "https://telegra.ph/file/9be421f926c5b0b7e59b5.png"; // آواتار پیش‌فرض
+        : "https://telegra.ph/file/9be421f926c5b0b7e59b5.png";
       div.innerHTML = `
         <img src="${photoUrl}" style="width:76px;height:76px;border-radius:50%;border:3px solid #61a5ff;box-shadow:0 2px 8px #bde0fd;margin-bottom:7px;">
         <div style="font-size:17px;font-weight:bold;margin-top:8px;">${user.first_name || "User"}</div>
@@ -348,12 +347,3 @@ function showTelegramUserProfile() {
     div.innerHTML = `<div style="color:#d44;font-size:16px;">Not connected to Telegram</div>`;
   }
 }
-if(tab.dataset.panel==="settings-panel") {
-  showTelegramUserProfile();
-  // ... بقیه کدها
-}
-document.getElementById("settings-open").onclick = () => {
-  document.querySelectorAll('.panel').forEach(p => p.classList.add("hidden"));
-  document.getElementById("settings-panel").classList.remove("hidden");
-  showTelegramUserProfile();
-};
