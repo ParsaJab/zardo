@@ -148,7 +148,7 @@ header {
 .bottom-tabs {
   background: rgba(20,23,35,0.91);
   box-shadow: 0 0 21px #12e3e922;
-  border-radius: 10px 10px 0 0;
+  border-radius: 20px 20px 0 0;
   display: flex;
   justify-content: space-between;
   position: fixed;
