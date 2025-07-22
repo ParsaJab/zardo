@@ -325,7 +325,6 @@ function showTelegramConnectionStatus() {
 }
 
 // هر وقت وارد تنظیمات شدی اینو صدا بزن (مثلاً تو event تب تنظیمات):
-// showTelegramConnectionStatus();
 function showTelegramUserProfile() {
   const div = document.getElementById('tg-user-profile');
   if (!div) return;
