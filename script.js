@@ -352,58 +352,6 @@ document.getElementById("settings-open").onclick = () => {
   document.getElementById("settings-panel").classList.remove("hidden");
   showTelegramUserProfile(); // این تابع باید دقیقاً اینجا فراخوانی شه
 };
-let telegramUserId = null; // اینو موقع لود پروفایل ست می‌کنی
-
-function showReferralPanel() {
-  const refInput = document.getElementById("ref-link");
-  const statsDiv = document.getElementById("referral-stats");
-  // مطمئن شو متغیر userId رو از تلگرام گرفتی:
-  let userId = null;
-  if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe) {
-    let user = window.Telegram.WebApp.initDataUnsafe.user;
-    if (user && user.id) userId = user.id;
-  }
-  if (!userId) userId = "123456"; // حالت تست یا کاربر بدون تلگرام
-  // لینک دعوت مخصوص کاربر
-  let baseLink = "https://zardo.click"; // یا آدرس بازی خودت!
-  refInput.value = `${baseLink}/?ref=${userId}`;
-  statsDiv.innerHTML = `Your referrals: <b>${window.userRefCount || 0}</b>`;
-}
-
-// دکمه Copy
-document.getElementById("copy-ref-link").onclick = function() {
-  let val = document.getElementById("ref-link").value;
-  navigator.clipboard.writeText(val);
-  this.textContent = "Copied!";
-  setTimeout(()=>{ this.textContent = "Copy"; }, 1500);
-};
-
-// وقتی تب Referral فعال شد این تابع رو اجرا کن:
-document.querySelector(".bottom-tabs").onclick = function(e) {
-  if(e.target.classList.contains("tab")) {
-    let tab = e.target;
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    tab.classList.add('active');
-    document.querySelectorAll('.panel').forEach(p => p.classList.add('hidden'));
-    document.getElementById(tab.dataset.panel).classList.remove('hidden');
-    if(tab.dataset.panel==="panel-referral") showReferralPanel();
-  }
-};
-function getReferralFromURL() {
-  const params = new URLSearchParams(window.location.search);
-  return params.get('ref');
-}
-
-window.addEventListener('DOMContentLoaded', function() {
-  // ...
-  if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe) {
-    const user = window.Telegram.WebApp.initDataUnsafe.user;
-    if (user && user.id) {
-      telegramUserId = user.id;
-    }
-  }
-  // ... بقیه کد لود
-});
 let telegramUserId = null;
 
 // تابع گرفتن userId تلگرام بعد از لود
