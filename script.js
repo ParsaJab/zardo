@@ -371,33 +371,12 @@ function fetchTelegramUserId(callback) {
 
 // تابع نمایش لینک رفرال
 function showReferralPanel() {
-  fetchTelegramUserId(function() {
-    const refInput = document.getElementById("ref-link");
-    const statsDiv = document.getElementById("referral-stats");
-    let baseLink = "https://zardo.click"; // آدرس دامنه واقعی بازی
-    let userId = telegramUserId || "demo";
-    refInput.value = `${baseLink}/?ref=${userId}`;
-    statsDiv.innerHTML = `Your referrals: <b>${window.userRefCount || 0}</b>`;
-  });
-}
-
-// رویداد تب‌ها (اگر قبلاً داری، همونو نگه‌دار فقط این خط اضافه شه)
-document.querySelector(".bottom-tabs").onclick = function(e) {
-  if(e.target.classList.contains("tab")) {
-    let tab = e.target;
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    tab.classList.add('active');
-    document.querySelectorAll('.panel').forEach(p => p.classList.add('hidden'));
-    document.getElementById(tab.dataset.panel).classList.remove('hidden');
-    // این خط رو بذار
-    if(tab.dataset.panel==="panel-referral") showReferralPanel();
+  const refInput = document.getElementById("ref-link");
+  let userId = "demo";
+  if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe) {
+    let user = window.Telegram.WebApp.initDataUnsafe.user;
+    if (user && user.id) userId = user.id;
   }
-};
-
-// دکمه Copy
-document.getElementById("copy-ref-link").onclick = function() {
-  let val = document.getElementById("ref-link").value;
-  navigator.clipboard.writeText(val);
-  this.textContent = "Copied!";
-  setTimeout(()=>{ this.textContent = "Copy"; }, 1500);
-};
+  let baseLink = "https://zardo.click";
+  refInput.value = `${baseLink}/?ref=${userId}`;
+}
