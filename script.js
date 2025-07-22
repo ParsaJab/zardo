@@ -292,6 +292,7 @@ window.addEventListener('DOMContentLoaded', function() {
       if(tab.dataset.panel==="panel-business") renderBusinesses();
       if(tab.dataset.panel==="panel-robot") renderRobotPanel();
       if(tab.dataset.panel==="settings-panel") showProfileInfo();
+      if(tab.dataset.panel==="panel-referral") showReferralPanel(); // این خط برای رفرال
       updateUI();
     }
   };
