@@ -373,13 +373,20 @@ function fetchTelegramUserId(callback) {
 function showReferralPanel() {
   const refInput = document.getElementById("ref-link");
   let userId = "demo";
+  let info = "env:";
   if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe) {
     let user = window.Telegram.WebApp.initDataUnsafe.user;
-    if (user && user.id) userId = user.id;
+    if (user && user.id) {
+      userId = user.id;
+      info = "telegram user.id: " + userId;
+    } else {
+      info = "telegram but no user.id!";
+    }
+  } else {
+    info = "not telegram webapp";
   }
   let baseLink = "https://zardo.click";
-  // این خط رو اینجا بذار
-  console.log("User id:", userId, refInput);
   refInput.value = `${baseLink}/?ref=${userId}`;
+  alert("REF TEST: " + info + "\nLink: " + refInput.value);
 }
 
