@@ -1,6 +1,6 @@
 window.addEventListener('DOMContentLoaded', function() {
 
-  // متغیرهای اصلی
+  // ---- VARIABLES ----
   let gold = 0, level = 1, xp = 0, xpToNextLevel = 20, vault = 0, vaultCapacity = 100, vaultLevel = 1, clickCount = 0, totalEarnings = 0;
   let robotOwned = false, robotLevel = 1, robotCollect = 2, robotBuyCost = 500, robotUpgradeCost = 400, robotTimeLeft = 10, robotInterval = null, darkMode = false;
   const businessDefs = [
@@ -18,7 +18,7 @@ window.addEventListener('DOMContentLoaded', function() {
   let businesses = [];
   let bizIncomeInterval = null;
 
-  // ذخیره و لود
+  // ---- LOCAL SAVE/LOAD ----
   function loadGame() {
     try {
       const data = JSON.parse(localStorage.getItem('zardoSave'));
@@ -52,7 +52,7 @@ window.addEventListener('DOMContentLoaded', function() {
     localStorage.setItem('zardoSave', JSON.stringify(data));
   }
 
-  // توابع اصلی
+  // ---- GAME LOGIC ----
   function getBusiness(id) { return businesses.find(b=>b.id===id); }
   function businessUpgradeCost(biz) { return Math.floor(businessDefs[biz.id-1].baseCost * Math.pow(1.7, biz.level)); }
 
@@ -89,7 +89,7 @@ window.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  // رویداد کلیک
+  // ---- CLICK EVENTS ----
   document.getElementById("click-button").onclick = () => {
     const earned = level;
     gold += earned;
@@ -112,7 +112,14 @@ window.addEventListener('DOMContentLoaded', function() {
     darkMode = document.body.classList.contains('dark');
     saveGame();
   };
+  document.getElementById("reset-game-btn").onclick = () => {
+    if(confirm("Are you sure? All your progress will be lost!")){
+      localStorage.removeItem('zardoSave');
+      location.reload();
+    }
+  };
 
+  // ---- BUSINESSES PANEL ----
   function renderBusinesses() {
     const bizList = document.getElementById("business-list");
     bizList.innerHTML = "";
@@ -134,4 +141,171 @@ window.addEventListener('DOMContentLoaded', function() {
             Upgrade (${businessUpgradeCost(biz)} Gold)
           </button>
         `;
-        box.querySelector(".
+        box.querySelector(".biz-upgrade-btn").onclick = ()=>{
+          let upCost = businessUpgradeCost(biz);
+          if(gold>=upCost && biz.level<10) {
+            gold-=upCost;
+            biz.level+=1;
+            biz.income+=2;
+            updateUI();
+            renderBusinesses();
+          }
+        };
+        bizList.appendChild(box);
+      });
+      if (businessDefs.some(def=>!getBusiness(def.id))) {
+        let startBox = document.createElement("div");
+        startBox.className = "business-item business-locked";
+        startBox.style.margin = "22px auto 0 auto"; startBox.style.textAlign="center";
+        startBox.innerHTML = `<button class="biz-buy-btn" id="open-business-modal" style="font-size:17px;min-width:140px;min-height:45px;">Start New Business</button>`;
+        bizList.appendChild(startBox);
+      }
+    }
+    let btn = document.getElementById("open-business-modal");
+    if (btn) btn.onclick = showBusinessModal;
+  }
+  function showBusinessModal() {
+    const modal = document.getElementById("business-select-modal");
+    const list = document.getElementById("business-select-list");
+    list.innerHTML = '';
+    businessDefs.filter(def=>!getBusiness(def.id)).forEach(def=>{
+      let card = document.createElement("div");
+      card.className = "business-buy-card";
+      card.innerHTML = `
+        <span class="biz-name">${def.name}</span>
+        <span class="biz-cost">${def.baseCost} Gold</span>
+        <button class="buy-btn" ${gold<def.baseCost?"disabled":""}>Buy</button>
+      `;
+      card.querySelector(".buy-btn").onclick = function() {
+        if (gold >= def.baseCost) {
+          gold -= def.baseCost;
+          businesses.push({id:def.id,level:1,income:5});
+          modal.classList.add('hidden');
+          renderBusinesses();
+          updateUI();
+        }
+      };
+      list.appendChild(card);
+    });
+    modal.classList.remove('hidden');
+  }
+  document.getElementById("close-business-modal").onclick = function(){
+    document.getElementById("business-select-modal").classList.add('hidden');
+  };
+
+  // درآمد بیزنس‌ها هر ثانیه به Vault اضافه شود
+  if (bizIncomeInterval) clearInterval(bizIncomeInterval);
+  bizIncomeInterval = setInterval(()=>{
+    let total = businesses.reduce((sum,b)=>sum+b.income,0);
+    if(total>0){
+      vault = Math.min(vault+total, vaultCapacity);
+      updateUI();
+    }
+  }, 1000);
+
+  // ---- ROBOT PANEL ----
+  function renderRobotPanel() {
+    let panel = document.getElementById("panel-robot");
+    panel.innerHTML = "";
+    let card = document.createElement("div");
+    card.className = "robot-card";
+    card.innerHTML = `
+      <div class="robot-title">
+        🤖 Robot Collector
+        <span style="font-size:16px;font-weight:normal;color:#666;margin-left:8px;">${robotOwned ? "Level " + robotLevel : "Not owned"}</span>
+      </div>
+      <div class="robot-stat-list">
+        <span><b>Vault:</b> ${vault} / ${vaultCapacity}</span>
+        <span><b>Gold:</b> ${gold}</span>
+        <span><b>Collect Power:</b> ${robotCollect} Gold / collect</span>
+        <span><b>Every:</b> 10 seconds</span>
+      </div>
+      <div class="robot-timer">${robotOwned ? ("Next collect in: <span id='robot-timer-txt'>" + robotTimeLeft + "</span>s") : ""}</div>
+    `;
+    if (!robotOwned) {
+      let btn = document.createElement("button");
+      btn.className = "robot-buy-btn";
+      btn.innerText = `Buy Robot (${robotBuyCost} Gold)`;
+      btn.disabled = gold < robotBuyCost;
+      btn.onclick = function() {
+        if (gold >= robotBuyCost) {
+          gold -= robotBuyCost;
+          robotOwned = true;
+          robotLevel = 1;
+          robotCollect = 2;
+          robotUpgradeCost = 400;
+          robotTimeLeft = 10;
+          startRobotInterval();
+          updateUI();
+          renderRobotPanel();
+        }
+      };
+      card.appendChild(btn);
+    } else {
+      let btn = document.createElement("button");
+      btn.className = "robot-upgrade-btn";
+      btn.innerText = `Upgrade Robot (${robotUpgradeCost} Gold)`;
+      btn.disabled = gold < robotUpgradeCost;
+      btn.onclick = function() {
+        if (gold >= robotUpgradeCost) {
+          gold -= robotUpgradeCost;
+          robotLevel += 1;
+          robotCollect += 2;
+          robotUpgradeCost = Math.floor(robotUpgradeCost * 1.8);
+          updateUI();
+          renderRobotPanel();
+        }
+      };
+      card.appendChild(btn);
+    }
+    panel.appendChild(card);
+  }
+  function startRobotInterval() {
+    if (robotInterval) clearInterval(robotInterval);
+    robotTimeLeft = 10;
+    robotInterval = setInterval(() => {
+      if (!robotOwned) return;
+      robotTimeLeft -= 1;
+      let txt = document.getElementById("robot-timer-txt");
+      if (txt) txt.innerText = robotTimeLeft;
+      if (robotTimeLeft <= 0) {
+        let canCollect = Math.min(robotCollect, vault);
+        gold += canCollect;
+        vault -= canCollect;
+        robotTimeLeft = 10;
+        updateUI();
+        renderRobotPanel();
+      }
+    }, 1000);
+  }
+  if (robotOwned) startRobotInterval();
+
+  // ---- TABS SWITCH ----
+  document.querySelector(".bottom-tabs").onclick = function(e) {
+    if(e.target.classList.contains("tab")) {
+      let tab = e.target;
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      document.querySelectorAll('.panel').forEach(p => p.classList.add('hidden'));
+      document.getElementById(tab.dataset.panel).classList.remove('hidden');
+      if(tab.dataset.panel==="panel-business") renderBusinesses();
+      if(tab.dataset.panel==="panel-robot") renderRobotPanel();
+      if(tab.dataset.panel==="settings-panel") showProfileInfo();
+      updateUI();
+    }
+  };
+  document.getElementById("settings-open").onclick = () => {
+    document.querySelectorAll('.panel').forEach(p => p.classList.add("hidden"));
+    document.getElementById("settings-panel").classList.remove("hidden");
+    showProfileInfo();
+    updateUI();
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelector('.tab[data-panel="settings-panel"]').classList.add('active');
+  };
+
+  // ---- INIT ----
+  loadGame();
+  updateUI();
+  renderBusinesses();
+  renderRobotPanel();
+});
