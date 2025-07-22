@@ -356,8 +356,16 @@ let telegramUserId = null; // اینو موقع لود پروفایل ست می�
 function showReferralPanel() {
   const refInput = document.getElementById("ref-link");
   const statsDiv = document.getElementById("referral-stats");
-  let userId = telegramUserId || "0";
-  refInput.value = `https://zardo.click/?ref=${userId}`;
+  // مطمئن شو متغیر userId رو از تلگرام گرفتی:
+  let userId = null;
+  if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe) {
+    let user = window.Telegram.WebApp.initDataUnsafe.user;
+    if (user && user.id) userId = user.id;
+  }
+  if (!userId) userId = "123456"; // حالت تست یا کاربر بدون تلگرام
+  // لینک دعوت مخصوص کاربر
+  let baseLink = "https://zardo.click"; // یا آدرس بازی خودت!
+  refInput.value = `${baseLink}/?ref=${userId}`;
   statsDiv.innerHTML = `Your referrals: <b>${window.userRefCount || 0}</b>`;
 }
 
@@ -369,10 +377,17 @@ document.getElementById("copy-ref-link").onclick = function() {
   setTimeout(()=>{ this.textContent = "Copy"; }, 1500);
 };
 
-// وقتی تب Referral فعال میشه اینو صدا بزن:
-if(tab.dataset.panel==="panel-referral") {
-  showReferralPanel();
-}
+// وقتی تب Referral فعال شد این تابع رو اجرا کن:
+document.querySelector(".bottom-tabs").onclick = function(e) {
+  if(e.target.classList.contains("tab")) {
+    let tab = e.target;
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    document.querySelectorAll('.panel').forEach(p => p.classList.add('hidden'));
+    document.getElementById(tab.dataset.panel).classList.remove('hidden');
+    if(tab.dataset.panel==="panel-referral") showReferralPanel();
+  }
+};
 function getReferralFromURL() {
   const params = new URLSearchParams(window.location.search);
   return params.get('ref');
@@ -382,10 +397,9 @@ window.addEventListener('DOMContentLoaded', function() {
   // ...
   let referralId = getReferralFromURL();
   if(referralId && !localStorage.getItem('ref-done')) {
-    // فقط یکبار، چون بعدا تو سرور هم می‌فرستی
-    // مثلا جایزه به کاربر جدید بده:
-    gold += 50;
+    // فقط یکبار به معرف جایزه بده یا به کاربر جدید هدیه بده
+    gold += 50; // مثال: به کاربر جدید Gold بده
     localStorage.setItem('ref-done', '1');
-    // این آیدی معرف رو بعدا می‌تونی به سرور هم بفرستی تا معرف جایزه بگیره
+    // اگر سرور داری، این آیدی معرف رو به سرور بفرست
   }
 });
