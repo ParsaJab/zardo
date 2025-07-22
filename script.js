@@ -347,3 +347,8 @@ function showTelegramUserProfile() {
     div.innerHTML = `<div style="color:#d44;font-size:16px;">Not connected to Telegram</div>`;
   }
 }
+document.getElementById("settings-open").onclick = () => {
+  document.querySelectorAll('.panel').forEach(p => p.classList.add("hidden"));
+  document.getElementById("settings-panel").classList.remove("hidden");
+  showTelegramUserProfile(); // این تابع باید دقیقاً اینجا فراخوانی شه
+};
