@@ -7,23 +7,68 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <header>
+    <div class="xp-bar">
+      <span id="level">Lvl 1</span>
+      <div class="xp-track"><div id="xp-fill"></div></div>
+    </div>
+    <div class="title">ZARDO</div>
+    <div class="settings-tab" id="settings-open">⚙️</div>
+  </header>
+
   <!-- Main Click Panel -->
   <section id="panel-main" class="panel">
     <div id="score-display">Gold: <span id="gold-count">0</span></div>
     <button id="click-button">💰 Click for Gold</button>
+    <div class="vault">
+      <div class="vault-bar"><div id="vault-fill"></div></div>
+      <div class="vault-info">
+        <p>Vault: <span id="vault-amount">0</span> Gold</p>
+        <p>Next Upgrade: <span id="vault-upgrade-cost">50</span> Gold</p>
+        <div class="vault-actions">
+          <button id="collect-button">Collect</button>
+          <button id="upgrade-vault-button">Upgrade</button>
+        </div>
+      </div>
+    </div>
   </section>
 
   <!-- Businesses Panel -->
   <section id="panel-business" class="panel hidden">
-    <div id="business-list">Your Businesses will appear here.</div>
+    <div class="biz-gold-bar">Gold: <span id="biz-gold-amount">0</span></div>
+    <div id="business-list"></div>
+    <div id="business-select-modal" class="modal hidden">
+      <div class="modal-content">
+        <h3>Buy a Business</h3>
+        <div id="business-select-list"></div>
+        <button class="modal-close" id="close-business-modal">Close</button>
+      </div>
+    </div>
   </section>
 
-  <!-- (مثال، می‌تونی پنل‌های بیشتری اضافه کنی) -->
-  <!-- <section id="panel-robot" class="panel hidden">...</section> -->
+  <!-- Robot Panel -->
+  <section id="panel-robot" class="panel hidden">
+    <div id="robot-status"></div>
+  </section>
 
+  <!-- Referral Panel -->
+  <section id="panel-referral" class="panel hidden">
+    <div id="referral-info">Invite referrals to earn bonus Gold!</div>
+  </section>
+
+  <!-- Settings Panel -->
+  <section id="settings-panel" class="panel hidden">
+    <div id="profile-info-settings" style="margin-top:20px;"></div>
+    <button id="toggle-theme">Toggle Theme (Dark/Light)</button>
+    <button id="reset-game-btn" style="margin-top:16px;">Reset Game</button>
+  </section>
+  
   <nav class="bottom-tabs">
     <button class="tab active" data-panel="panel-main">🖱️ Click</button>
     <button class="tab" data-panel="panel-business">🏢 Businesses</button>
+    <button class="tab" data-panel="panel-robot">🤖 Robot</button>
+    <button class="tab" data-panel="panel-referral">🔗 Referrals</button>
+    <button class="tab" data-panel="settings-panel">⚙️ Settings</button>
   </nav>
   <script src="script.js"></script>
 </body>
