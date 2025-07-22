@@ -326,3 +326,25 @@ function showTelegramConnectionStatus() {
 
 // هر وقت وارد تنظیمات شدی اینو صدا بزن (مثلاً تو event تب تنظیمات):
 // showTelegramConnectionStatus();
+function showTelegramUserProfile() {
+  const div = document.getElementById('tg-user-profile');
+  if (!div) return;
+  if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe) {
+    const user = window.Telegram.WebApp.initDataUnsafe.user;
+    if (user) {
+      // عکس پروفایل تلگرام (اگر نبود، یک عکس دیفالت)
+      let photoUrl = user.photo_url
+        ? user.photo_url
+        : "https://telegra.ph/file/9be421f926c5b0b7e59b5.png"; // آواتار پیش‌فرض
+      div.innerHTML = `
+        <img src="${photoUrl}" style="width:76px;height:76px;border-radius:50%;border:3px solid #61a5ff;box-shadow:0 2px 8px #bde0fd;margin-bottom:7px;">
+        <div style="font-size:17px;font-weight:bold;margin-top:8px;">${user.first_name || "User"}</div>
+        <div style="font-size:14px;color:#444;">@${user.username || "unknown"}</div>
+      `;
+    } else {
+      div.innerHTML = `<div style="color:#d44;font-size:16px;">Not connected to Telegram</div>`;
+    }
+  } else {
+    div.innerHTML = `<div style="color:#d44;font-size:16px;">Not connected to Telegram</div>`;
+  }
+}
