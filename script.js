@@ -378,5 +378,8 @@ function showReferralPanel() {
     if (user && user.id) userId = user.id;
   }
   let baseLink = "https://zardo.click";
+  // این خط رو اینجا بذار
+  console.log("User id:", userId, refInput);
   refInput.value = `${baseLink}/?ref=${userId}`;
 }
+
