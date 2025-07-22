@@ -309,3 +309,20 @@ window.addEventListener('DOMContentLoaded', function() {
   renderBusinesses();
   renderRobotPanel();
 });
+function showTelegramConnectionStatus() {
+  const infoDiv = document.getElementById('tg-user-info');
+  if (!infoDiv) return;
+  if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe) {
+    const user = window.Telegram.WebApp.initDataUnsafe.user;
+    if (user) {
+      infoDiv.innerHTML = `🟢 Connected as <b>${user.first_name}</b> <span style="color:#888;">(${user.id})</span>`;
+    } else {
+      infoDiv.innerHTML = `🔴 Not connected to Telegram WebApp.`;
+    }
+  } else {
+    infoDiv.innerHTML = `🔴 Not connected to Telegram WebApp.`;
+  }
+}
+
+// هر وقت وارد تنظیمات شدی اینو صدا بزن (مثلاً تو event تب تنظیمات):
+// showTelegramConnectionStatus();
