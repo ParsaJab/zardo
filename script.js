@@ -381,22 +381,21 @@ function showReferralPanel() {
     let user = window.Telegram.WebApp.initDataUnsafe.user;
     if (user && user.id) userId = user.id;
   }
-  let baseLink = "https://zardo.click"; // آدرس دامنه‌ات
+  let baseLink = "https://zardo.click";
   refInput.value = `${baseLink}/?ref=${userId}`;
+  // نمایش تعداد رفرال و درآمد
+  let refCount = localStorage.getItem('my-ref-count') || 0;
+  let refIncome = localStorage.getItem('my-ref-income') || 0;
+  document.getElementById("ref-count").textContent = refCount;
+  document.getElementById("ref-income").textContent = refIncome;
 }
 
-// دکمه Copy
-document.getElementById("copy-ref-link").onclick = function() {
-  let val = document.getElementById("ref-link").value;
-  navigator.clipboard.writeText(val);
-  this.textContent = "Copied!";
-  setTimeout(()=>{ this.textContent = "Copy"; }, 1200);
-};
+//تست
+
 function getReferralFromURL() {
   const params = new URLSearchParams(window.location.search);
   return params.get('ref');
 }
-
 window.addEventListener('DOMContentLoaded', function() {
   // ... سایر کدها
   let referralId = getReferralFromURL();
@@ -410,4 +409,16 @@ window.addEventListener('DOMContentLoaded', function() {
     // این بخش رو در عمل باید توی سرور ذخیره کنی نه لوکال!
   }
 });
+// فرض: هر بار Gold کاربر جدید زیاد میشه
+function addGold(amount) {
+  gold += amount;
+  // شبیه‌سازی پرداخت 10% به معرف:
+  let ref = getReferralFromURL();
+  if(ref && ref !== "demo") {
+    let income = Math.floor(amount * 0.10);
+    let rIncome = localStorage.getItem('my-ref-income') || 0;
+    localStorage.setItem('my-ref-income', (+rIncome) + income);
+  }
+  // ...
+}
 
