@@ -6,7 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>ZARDO Clicker Game</title>
   <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
 <body>
   <header>
@@ -28,7 +27,7 @@
         <p>Vault: <span id="vault-amount">0</span> Gold</p>
         <p>Next Upgrade: <span id="vault-upgrade-cost">50</span> Gold</p>
         <div class="vault-actions">
-          <button id="collect-button"><i class="fa-solid fa-vault"></i> Collect</button>
+          <button id="collect-button">Collect</button>
           <button id="upgrade-vault-button">Upgrade</button>
         </div>
       </div>
@@ -77,11 +76,11 @@
 </section>
   
   <nav class="bottom-tabs">
-  <button class="tab active" data-panel="panel-main"><i class="fa-solid fa-hand-pointer"></i> Click</button>
-  <button class="tab" data-panel="panel-business"><i class="fa-solid fa-building-columns"></i> Businesses</button>
-  <button class="tab" data-panel="panel-robot"><i class="fa-solid fa-robot"></i> Robot</button>
-  <button class="tab" data-panel="panel-referral"><i class="fa-solid fa-users"></i> Referrals</button>
-</nav>
-
+    <button class="tab active" data-panel="panel-main">🖱️</button>
+    <button class="tab" data-panel="panel-business">🏢</button>
+    <button class="tab" data-panel="panel-robot">🤖</button>
+    <button class="tab" data-panel="panel-referral">🔗</button>
+  </nav>
+  <script src="script.js"></script>
 </body>
 </html>
