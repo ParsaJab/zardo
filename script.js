@@ -1,3 +1,5 @@
+window.addEventListener('DOMContentLoaded', function() {
+
 const SERVER_URL = 'https://zardo-server.onrender.com';
 let telegramUser = null;
 
@@ -322,6 +324,7 @@ function startRobotInterval() {
 }
 if (robotOwned) startRobotInterval();
 
+// ==== سوییچ تب‌ها فقط و فقط یکبار ====
 document.querySelector(".bottom-tabs").onclick = function(e) {
   if(e.target.classList.contains("tab")) {
     let tab = e.target;
@@ -359,45 +362,33 @@ document.getElementById("settings-open").onclick = () => {
   updateUI();
 };
 
-document.getElementById("reset-game-btn").onclick = () => {
+document.getElementById("reset-game-btn")?.onclick = () => {
   if(confirm("Are you sure? All your progress will be lost!")){
     localStorage.removeItem('zardoSave');
     location.reload();
   }
 };
 
-// اجرا
-window.addEventListener('DOMContentLoaded', function() {
-  if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe) {
-    telegramUser = window.Telegram.WebApp.initDataUnsafe.user;
-    if (telegramUser) {
-      loadUserDataFromServer(() => {
-        updateUI();
-        renderBusinesses();
-        renderRobotPanel();
-      });
-    } else {
-      loadGame();
+// اجرا و لود داده‌ها
+if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe) {
+  telegramUser = window.Telegram.WebApp.initDataUnsafe.user;
+  if (telegramUser) {
+    loadUserDataFromServer(() => {
       updateUI();
       renderBusinesses();
       renderRobotPanel();
-    }
+    });
   } else {
     loadGame();
     updateUI();
     renderBusinesses();
     renderRobotPanel();
   }
+} else {
+  loadGame();
+  updateUI();
+  renderBusinesses();
+  renderRobotPanel();
+}
+
 });
-document.querySelector(".bottom-tabs").onclick = function(e) {
-  if(e.target.classList.contains("tab")) {
-    let tab = e.target;
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    tab.classList.add('active');
-    document.querySelectorAll('.panel').forEach(p => p.classList.add('hidden'));
-    document.getElementById(tab.dataset.panel).classList.remove('hidden');
-    if(tab.dataset.panel==="panel-business") renderBusinesses();
-    if(tab.dataset.panel==="panel-robot") renderRobotPanel();
-    updateUI();
-  }
-};
