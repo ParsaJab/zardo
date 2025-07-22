@@ -370,23 +370,24 @@ function fetchTelegramUserId(callback) {
 }
 
 // تابع نمایش لینک رفرال
+// -- Referral Panel (کد دعوت)
 function showReferralPanel() {
   const refInput = document.getElementById("ref-link");
   let userId = "demo";
-  let info = "env:";
   if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe) {
     let user = window.Telegram.WebApp.initDataUnsafe.user;
-    if (user && user.id) {
-      userId = user.id;
-      info = "telegram user.id: " + userId;
-    } else {
-      info = "telegram but no user.id!";
-    }
-  } else {
-    info = "not telegram webapp";
+    if (user && user.id) userId = user.id;
   }
-  let baseLink = "https://zardo.click";
+  let baseLink = "https://zardo.click"; // آدرس دامنه‌ات
   refInput.value = `${baseLink}/?ref=${userId}`;
-  alert("REF TEST: " + info + "\nLink: " + refInput.value);
 }
+
+// دکمه Copy
+document.getElementById("copy-ref-link").onclick = function() {
+  let val = document.getElementById("ref-link").value;
+  navigator.clipboard.writeText(val);
+  this.textContent = "Copied!";
+  setTimeout(()=>{ this.textContent = "Copy"; }, 1200);
+};
+
 
