@@ -351,3 +351,41 @@ document.getElementById("settings-open").onclick = () => {
   document.getElementById("settings-panel").classList.remove("hidden");
   showTelegramUserProfile(); // این تابع باید دقیقاً اینجا فراخوانی شه
 };
+let telegramUserId = null; // اینو موقع لود پروفایل ست می‌کنی
+
+function showReferralPanel() {
+  const refInput = document.getElementById("ref-link");
+  const statsDiv = document.getElementById("referral-stats");
+  let userId = telegramUserId || "0";
+  refInput.value = `https://zardo.click/?ref=${userId}`;
+  statsDiv.innerHTML = `Your referrals: <b>${window.userRefCount || 0}</b>`;
+}
+
+// دکمه Copy
+document.getElementById("copy-ref-link").onclick = function() {
+  let val = document.getElementById("ref-link").value;
+  navigator.clipboard.writeText(val);
+  this.textContent = "Copied!";
+  setTimeout(()=>{ this.textContent = "Copy"; }, 1500);
+};
+
+// وقتی تب Referral فعال میشه اینو صدا بزن:
+if(tab.dataset.panel==="panel-referral") {
+  showReferralPanel();
+}
+function getReferralFromURL() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get('ref');
+}
+
+window.addEventListener('DOMContentLoaded', function() {
+  // ...
+  let referralId = getReferralFromURL();
+  if(referralId && !localStorage.getItem('ref-done')) {
+    // فقط یکبار، چون بعدا تو سرور هم می‌فرستی
+    // مثلا جایزه به کاربر جدید بده:
+    gold += 50;
+    localStorage.setItem('ref-done', '1');
+    // این آیدی معرف رو بعدا می‌تونی به سرور هم بفرستی تا معرف جایزه بگیره
+  }
+});
