@@ -381,7 +381,7 @@ function showReferralPanel() {
     let user = window.Telegram.WebApp.initDataUnsafe.user;
     if (user && user.id) userId = user.id;
   }
-  let baseLink = "https://ZARDOZDCBOT";
+  let baseLink = "https://t.me/zardozdcbot?start=ref";
   refInput.value = `${baseLink}/?ref=${userId}`;
   // نمایش تعداد رفرال و درآمد
   let refCount = localStorage.getItem('my-ref-count') || 0;
