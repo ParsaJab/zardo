@@ -389,3 +389,15 @@ window.addEventListener('DOMContentLoaded', function() {
     renderRobotPanel();
   }
 });
+document.querySelector(".bottom-tabs").onclick = function(e) {
+  if(e.target.classList.contains("tab")) {
+    let tab = e.target;
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    document.querySelectorAll('.panel').forEach(p => p.classList.add('hidden'));
+    document.getElementById(tab.dataset.panel).classList.remove('hidden');
+    if(tab.dataset.panel==="panel-business") renderBusinesses();
+    if(tab.dataset.panel==="panel-robot") renderRobotPanel();
+    updateUI();
+  }
+};
