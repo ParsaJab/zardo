@@ -115,12 +115,6 @@ window.addEventListener('DOMContentLoaded', function() {
     darkMode = document.body.classList.contains('dark');
     saveGame();
   };
-  document.getElementById("reset-game-btn").onclick = () => {
-    if(confirm("Are you sure? All your progress will be lost!")){
-      localStorage.removeItem('zardoSave');
-      location.reload();
-    }
-  };
 
   // ---- BUSINESSES PANEL ----
   function renderBusinesses() {
