@@ -396,11 +396,11 @@ function getReferralFromURL() {
 
 window.addEventListener('DOMContentLoaded', function() {
   // ...
-  let referralId = getReferralFromURL();
-  if(referralId && !localStorage.getItem('ref-done')) {
-    // فقط یکبار به معرف جایزه بده یا به کاربر جدید هدیه بده
-    gold += 50; // مثال: به کاربر جدید Gold بده
-    localStorage.setItem('ref-done', '1');
-    // اگر سرور داری، این آیدی معرف رو به سرور بفرست
+  if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe) {
+    const user = window.Telegram.WebApp.initDataUnsafe.user;
+    if (user && user.id) {
+      telegramUserId = user.id;
+    }
   }
+  // ... بقیه کد لود
 });
