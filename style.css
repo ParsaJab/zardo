@@ -1,141 +1,143 @@
 body {
-  background: radial-gradient(ellipse at 60% 30%, #232b39 60%, #131522 100%);
   min-height: 100vh;
+  background: linear-gradient(120deg, #1a1537 0%, #183b68 65%, #13c9ee 100%);
   font-family: 'Poppins', 'Vazirmatn', Arial, sans-serif;
-  color: #fafcff;
+  color: #e8fbfc;
   margin: 0;
   padding: 0;
   font-size: 15px;
 }
 
 header {
-  background: rgba(30,38,56,0.93);
-  box-shadow: 0 3px 14px #20284833;
-  padding: 13px 7px 10px 7px;
+  background: rgba(14,17,44,0.85);
+  box-shadow: 0 2px 16px #12e3c455, 0 1px 9px #212;
+  padding: 15px 12px 14px 12px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  border-radius: 0 0 20px 20px;
+  border-bottom: 2px solid #12e3e980;
 }
 
 .title {
-  font-size: 23px;
+  font-size: 28px;
   font-weight: bold;
-  letter-spacing: 2px;
-  color: #22e5ff;
-  text-shadow: 0 0 10px #22e5ff80, 0 2px 5px #1116;
+  letter-spacing: 1px;
+  color: #20f9ff;
+  text-shadow: 0 0 19px #3cf8ff90, 0 2px 8px #1bced5cc;
 }
 
 .settings-tab {
-  font-size: 21px;
+  font-size: 26px;
   cursor: pointer;
   transition: color 0.18s;
-  color: #fec43b;
-  text-shadow: 0 0 6px #fec43b77;
+  color: #ffd600;
+  text-shadow: 0 0 13px #ffd60099, 0 1px 8px #fffa;
 }
-.settings-tab:hover { color: #ffac07; }
+.settings-tab:hover { color: #ffe346; }
 
 .xp-bar {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 }
 #level {
-  background: #14ffb355;
-  color: #1be38a;
-  padding: 2px 7px;
+  background: #13e7ff33;
+  color: #05c1bb;
+  padding: 4px 12px;
   font-weight: bold;
-  border-radius: 14px;
-  font-size: 13px;
+  border-radius: 15px;
+  font-size: 14px;
   letter-spacing: 1px;
-  box-shadow: 0 2px 12px #1be38a44;
+  box-shadow: 0 2px 14px #13e7ff30;
 }
 .xp-track {
-  background: #293655;
+  background: #142242;
   border-radius: 10px;
-  width: 56px;
-  height: 8px;
+  width: 70px;
+  height: 10px;
   position: relative;
   overflow: hidden;
 }
 #xp-fill {
-  background: linear-gradient(90deg, #1be3d8 0%, #18e388 80%);
+  background: linear-gradient(90deg, #27f8fe 0%, #24fe92 90%);
   height: 100%;
   border-radius: 12px 0 0 12px;
-  transition: width 0.28s cubic-bezier(.76,-0.05,.33,1.29);
+  transition: width 0.24s cubic-bezier(.76,-0.05,.33,1.29);
   width: 40%;
 }
 
-/* دکمه کلیک گلد */
+#score-display {
+  text-align: center;
+  font-size: 22px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  color: #fffde6;
+  text-shadow: 0 0 9px #ffd600cc, 0 2px 10px #ffdb6e66;
+  margin-top: 15px;
+}
+
+/* دکمه کلیک نئونی */
 #click-button {
-  background: linear-gradient(180deg, #ffd96c 0%, #f0c419 50%, #f9e793 100%);
-  box-shadow: 0 6px 36px #f9db4580, 0 3px 10px #b39d3c70;
+  background: linear-gradient(180deg, #fffad0 10%, #ffd600 50%, #fffad0 100%);
+  box-shadow: 0 0 40px #ffe16990, 0 4px 18px #ffec8c80;
   border: none;
   border-radius: 50%;
-  font-size: 20px;
+  font-size: 36px;
   font-weight: bold;
-  width: 76px;
-  height: 76px;
-  margin: 20px auto 11px auto;
+  width: 100px;
+  height: 100px;
+  margin: 35px auto 18px auto;
   display: block;
-  color: #916700;
-  text-shadow: 0 2px 7px #fff8, 0 6px 20px #f0c41944;
-  transition: transform 0.09s cubic-bezier(.6,1.7,.33,1.01), box-shadow 0.18s;
+  color: #a58a00;
+  text-shadow: 0 2px 7px #fff8, 0 4px 18px #ffe16966;
+  transition: transform 0.12s cubic-bezier(.6,1.7,.33,1.01), box-shadow 0.22s;
   cursor: pointer;
   outline: none;
   position: relative;
 }
 #click-button.clicked {
-  transform: scale(1.13);
-  box-shadow: 0 10px 42px #ffe344aa, 0 5px 24px #e7c42491;
+  transform: scale(1.17) rotate(-7deg);
+  box-shadow: 0 0 65px #ffe344dd, 0 8px 32px #ffd600bb;
 }
 
-#score-display {
-  text-align: center;
-  font-size: 18px;
-  font-weight: bold;
-  letter-spacing: 1px;
-  color: #f1e293;
-  text-shadow: 0 0 8px #ffdb6e99;
-  margin-top: 8px;
-}
-
-/* کارت Vault */
 .vault {
-  margin: 18px auto 0 auto;
-  background: linear-gradient(120deg, #212c41ee 50%, #22344d 100%);
-  border-radius: 17px;
-  max-width: 95vw;
-  box-shadow: 0 4px 32px #12e3c430, 0 1px 8px #213;
-  padding: 11px 11px;
+  margin: 22px auto 0 auto;
+  background: linear-gradient(100deg, #15172eaa 40%, #0b2b49cc 100%);
+  border-radius: 21px;
+  max-width: 97vw;
+  box-shadow: 0 4px 36px #13e7ff33, 0 1px 10px #120b2440;
+  padding: 17px 19px;
+  border: 1.5px solid #20f9ff66;
 }
 .vault-bar {
-  background: #23272f;
-  border-radius: 7px;
-  width: 96%;
-  height: 8px;
-  margin: 6px auto 2px auto;
+  background: #181f2c;
+  border-radius: 8px;
+  width: 97%;
+  height: 11px;
+  margin: 11px auto 4px auto;
   overflow: hidden;
 }
 #vault-fill {
-  background: linear-gradient(90deg, #fec43b 0%, #ffda64 90%);
-  border-radius: 10px;
+  background: linear-gradient(90deg, #ffd600 0%, #f9fe54 90%);
+  border-radius: 8px;
   height: 100%;
-  transition: width 0.23s;
+  transition: width 0.20s;
   width: 40%;
-  box-shadow: 0 0 9px #ffe288bb;
+  box-shadow: 0 0 11px #fff688aa;
 }
-.vault-info { text-align: center; font-size: 13px; }
+.vault-info { text-align: center; font-size: 14px; }
 .vault-actions {
-  display: flex; gap: 10px; justify-content: center; margin-top: 8px;
+  display: flex; gap: 15px; justify-content: center; margin-top: 11px;
 }
 .vault-actions button {
   background: linear-gradient(90deg, #1ae3cb 0%, #27cfff 90%);
   color: #202a35;
-  font-size: 13px;
+  font-size: 16px;
   border: none;
-  border-radius: 7px;
+  border-radius: 12px;
   font-weight: bold;
-  padding: 5px 13px;
+  padding: 8px 22px;
   margin: 0 3px;
   box-shadow: 0 3px 16px #1ae3cb22;
   cursor: pointer;
@@ -144,33 +146,33 @@ header {
 .vault-actions button:hover { background: #31fdcd; color: #083849; transform: scale(1.07);}
 .vault-actions button:active { background: #18cb99; }
 
-/* تب ها */
 .bottom-tabs {
-  background: rgba(20,23,35,0.91);
-  box-shadow: 0 0 21px #12e3e922;
-  border-radius: 0px 0px 0 0;
+  background: rgba(18,25,41,0.95);
+  box-shadow: 0 0 21px #11e3e930;
+  border-radius: 18px 18px 0 0;
   display: flex;
   justify-content: space-between;
   position: fixed;
   bottom: 0; left: 0; width: 100vw;
-  z-index: 11;
+  z-index: 12;
+  border-top: 2.5px solid #19c9fe90;
 }
 .tab {
   flex: 1;
   border: none;
-  font-size: 18px;
+  font-size: 25px;
   background: none;
-  padding: 14px 0 16px 0;
-  color: #14e3e9;
+  padding: 18px 0 18px 0;
+  color: #12e7f9;
   cursor: pointer;
-  transition: color 0.18s, background 0.15s;
+  transition: color 0.22s, background 0.18s;
   border-radius: 0;
   font-family: inherit;
 }
 .tab.active, .tab:hover {
-  color: #fec43b;
-  background: #21324b66;
-  border-radius: 0px 0px 0 0;
+  color: #ffd600;
+  background: #23324b77;
+  border-radius: 15px 15px 0 0;
 }
 
 .panel { display: none; }
@@ -180,120 +182,122 @@ header {
   to { opacity: 1; transform: translateY(0);}
 }
 
-/* کارت‌های بیزنس و ربات */
 .business-item, .robot-card {
-  background: linear-gradient(120deg, #233c6b99 60%, #18334d 100%);
-  border-radius: 13px;
-  margin: 10px auto 9px auto;
-  box-shadow: 0 2px 16px #1ae3cb12;
-  padding: 12px 11px 7px 11px;
-  max-width: 97vw;
+  background: linear-gradient(120deg, #1a2a4b77 60%, #0b1d38c5 100%);
+  border-radius: 18px;
+  margin: 18px auto 15px auto;
+  box-shadow: 0 2px 17px #1ae3cb21;
+  padding: 15px 15px 11px 15px;
+  max-width: 98vw;
   color: #fff;
   position: relative;
-  border: 1px solid #29486844;
-  font-size: 13px;
+  border: 1.3px solid #16f9ff44;
+  font-size: 15px;
+  backdrop-filter: blur(1.5px);
 }
 .business-item .biz-title {
-  font-size: 15px;
+  font-size: 20px;
   font-weight: bold;
-  color: #29f9f3;
-  margin-bottom: 3px;
+  color: #16f9f3;
+  margin-bottom: 6px;
   letter-spacing: .5px;
-  text-shadow: 0 2px 8px #12e3e944;
+  text-shadow: 0 2px 8px #1ae3e944;
 }
 .business-item .biz-lvl {
-  background: #fed43b;
-  color: #3a2201;
-  font-size: 11px;
-  border-radius: 8px;
-  margin-left: 6px;
-  padding: 1px 6px;
+  background: #ffd600;
+  color: #4c3e00;
+  font-size: 13px;
+  border-radius: 9px;
+  margin-left: 8px;
+  padding: 2px 9px;
   font-weight: bold;
-  text-shadow: 0 1px 5px #ffeeba80;
+  text-shadow: 0 1px 6px #ffeeba80;
 }
 .business-item .biz-income {
-  color: #eee;
-  font-size: 12px;
-  margin-bottom: 4px;
+  color: #e2f9ff;
+  font-size: 15px;
+  margin-bottom: 9px;
 }
 .biz-upgrade-btn, .biz-buy-btn {
-  background: linear-gradient(90deg, #fec43b 0%, #1ae3cb 90%);
-  color: #143233;
+  background: linear-gradient(90deg, #ffd600 0%, #13e7ff 100%);
+  color: #093946;
   border: none;
-  border-radius: 7px;
+  border-radius: 12px;
   font-weight: bold;
-  font-size: 12px;
-  padding: 5px 13px;
-  box-shadow: 0 3px 11px #fec43b22;
+  font-size: 15px;
+  padding: 8px 18px;
+  box-shadow: 0 3px 11px #ffd60011;
   cursor: pointer;
-  margin-top: 5px;
+  margin-top: 9px;
   transition: background 0.18s, color 0.13s, transform 0.13s;
 }
-.biz-upgrade-btn:disabled { background: #bdbbbb; color: #7b7c77;}
+.biz-upgrade-btn:disabled { background: #ccc8a8; color: #817f59;}
 .biz-upgrade-btn:hover, .biz-buy-btn:hover { background: #13e3f7; color: #072b32;}
-.business-locked { opacity: .8; filter: blur(.2px);}
+.business-locked { opacity: .82; filter: blur(.2px);}
 .business-buy-card {
-  background: #1d213355;
-  border-radius: 10px;
-  margin: 6px 0 4px 0;
-  padding: 4px 8px;
+  background: #15243744;
+  border-radius: 13px;
+  margin: 10px 0 7px 0;
+  padding: 9px 15px;
   display: flex; align-items: center; justify-content: space-between;
+  font-size: 15px;
 }
 
 .robot-card {
-  margin-top: 19px;
-  background: linear-gradient(120deg, #193c3b90 50%, #14222d 100%);
-  border-radius: 13px;
-  box-shadow: 0 2px 16px #fec43b11;
-  border: 1px solid #14e3e944;
+  margin-top: 38px;
+  background: linear-gradient(120deg, #183c3b90 50%, #151e2a 100%);
+  border-radius: 18px;
+  box-shadow: 0 2px 18px #ffd60022;
+  border: 1.3px solid #16e3e944;
+  font-size: 15px;
 }
 .robot-title {
-  font-size: 14px; color: #fff; font-weight: bold; text-align: center; margin-bottom: 4px;
-  text-shadow: 0 2px 8px #fec43b22;
+  font-size: 18px; color: #fff; font-weight: bold; text-align: center; margin-bottom: 7px;
+  text-shadow: 0 2px 8px #ffd60022;
 }
-.robot-stat-list { color: #b1f3ee; font-size: 11px; text-align: center; margin-bottom: 7px;}
-.robot-timer { text-align: center; color: #fec43b; margin: 2px 0 0 0; font-size: 11px;}
+.robot-stat-list { color: #c3f9ee; font-size: 13px; text-align: center; margin-bottom: 12px;}
+.robot-timer { text-align: center; color: #ffd600; margin: 6px 0 0 0; font-size: 13px;}
 .robot-buy-btn, .robot-upgrade-btn {
-  background: linear-gradient(90deg, #fec43b 0%, #1ae3cb 100%);
+  background: linear-gradient(90deg, #ffd600 0%, #13e3cb 100%);
   color: #143233;
-  border: none; border-radius: 7px;
-  font-weight: bold; font-size: 12px; padding: 5px 13px;
-  box-shadow: 0 3px 11px #fec43b22;
-  cursor: pointer; margin-top: 7px;
+  border: none; border-radius: 12px;
+  font-weight: bold; font-size: 15px; padding: 8px 18px;
+  box-shadow: 0 3px 11px #ffd60033;
+  cursor: pointer; margin-top: 13px;
   transition: background 0.18s, color 0.13s, transform 0.13s;
 }
 .robot-buy-btn:hover, .robot-upgrade-btn:hover { background: #13e3f7; color: #072b32;}
 
 input#ref-link {
-  background: #17212d;
-  color: #38e7e0;
-  font-size: 12px;
-  border: 1.5px solid #1ae3cb;
-  border-radius: 6px;
+  background: #1c2746;
+  color: #13e7e0;
+  font-size: 15px;
+  border: 1.5px solid #13e7ff;
+  border-radius: 9px;
   margin-top: 2px;
-  box-shadow: 0 2px 12px #1ae3cb11;
-  padding: 6px 4px;
+  box-shadow: 0 2px 12px #13e7ff11;
+  padding: 8px 7px;
 }
 #copy-ref-link {
-  background: #1ae3cb;
-  color: #173037;
+  background: #13e7ff;
+  color: #1b2c36;
   border: none;
-  border-radius: 7px;
-  font-size: 12px;
-  padding: 4px 11px;
-  margin-left: 4px;
+  border-radius: 9px;
+  font-size: 15px;
+  padding: 7px 17px;
+  margin-left: 7px;
   box-shadow: 0 1px 8px #13e3f722;
   transition: background 0.14s;
 }
-#copy-ref-link:hover { background: #fec43b; color: #09463b; }
+#copy-ref-link:hover { background: #ffd600; color: #09463b; }
 
 #referral-info {
-  margin-top: 10px;
-  background: #1c2a3485;
-  border-radius: 7px;
-  color: #14e3e9;
-  font-size: 12px;
-  padding: 4px 6px 5px 6px;
-  box-shadow: 0 2px 8px #1ae3cb16;
+  margin-top: 16px;
+  background: #0e1b2485;
+  border-radius: 15px;
+  color: #13e3e9;
+  font-size: 14px;
+  padding: 8px 11px 12px 11px;
+  box-shadow: 0 2px 8px #13e3cb16;
 }
-#referral-info b { color: #fec43b; font-size: 13px; }
+#referral-info b { color: #ffd600; font-size: 17px; }
