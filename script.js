@@ -110,11 +110,6 @@ window.addEventListener('DOMContentLoaded', function() {
     let cost = vaultLevel*50;
     if (gold >= cost) { gold -= cost; vaultLevel++; vaultCapacity = vaultLevel*100; updateUI(); }
   };
-  document.getElementById("toggle-theme").onclick = () => {
-    document.body.classList.toggle('dark');
-    darkMode = document.body.classList.contains('dark');
-    saveGame();
-  };
 
   // ---- BUSINESSES PANEL ----
   function renderBusinesses() {
