@@ -37,7 +37,7 @@ header {
 .xp-bar {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 28px;
 }
 #level {
   background: #14ffb355;
